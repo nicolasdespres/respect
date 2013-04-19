@@ -112,13 +112,8 @@ module Respect
     # - Be a sub-class of Respect::Schema.
     # - Be concrete (i.e. have a public method _new_)
     def schema_for(command_name)
-      klass_name = Respect.schema_name_for(command_name)
-      begin
-        klass = klass_name.constantize
-      rescue NameError => e
-        return nil
-      end
-      if klass < Schema && klass.public_methods.include?(:new)
+      klass = Respect.schema_name_for(command_name).safe_constantize
+      if klass && klass < Schema && klass.public_methods.include?(:new)
         klass
       else
         nil
@@ -139,12 +134,7 @@ module Respect
     # Turn the given _constraint_name_ into a validator class symbol.
     # Return nil if the validator class does not exist.
     def validator_for(constraint_name)
-      class_name = validator_name_for(constraint_name)
-      begin
-        class_name.constantize
-      rescue NameError
-        nil
-      end
+      validator_name_for(constraint_name).safe_constantize
     end
 
     # Test whether a validator is defined for the given _constraint_name_.

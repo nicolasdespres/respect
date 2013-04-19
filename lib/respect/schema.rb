@@ -79,9 +79,7 @@ module Respect
       # Return the definition class symbol for this schema class or nil
       # if there is no class (see Schema#def_class_name)
       def def_class
-        self.def_class_name.constantize
-      rescue NameError
-        nil
+        self.def_class_name.safe_constantize
       end
 
       # Build a command name from this class name.
