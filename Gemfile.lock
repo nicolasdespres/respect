@@ -1,0 +1,26 @@
+PATH
+  remote: .
+  specs:
+    respect (0.1.0)
+      json (~> 1.7.7)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    json (1.7.7)
+    metaclass (0.0.1)
+    mocha (0.13.3)
+      metaclass (~> 0.0.1)
+    rake (10.0.4)
+    redcarpet (2.2.2)
+    yard (0.8.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mocha (~> 0.13.3)
+  rake (~> 10.0.4)
+  redcarpet (~> 2.2.2)
+  respect!
+  yard (~> 0.8.5.2)
