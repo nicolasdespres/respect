@@ -12,7 +12,7 @@ YARD::Rake::YardocTask.new do |t|
     '-',
     'README.rdoc',
     'STATUS_MATRIX.html',
-    'SURVEY.md',
+    'RELATED_WORK.md',
   ]
   # t.options = ['--any', '--extra', '--opts'] # optional
 end

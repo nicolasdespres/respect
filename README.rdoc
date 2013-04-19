@@ -3,6 +3,9 @@
 Respect is a JSON schema validation system providing a DSL to concisely write your schema. It also comes with a
 validator, a sanitizer and dumpers to generate valid json-schema.org compliant specifications.
 
+Respect is named after the contraction of REST SPEC. Indeed, it is first intended to be used to specify REST API
+in the context of a Web application.
+
 = Features
 
 * Ruby DSL: I find it more concise and convenient than plain json-schema.org.

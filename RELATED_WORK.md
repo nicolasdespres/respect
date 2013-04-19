@@ -41,3 +41,5 @@
   - Not bind to the routes.
   - No HTTP headers validation possible.
 - No sanitizer.
+
+== Rails::API [https://github.com/rails-api/rails-api]
