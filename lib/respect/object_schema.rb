@@ -150,5 +150,12 @@ module Respect
       @properties.has_key?(property_name)
     end
 
+    # Evaluate the given block as an object schema definition (i.e. in the context of
+    # Respect::ObjectDef) and merge the result with this object schema.
+    # This is a way to "re-open" this object schema definition to add some more.
+    def eval(&block)
+      self.merge!(ObjectSchema.define(&block))
+    end
+
   end
 end

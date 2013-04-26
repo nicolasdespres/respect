@@ -433,4 +433,17 @@ class SchemaTest < Test::Unit::TestCase
     assert(s1.properties.object_id != s2.properties.object_id)
   end
 
+  def test_eval_add_more_properties
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "s11"
+    end
+    assert s1.has_property?("s11")
+    assert !s1.has_property?("new_prop")
+    s1.eval do |s|
+      s.integer "new_prop"
+    end
+    assert s1.has_property?("s11")
+    assert s1.has_property?("new_prop")
+  end
+
 end
