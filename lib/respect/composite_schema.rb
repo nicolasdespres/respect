@@ -14,12 +14,7 @@ module Respect
 
     def validate(doc)
       @schema.validate(doc)
-      if @schema.sanitized_doc.is_a? Hash
-        doc_to_resanitize = @schema.sanitized_doc.with_indifferent_access
-      else
-        doc_to_resanitize = @schema.sanitized_doc.dup
-      end
-      self.sanitized_doc = sanitize(doc_to_resanitize)
+      self.sanitized_doc = sanitize(@schema.sanitized_doc)
       true
     end
 

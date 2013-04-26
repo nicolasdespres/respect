@@ -66,7 +66,7 @@ module Respect
       unless doc.is_a?(Hash)
         raise ValidationError, "document is not a hash but a #{doc.class}"
       end
-      sanitized_doc = {}
+      sanitized_doc = {}.with_indifferent_access
       # Validate expected properties.
       @properties.each do |name, schema|
         case name

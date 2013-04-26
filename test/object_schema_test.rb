@@ -287,7 +287,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.circle "circle"
     end
-    doc = { circle: { center: { x: "1.0", y: "2.0" }, radius: "5.5" } }.with_indifferent_access
+    doc = { "circle" => { "center" => { "x" => "1.0", "y" => "2.0" }, "radius" => "5.5" } }
     assert_validate! s, doc
     assert_equal Circle.new(Point.new(1.0, 2.0), 5.0), doc["circle"]
   end
