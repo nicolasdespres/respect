@@ -207,12 +207,15 @@ module Respect
       end
     end
 
-    private
-
     # Sanitize the given _doc_ according to the given _sanitized_doc_.
     # A sanitized document contains value with more specific data type. Like a URI
     # object instead of a plain string.
-    # Non-validated value are not touch.
+    #
+    # Non-validated value are not touch (i.e. values present in the document but not
+    # specified in the schema for example).
+    #
+    # The sanitized document is accessible via the _sanitized_doc_ method after a
+    # successful validation.
     def sanitize_doc(doc, sanitized_doc)
       case doc
       when Hash
@@ -237,6 +240,8 @@ module Respect
         sanitized_doc
       end
     end
+
+    private
 
     # Used by sub-classes to update the formatted document.
     attr_writer :sanitized_doc
