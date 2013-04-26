@@ -127,6 +127,26 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal "point", Respect::PointSchema.command_name
   end
 
+  def test_in_place_validation_always_return_boolean
+    s = Respect::Schema.define do |s|
+      s.boolean
+    end
+    assert_equal true, s.validate!(false)
+    assert_equal true, s.validate!(true)
+    assert_equal false, s.validate!(nil)
+  end
+
+  def test_sanitize_always_return_new_doc
+    s = Respect::Schema.define do |s|
+      s.boolean
+    end
+    assert_equal false, s.sanitize(false)
+    assert_equal true, s.sanitize(true)
+    assert_raise(Respect::ValidationError) do
+      s.sanitize(nil)
+    end
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)

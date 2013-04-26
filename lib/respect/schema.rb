@@ -160,15 +160,21 @@ module Respect
       raise NoMethodError, "overwrite me in sub-classes"
     end
 
-    # Return nil if this schema does not validate the given _doc_. If it does
-    # the document is updated in-place with sanitized value and the updated
-    # document is returned.
+    # Return true or false whether this schema validates the given _doc_.
+    # If it does the document is updated in-place with the sanitized value.
     def validate!(doc)
-      if validate?(doc)
+      valid = validate?(doc)
+      if valid
         sanitize_doc(doc, sanitized_doc)
-      else
-        nil
       end
+      valid
+    end
+
+    # Sanitize the given _doc_ if it validates this schema. The sanitized document
+    # is returned. A Respect::ValidationError is raised on error.
+    def sanitize(doc)
+      validate(doc)
+      sanitize_doc(doc, sanitized_doc)
     end
 
     # Convert this schema to a comprehensive string.
