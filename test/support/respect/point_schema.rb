@@ -4,14 +4,14 @@ module Respect
   # sanitizer block.
   class PointSchema < CompositeSchema
 
-    composed_by do |s|
-      s.object do |s|
+    def schema
+      ObjectSchema.define do |s|
         s.float "x"
         s.float "y"
       end
     end
 
-    sanitize do |doc|
+    def sanitize(doc)
       Point.new(doc["x"], doc["y"])
     end
 

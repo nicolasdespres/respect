@@ -2,25 +2,14 @@ module Respect
   class CompositeSchema < Schema
 
     class << self
-
-      def composed_by(&block)
-        public_class_method :new
-        define_method(:composed_by) do
-          Schema.define(&block)
-        end
+      def inherited(subclass)
+        subclass.public_class_method :new
       end
-
-      def sanitize(&block)
-        define_method(:sanitize) do |doc|
-          block.call(doc)
-        end
-      end
-
     end
 
     def initialize(options = {})
       super
-      @schema = composed_by
+      @schema = self.schema
     end
 
     def validate(doc)
@@ -34,8 +23,8 @@ module Respect
       true
     end
 
-    def composed_by
-      raise NoMethodError, "implement me in sub-class or use the 'composed_by' macro"
+    def schema
+      raise NoMethodError, "implement me in sub-class"
     end
 
     def sanitize(doc)
