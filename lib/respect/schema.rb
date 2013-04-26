@@ -150,7 +150,7 @@ module Respect
 
     # Return the validation last error that happens during the
     # validation process. (set by validate)
-    attr_accessor :last_error
+    attr_reader :last_error
 
     # Raise a ValidationError if the given _doc_ is not validated by this schema.
     # Returns true otherwise. A sanitized version of the document is built during
