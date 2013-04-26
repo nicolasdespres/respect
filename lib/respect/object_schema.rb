@@ -36,6 +36,10 @@ module Respect
       @properties = {}
     end
 
+    def initialize_copy(other)
+      @properties = other.properties.dup
+    end
+
     # Get the schema for the given property _name_.
     def [](name)
       @properties[name]
@@ -130,6 +134,20 @@ module Respect
     # Return all the properties identified by a regular expression.
     def pattern_properties
       @properties.select{|name, schema| name.is_a?(Regexp) }
+    end
+
+    def merge!(object_schema)
+      @properties.merge!(object_schema.properties)
+      self
+    end
+
+    def merge(object_schema)
+      self.dup.merge!(object_schema)
+    end
+
+    # Return whether _property_name_ is defined in this object schema.
+    def has_property?(property_name)
+      @properties.has_key?(property_name)
     end
 
   end

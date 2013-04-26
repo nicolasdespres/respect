@@ -382,4 +382,55 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal 1, opts[:opt]
   end
 
+  def test_has_property
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "s11"
+    end
+    assert s1.has_property?("s11")
+    assert !s1.has_property?("not a property")
+  end
+
+  def test_merge_object_schema_in_place
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "s11"
+      s.integer "s12"
+    end
+    s2 = Respect::ObjectSchema.define do |s|
+      s.integer "s21"
+      s.integer "s22"
+    end
+    s1.merge!(s2)
+    %w(s11 s12 s21 s22).each do |prop|
+      assert s1.has_property?(prop), "has prop #{prop}"
+    end
+  end
+
+  def test_merge_object_schema
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "s11"
+      s.integer "s12"
+    end
+    s2 = Respect::ObjectSchema.define do |s|
+      s.integer "s21"
+      s.integer "s22"
+    end
+    s3 = s1.merge(s2)
+    assert(s3.object_id != s1.object_id)
+    assert_equal 2, s1.properties.size
+    assert_equal 2, s2.properties.size
+    assert_equal 4, s3.properties.size
+    %w(s11 s12 s21 s22).each do |prop|
+      assert s3.has_property?(prop), "has prop #{prop}"
+    end
+  end
+
+  def test_dup_duplicate_properties
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "s11"
+    end
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert(s1.properties.object_id != s2.properties.object_id)
+  end
+
 end
