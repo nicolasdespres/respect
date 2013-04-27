@@ -30,6 +30,10 @@ module Respect
   # +doc+:      the documentation of this schema (nil by default).
   #             A documentation is composed of a title followed by
   #             an empty line and an optional long description.
+  #             If set to false, then this schema is considered
+  #             as an implementation details that should not be
+  #             publicly documented. Thus, it will no be dumped as
+  #             json-schema.org.
   # These options applies to all schema sub-classes.
   #
   # This class is "abstract". You cannot instantiate it directly.

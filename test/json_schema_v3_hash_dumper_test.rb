@@ -312,6 +312,47 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
     assert_equal e, a
   end
 
+  def test_do_not_dump_nodoc_object_properties
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "enabled"
+      s.integer "nodoc", doc: false
+    end
+    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    e = {
+      "type" => "object",
+      "properties" => { "enabled" => { "type" => "integer", "required" => true } },
+    }
+    assert_equal e, a
+  end
+
+  def test_do_not_dump_nodoc_object_optional_properties
+    s = Respect::ObjectSchema.define do |s|
+      s.optionals do |s|
+        s.integer "enabled"
+        s.integer "nodoc", doc: false
+      end
+    end
+    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    e = {
+      "type" => "object",
+      "additionalProperties" => { "enabled" => { "type" => "integer" } },
+    }
+    assert_equal e, a
+  end
+
+  def test_do_not_dump_nodoc_object_pattern_properties
+    s = Respect::ObjectSchema.define do |s|
+      s.integer /enabled/
+      s.integer /nodoc/, doc: false
+    end
+    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    e = {
+      "type" => "object",
+      "patternProperties" => { "enabled" => { "type" => "integer", "required" => true } },
+    }
+    assert_equal e, a
+  end
+
   def test_dump_array_item
     s = Respect::ArraySchema.define do |s|
       s.integer
@@ -653,6 +694,34 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
     end
   end
 
+  def test_no_dump_for_nodoc
+    BASIC_COMMANDS_LIST.each do |command|
+      s = Respect::Schema.define do |s|
+        s.__send__(command, doc: false)
+      end
+      assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+    end
+  end
+
+  def test_no_dump_for_non_empty_object
+    s = Respect::Schema.define do |s|
+      s.object doc: false do |s|
+        s.integer "i"
+        s.string "s"
+      end
+    end
+    assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+  end
+
+  def test_no_dump_for_non_empty_array
+    s = Respect::Schema.define do |s|
+      s.array doc: false do |s|
+        s.integer
+      end
+    end
+    assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+  end
+
   def test_dump_composite_schema
     s = Respect::ObjectSchema.define do |s|
       s.point "origin"
@@ -705,6 +774,9 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       }
     }
     assert_equal e, a
+  end
+
+  def test_dump_no_doc
   end
 
 end

@@ -60,6 +60,7 @@ module Respect
 
   class Schema
     def dump_as_json_schema_v3_hash(params = {})
+      return nil if options[:doc] == false
       h = {}
       h['type'] = dump_command_name_as_json_schema_v3_hash
       # Dump generic options.
@@ -98,6 +99,7 @@ module Respect
   class ObjectSchema < Schema
     def dump_as_json_schema_v3_hash(params = {})
       h = super
+      return nil if h.nil?
       props = {}
       pattern_props = {}
       additional_props = {}
@@ -108,13 +110,16 @@ module Respect
             warn "pattern properties cannot be optional in json-schema.org draft v3"
           else
             # FIXME(Nicolas Despres): What do we do with regexp options such as 'i'?
-            pattern_props[prop.source] = schema.dump_as_json_schema_v3_hash
+            schema_dump = schema.dump_as_json_schema_v3_hash
+            pattern_props[prop.source] = schema_dump if schema_dump
           end
         else
           if schema.optional?
-            additional_props[prop.to_s] = schema.dump_as_json_schema_v3_hash
+            schema_dump = schema.dump_as_json_schema_v3_hash
+            additional_props[prop.to_s] = schema_dump if schema_dump
           else
-            props[prop.to_s] = schema.dump_as_json_schema_v3_hash
+            schema_dump = schema.dump_as_json_schema_v3_hash
+            props[prop.to_s] = schema_dump if schema_dump
           end
         end
       end
@@ -134,6 +139,7 @@ module Respect
   class ArraySchema < Schema
     def dump_as_json_schema_v3_hash(params = {})
       h = super
+      return nil if h.nil?
       if @item
         h['items'] = @item.dump_as_json_schema_v3_hash(ignore: [:required])
       else
