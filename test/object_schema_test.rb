@@ -446,4 +446,14 @@ class SchemaTest < Test::Unit::TestCase
     assert s1.has_property?("new_prop")
   end
 
+  def test_documented_properties
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "documented"
+      s.integer "documented_with_text", doc: "a title"
+      s.integer "nodoc", doc: false
+    end
+    e = %w(documented documented_with_text).sort
+    assert_equal e, s.documented_properties.keys.sort
+  end
+
 end

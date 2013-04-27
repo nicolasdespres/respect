@@ -157,5 +157,10 @@ module Respect
       self.merge!(ObjectSchema.define(&block))
     end
 
+    # Return all the properties with a non-false documentation.
+    def documented_properties
+      @properties.select{|name, schema| schema.documented? }
+    end
+
   end
 end
