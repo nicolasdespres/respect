@@ -1,6 +1,5 @@
 module Respect
   class ObjectDef < BaseDef
-    include MetadataCommand
 
     def initialize(options = {})
       @object_schema = ObjectSchema.new(options)
@@ -16,7 +15,6 @@ module Respect
     private
 
     def evaluation_result
-      update_metadata @object_schema
       @object_schema
     end
 

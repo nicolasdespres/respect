@@ -2,6 +2,7 @@ require 'active_support/dependencies/autoload'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/integer/inflections'
 require 'active_support/core_ext/hash/indifferent_access'
+require 'active_support/core_ext/string/strip'
 
 module Respect
   extend ActiveSupport::Autoload
@@ -25,7 +26,6 @@ module Respect
   autoload :Ipv6AddrSchema
   autoload :UtcTimeSchema
   autoload :HasConstraints
-  autoload :Metadata
   autoload :CompositeSchema
   # Validator classes
   autoload :Validator
@@ -51,11 +51,11 @@ module Respect
   autoload :BasicCommands
   autoload :DefWithoutName
   autoload :DefEvaluator
-  autoload :MetadataDef
-  autoload :MetadataCommand
   # Dumper classes
   autoload :DslDumper
   autoload :JsonSchemaV3HashDumper
+  # Helper classes
+  autoload :DocParser
 
   # Base error of all errors raised by this class.
   class RespectError < StandardError

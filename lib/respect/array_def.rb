@@ -1,7 +1,6 @@
 module Respect
   class ArrayDef < BaseDef
     include DefWithoutName
-    include MetadataCommand
 
     def initialize(options = {})
       @array_schema = ArraySchema.new(options)
@@ -18,7 +17,6 @@ module Respect
     private
 
     def evaluation_result
-      update_metadata @array_schema
       @array_schema
     end
 

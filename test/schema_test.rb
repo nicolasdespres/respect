@@ -147,6 +147,26 @@ class SchemaTest < Test::Unit::TestCase
     end
   end
 
+  def test_schema_accept_doc_option
+    s = Respect::IntegerSchema.new(doc: "Hey!")
+    assert_equal "Hey!", s.doc
+    assert_equal "Hey!", s.options[:doc]
+  end
+
+  def test_schema_title_use_doc_parser
+    doc = "Hey!"
+    Respect::DocParser.any_instance.stubs(:parse).with(doc).returns(Respect::DocParser.new).at_least_once
+    Respect::DocParser.any_instance.stubs(:title).returns("title").at_least_once
+    assert_equal "title", Respect::IntegerSchema.new(doc: doc).title
+  end
+
+  def test_schema_description_use_doc_parser
+    doc = "Hey!"
+    Respect::DocParser.any_instance.stubs(:parse).with(doc).returns(Respect::DocParser.new).at_least_once
+    Respect::DocParser.any_instance.stubs(:description).returns("desc").at_least_once
+    assert_equal "desc", Respect::IntegerSchema.new(doc: doc).description
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)

@@ -628,26 +628,24 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
 
   # FIXME(Nicolas Despres): Test ip_addr format warn that it cannot be dumped
 
-  def test_dump_metadata
+  def test_dump_documentation
     [
-      { title: "a title", desc: "a description",
+      { doc: "a title\n\na description",
         expected: { "title" => "a title", "description" => "a description" },
-        message: "complete metadata",
+        message: "complete documentation",
       },
-      { title: nil, desc: "a description",
-        expected: { "description" => "a description" },
-        message: "metadata with no title",
+      { doc: "a long ... \n ... description",
+        expected: { "description" => "a long ... \n ... description" },
+        message: "documentation with no title",
       },
-      { title: "a title", desc: nil,
+      { doc: "a title",
         expected: { "title" => "a title" },
-        message: "metadata with no description",
+        message: "documentation with no description",
       },
     ].each do |data|
       s = Respect::Schema.define do |s|
-        s.integer do |m|
-          m.title data[:title]
-          m.description { data[:desc] }
-        end
+        s.doc data[:doc]
+        s.integer
       end
       a = Respect::JsonSchemaV3HashDumper.new(s).dump
       e = { "type" => "integer" }.merge(data[:expected])

@@ -22,7 +22,7 @@ module Respect
     end
 
     def <<(str)
-      @output << str.gsub(/\n/, "\n#{indentation}")
+      @output << str.gsub(/(\n+)/, "\\1#{indentation}")
       self
     end
 
@@ -54,6 +54,7 @@ module Respect
 
   class Schema
     def dump_as_dsl(dumper)
+      dump_command_documentation_as_dsl(dumper)
       dumper << "\ns."
       dump_command_name_as_dsl(dumper)
       dump_command_arguments_as_dsl(dumper)
@@ -73,7 +74,9 @@ module Respect
         name = nil
       end
       # Compute options to dump.
-      options = self.non_default_options
+      options = self.non_default_options.reject do |opt|
+        opt == :doc
+      end
       # Dump name and options
       if name || !options.empty?
         if name
@@ -104,21 +107,20 @@ module Respect
     end
 
     def dump_command_block_as_dsl(dumper)
-      dump_command_metadata_as_dsl(dumper)
     end
 
-    def dump_command_metadata_as_dsl(dumper, prefix = false)
-      if self.metadata
-        title = self.metadata.title
-        desc = self.metadata.description
-        if title || desc
-          if prefix
-            dumper << "\ns.metadata"
+    def dump_command_documentation_as_dsl(dumper, prefix = false)
+      if self.doc
+        if self.description
+          dumper << "\n"
+          dumper << %q{s.doc <<-EOS.strip_heredoc}
+          dumper.indent do
+            dumper << "\n"
+            dumper << self.doc
+            dumper << "EOS"
           end
-          dumper.dump_block(["m"]) do
-            dumper << "\nm.title " << title.inspect if title
-            dumper << "\nm.description { " << desc.inspect << " }" if desc
-          end
+        else
+          dumper << "\ns.doc \"#{self.title}\""
         end
       end
     end
@@ -127,7 +129,6 @@ module Respect
   class ObjectSchema < Schema
     def dump_command_block_as_dsl(dumper)
       dumper.dump_block do
-        dump_command_metadata_as_dsl(dumper, true)
         @properties.each do |name, schema|
           dumper.context_data[:name] = name
           schema.dump_as_dsl(dumper)
@@ -140,7 +141,6 @@ module Respect
     def dump_command_block_as_dsl(dumper)
       dumper.dump_block do
         dumper.context_data.delete(:name)
-        dump_command_metadata_as_dsl(dumper, true)
         if @item
           @item.dump_as_dsl(dumper)
         end

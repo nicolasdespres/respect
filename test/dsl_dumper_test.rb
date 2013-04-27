@@ -302,58 +302,62 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_terminal_command_metadata
+  def test_dump_primitive_command_documentation
     PRIMITIVE_COMMANDS_LIST.each do |command|
       assert_bijective_dump("dump command #{command}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.#{command} do |m|
-            m.title "a title"
-            m.description { "a description" }
-          end
+          s.doc <<-EOS.strip_heredoc
+            a title
+
+            a description
+            EOS
+          s.#{command}
         end
         EOF
       end
     end
   end
 
-  def test_dump_teminal_command_with_no_description
+  def test_dump_primitive_command_with_no_description
     PRIMITIVE_COMMANDS_LIST.each do |command|
       assert_bijective_dump("dump command #{command}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.#{command} do |m|
-            m.title "a title"
-          end
+          s.doc "a title"
+          s.#{command}
         end
         EOF
       end
     end
   end
 
-  def test_dump_teminal_command_with_no_title
+  def test_dump_primitive_command_with_no_title
     PRIMITIVE_COMMANDS_LIST.each do |command|
       assert_bijective_dump("dump command #{command}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.#{command} do |m|
-            m.description { "a description" }
-          end
+          s.doc <<-EOS.strip_heredoc
+            a long...
+            ... description
+            EOS
+          s.#{command}
         end
         EOF
       end
     end
   end
 
-  def test_dump_object_metadata
+  def test_dump_object_documentation
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
+        s.doc <<-EOS.strip_heredoc
+          a title
+
+          a description
+          EOS
         s.object do |s|
-          s.metadata do |m|
-            m.title "a title"
-            m.description { "a description" }
-          end
           s.integer "i"
           s.string "s"
         end
@@ -362,41 +366,22 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_array_metadata
+  def test_dump_array_documentation
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
+        s.doc <<-EOS.strip_heredoc
+          a title
+
+          a description
+          EOS
         s.array do |s|
-          s.metadata do |m|
-            m.title "a title"
-            m.description { "a description" }
-          end
           s.integer
         end
       end
       EOF
     end
   end
-
-  # FIXME(Nicolas Despres): Make it works
-  # def test_dump_description_as_heredoc
-  #   assert_bijective_dump do
-  #     <<-EOF.strip_heredoc
-  #     Respect::Schema.define do |s|
-  #       s.integer do |m|
-  #         m.title "a title"
-  #         m.description do
-  #           <<-EOS.strip_heredoc
-  #           This a long description...
-
-  #           ...with blank line.
-  #           EOS
-  #         end
-  #       end
-  #     end
-  #     EOF
-  #   end
-  # end
 
   private
 

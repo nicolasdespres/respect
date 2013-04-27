@@ -13,7 +13,14 @@ module Respect
         size_range = 1..2
         if size_range.include? args.size
           name = args.shift
-          options = args.shift || {}
+          default_options = {}
+          default_options[:doc] = @doc unless @doc.nil?
+          if options = args.shift
+            options = default_options.merge(options)
+          else
+            options = default_options
+          end
+          @doc = nil
           update_result name, Respect.schema_for(method_name).define(options, &block)
         else
           expected_size = args.size > size_range.end ? size_range.end : size_range.begin
@@ -36,6 +43,10 @@ module Respect
       define_method(meth_name) do |name, options = {}, &block|
         string name, options.dup.merge(format: meth_name), &block
       end
+    end
+
+    def doc(text)
+      @doc = text
     end
 
   end # module BasicCommands

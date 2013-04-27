@@ -79,8 +79,9 @@ module Respect
         end
       end
       h.merge!(dump_options_as_json_schema_v3_hash)
-      # Dump metadata
-      h.merge!(metadata.to_h) if metadata
+      # Dump documentation
+      h["title"] = title if title
+      h["description"] = description if description
       h
     end
 

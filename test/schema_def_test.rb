@@ -9,10 +9,7 @@ class SchemaDefTest < Test::Unit::TestCase
 
       ...with blank line.
       EOS
-    @metadata = Respect::Metadata.define do |m|
-      m.title @title
-      m.description { @description }
-    end
+    @doc = "#@title\n\n#@description"
   end
 
   def test_schema_definition_accept_string_with_no_option
@@ -306,61 +303,28 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
-  def test_composite_schema_dsl_context_support_metadata
-    [
-      Respect::Schema,
-      Respect::ObjectSchema,
-      Respect::ArraySchema,
-    ].each do |schema_class|
-      s = schema_class.define do |s|
-        s.metadata do |m|
-          m.title @title
-          m.description do
-            @description
-          end
-        end
-        send_command_in_context(s, :integer, "a_name", greater_than: 6)
-      end
-      assert_equal @title, s.metadata.title, "title set in #{schema_class}"
-      assert_equal @description, s.metadata.description, "description set in #{schema_class}"
-    end
-  end
-
-  def test_commands_have_metadata_option
+  def test_commands_have_doc_option
     BASIC_COMMANDS_LIST.each do |command|
       for_each_context do |s|
-        schema = send_command_in_context(s, command, "a_name", metadata: @metadata)
-        assert_equal @title, schema.metadata.title, "title set by #{command} in #{s.target.class}"
-        assert_equal @description, schema.metadata.description, "description set by #{command} in #{s.target.class}"
-        assert_equal @metadata, schema.metadata, "metadata set by #{command} in #{s.target.class}"
+        schema = send_command_in_context(s, command, "a_name", doc: @doc)
+        assert_equal @title, schema.title, "title set by #{command} in #{s.target.class}"
+        assert_equal @description, schema.description, "description set by #{command} in #{s.target.class}"
+        assert_equal @doc, schema.doc, "doc set by #{command} in #{s.target.class}"
       end
     end
   end
 
-  def test_commands_have_title_option
+  def test_doc_command_assign_every_commands
     BASIC_COMMANDS_LIST.each do |command|
       for_each_context do |s|
-        schema = send_command_in_context(s, command, "a_name", title: @title)
-        assert_equal @title, schema.metadata.title, "title set by #{command} in #{s.target.class}"
-        assert_nil schema.metadata.description, "description set by #{command} in #{s.target.class}"
-      end
-    end
-  end
-
-  def test_metadata_option_supercede_title_option
-    s = Respect::IntegerSchema.new metadata: @metadata, title: "overwritten title"
-    assert_equal @metadata.title, s.metadata.title
-  end
-
-  def test_terminal_command_accept_metadata_block
-    TERMINAL_COMMANDS_LIST.each do |command|
-      for_each_context do |s|
-        schema = send_command_in_context(s, command, "a_name") do |m|
-          m.title @title
-          m.description { @description }
-        end
-      assert_equal @title, schema.metadata.title, "title set by #{command} in #{s.target.class}"
-      assert_equal @description, schema.metadata.description, "description set by #{command} in #{s.target.class}"
+        title = "#@title for '#{command}' in #{s.target.class}"
+        description = "#@description for '#{command}' in #{s.target.class}"
+        doc = "#{title}\n\n#{description}"
+        s.doc doc
+        schema = send_command_in_context(s, command, "a_name")
+        assert_equal title, schema.title, "title set by #{command} in #{s.target.class}"
+        assert_equal description, schema.description, "description set by #{command} in #{s.target.class}"
+        assert_equal doc, schema.doc, "doc set by #{command} in #{s.target.class}"
       end
     end
   end

@@ -27,10 +27,9 @@ module Respect
   # +default+:  the default value to use for the associated property
   #             if it is not present. Setting a default value make
   #             the property private. (nil by default)
-  # +metadata+: a metadata associated to this schema. Pass a Metadata
-  #             object as value for this option. (nil by default)
-  # +title+:    a shortcut to set the metadata's title of this schema
-  #             (nil by default).
+  # +doc+:      the documentation of this schema (nil by default).
+  #             A documentation is composed of a title followed by
+  #             an empty line and an optional long description.
   # These options applies to all schema sub-classes.
   #
   # This class is "abstract". You cannot instantiate it directly.
@@ -46,8 +45,7 @@ module Respect
       # _block_ in the context of this definition class.  It behaves as an alias
       # for new if no block is given.
       #
-      # If there is no associated "def" class it instantiate a new schema and use
-      # the block to define its metadata.
+      # If there is no associated "def" class the block is passed to the constructor.
       def define(*args, &block)
         def_class = self.def_class
         if def_class
@@ -57,9 +55,7 @@ module Respect
             self.new(*args)
           end
         else
-          schema = self.new(*args)
-          schema.metadata = Respect::Metadata.define(&block) if block
-          schema
+          self.new(*args, &block)
         end
       end
 
@@ -94,6 +90,7 @@ module Respect
         {
           required: true,
           default: nil,
+          doc: nil,
         }.freeze
       end
     end
@@ -102,9 +99,6 @@ module Respect
     def initialize(options = {})
       @sanitized_doc = nil
       @options = self.class.default_options.merge(options)
-      @metadata = @options[:metadata]
-      @metadata ||= Metadata.new
-      @metadata.title ||= @options[:title]
     end
 
     # Returns the sanitized document. It is nil as long as you have not
@@ -114,7 +108,26 @@ module Respect
 
     attr_reader :options
 
-    attr_accessor :metadata
+    # Returns the documentation of this schema.
+    def doc
+      @options[:doc]
+    end
+
+    # Return the title part of the documentation of this schema
+    # (nil if it does not have any).
+    def title
+      if doc.is_a?(String)
+        DocParser.new.parse(doc).title
+      end
+    end
+
+    # Return the description part of the documentation of this schema
+    # (nil if it does not have any).
+    def description
+      if doc.is_a?(String)
+        DocParser.new.parse(doc).description
+      end
+    end
 
     # Whether this schema is required. (opposite of optional?)
     def required?

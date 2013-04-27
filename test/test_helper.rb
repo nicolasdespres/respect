@@ -2,8 +2,6 @@ require 'test/unit'
 
 require 'respect'
 
-require 'active_support/core_ext/string/strip'
-
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
