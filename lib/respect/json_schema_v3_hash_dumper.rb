@@ -60,7 +60,7 @@ module Respect
 
   class Schema
     def dump_as_json_schema_v3_hash(params = {})
-      return nil if options[:doc] == false
+      return nil if !documented?
       h = {}
       h['type'] = dump_command_name_as_json_schema_v3_hash
       # Dump generic options.

@@ -133,6 +133,12 @@ module Respect
       end
     end
 
+    # Returns whether this schema must be documented (i.e. not ignored
+    # when dumped).
+    def documented?
+      @options[:doc] != false
+    end
+
     # Whether this schema is required. (opposite of optional?)
     def required?
       @options[:required] && !has_default?
