@@ -117,8 +117,8 @@ class Place
 end
 
 module Respect
-  # Then you must extend the Schema hierarchy with the new schema for you custom type.
-  # The `CompositeSchema` class assist you in this task so you just have to overwrite
+  # Then you must extend the Schema hierarchy with the new schema for your custom type.
+  # The `CompositeSchema` class assists you in this task so you just have to overwrite
   # two methods.
   class PlaceSchema < CompositeSchema
     # The 'schema' method returns the schema specification for your custom type.
@@ -168,7 +168,7 @@ Then, install it on the command line:
 $ bundle install
 ```
 
-Finally, you can start using it in your program like this:
+Finally, you can start validate JSON document in your program like this:
 
 ```ruby
 require 'respect'
