@@ -237,6 +237,8 @@ module Respect
     # _specification_.
     def to_h(version = :json_schema_v3)
       case version
+    def to_h(format = :json_schema_v3)
+      case format
       when :json_schema_v3
         JsonSchemaV3HashDumper.new(self).dump
       else
