@@ -162,13 +162,7 @@ The easiest way to install _Respect_ is to add it to your `Gemfile`:
 gem "respect"
 ```
 
-Then, install it on the command line:
-
-```
-$ bundle install
-```
-
-Finally, you can start validate JSON document in your program like this:
+Then, after running the `bundle install` command, you can start to validate JSON document in your program like this:
 
 ```ruby
 require 'respect'
