@@ -200,14 +200,24 @@ module Respect
       sanitize_doc(doc, sanitized_doc)
     end
 
+    def inspect
+      "#<%s:0x%x %s>" % [
+        self.class.name,
+        self.object_id,
+        instance_variables.map{|v| "#{v}=#{instance_variable_get(v).inspect}" }.join(", ")
+      ]
+    end
+
+    def to_s
+      DslDumper.new(self).dump
+    end
+
     # Convert this schema to a comprehensive string.
-    def to_s(format = :json_schema_v3)
+    def to_json(format = :json_schema_v3)
       case format
-      when :dsl
-        DslDumper.new(self).dump
       when :json_schema_v3
         require 'json'
-        JSON.pretty_generate(self.to_h(:json_schema_v3))
+        self.to_h(:json_schema_v3).to_json
       else
         raise ArgumentError, "unknown format '#{format}'"
       end
