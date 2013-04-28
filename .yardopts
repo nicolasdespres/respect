@@ -1,0 +1,7 @@
+--markup=markdown
+--markup-provider=redcarpet
+lib/**/*.rb
+-
+README.md
+STATUS_MATRIX.html
+RELATED_WORK.md

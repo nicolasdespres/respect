@@ -10,11 +10,11 @@ YARD::Rake::YardocTask.new do |t|
   t.files = [
     'lib/**/*.rb',
     '-',
-    'README.rdoc',
+    'README.md',
     'STATUS_MATRIX.html',
     'RELATED_WORK.md',
   ]
-  # t.options = ['--any', '--extra', '--opts'] # optional
+  t.options = %w(--markup=markdown --markup-provider=redcarpet)
 end
 
 Bundler::GemHelper.install_tasks
