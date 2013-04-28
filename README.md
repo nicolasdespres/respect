@@ -100,10 +100,9 @@ schema.validate!(doc)                            #=> true
 doc["homepage"].class                            #=> URI::HTTP
 ```
 
-You can easily extend the sanitizer with your own object type.
+You can easily extend the sanitizer with your own object type. Let's assume you have an object type define like this:
 
 ```ruby
-# Let's assume you have an object type define like this
 class Place
   def initialize(latitude, longitude)
     @latitude, @longitude = latitude, longitude
@@ -115,11 +114,14 @@ class Place
     @latitude == other.latitude && @longitude == other.longitude
   end
 end
+```
 
+Then you must extend the Schema hierarchy with the new schema for your custom type.
+The `CompositeSchema` class assists you in this task so you just have to overwrite
+two methods.
+
+```ruby
 module Respect
-  # Then you must extend the Schema hierarchy with the new schema for your custom type.
-  # The `CompositeSchema` class assists you in this task so you just have to overwrite
-  # two methods.
   class PlaceSchema < CompositeSchema
     # The 'schema' method returns the schema specification for your custom type.
     def schema
@@ -136,10 +138,14 @@ module Respect
     end
   end
 end
+```
 
-# Define the structure of your JSON document as usual.
+Finally, you define the structure of your JSON document as usual. Note that you have
+access to your custom schema via the `place` method.
+
+
+```ruby
 schema = Respect::ObjectSchema.define do |s|
-  # Note that you have access to your custom schema via the "place" method.
   s.place "home"
 end
 
