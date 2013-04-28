@@ -56,7 +56,7 @@ module Respect
       @schema.dump_as_json_schema_v3_hash(ignore: [:required])
     end
 
-  end # class JsonSchemaV3HashDumper
+  end
 
   class Schema
     def dump_as_json_schema_v3_hash(params = {})
@@ -212,4 +212,4 @@ module Respect
     end
   end
 
-end # module Respect
+end

@@ -5,40 +5,41 @@ module Respect
   # received when initialized.
   #
   # This proxy has the following goals:
-  # 1/ Provide two facades to DSL methods: one with a name as first argument
+  # 1. Provide two facades to DSL methods: one with a name as first argument
   #    and one without. See the example below.
-  # 2/ Evaluate user block in the context of a BasicObject without
-  #    restricting all the DSL classes to be a sub-class of BasicObject
+  # 1. Evaluate user block in the context of a BasicObject without
+  #    restricting all the DSL classes to be a sub-class of {BasicObject}
   #    this way users can still use Ruby's reflection features via the
-  #    _target_ method.
+  #    {#target} method.
   #
-  # Problem:
+  # The problem is that we have to write two versions of an +integer+ method
+  # in to different context. The code of the two versions is almost the same.
   #
-  # class ObjectDef
-  #   def integer(name, options = {})
-  #     # code...
+  #   class ObjectDef
+  #     def integer(name, options = {})
+  #       # code...
+  #     end
   #   end
-  # end
   #
-  # class ArrayDef
-  #   def integer(options = {})
-  #     # same code...
+  #   class ArrayDef
+  #     def integer(options = {})
+  #       # same code...
+  #     end
   #   end
-  # end
   #
-  # Thanks to this proxy users only have to define one 'integer' method like
+  # Thanks to this proxy users only have to define one +integer+ method like
   # this:
   #
-  # module Helper
-  #   def integer(name, options = {})
-  #     # code which handle the case where name is nil
+  #   module Helper
+  #     def integer(name, options = {})
+  #       # code which handle the case where name is nil
+  #     end
   #   end
-  # end
-  # Respect.extend_dsl_with Helper
+  #   Respect.extend_dsl_with Helper
   #
-  # If the target accept_name? method returns false, this proxy sends nil as
-  # first argument to:
-  # - static methods expecting a name as first argument ;
+  # If the target {BaseDef.accept_name?} method returns +false+, this proxy
+  # sends +nil+ as first argument to:
+  # - static methods expecting a name as first argument
   # - dynamic methods.
   class DefEvaluator < BasicObject
 
@@ -91,7 +92,7 @@ module Respect
       @target.respond_to?(symbol) && !BaseDef.new.respond_to?(symbol)
     end
 
-    # Evaluate the given _block_ in the context of this class and pass it this
+    # Evaluate the given +block+ in the context of this class and pass it this
     # instance as argument and returns the value returned by the block.
     def eval(&block)
       if block.arity != 1

@@ -50,7 +50,7 @@ module Respect
       self << "\nend"
     end
 
-  end # class DslDumper
+  end
 
   class Schema
     def dump_as_dsl(dumper)

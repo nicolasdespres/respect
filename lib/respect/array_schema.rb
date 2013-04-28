@@ -3,8 +3,8 @@ module Respect
   #
   # They are two approaches to specify the structure of a JSON array.
   #
-  # If the items of your array have all the same structures then you
-  # should use the _item_ method to set their schema.
+  # If the items of your array have all the same structure then you
+  # should use the {#item=} method to set their schema.
   #
   # Example:
   #   # An array where all items are integer greater than 42.
@@ -18,7 +18,7 @@ module Respect
   #   s.validate?([ 43, 44 ])      #=> true
   #   s.validate?([ 43, 44, 30 ])  #=> false
   #
-  # Otherwise, you should use the _items_ and _extra_items_. This is called
+  # Otherwise, you should use the {#items=} and {#extra_items=}. This is called
   # "tuple" typing.
   #
   # Example:
@@ -37,18 +37,18 @@ module Respect
   #
   # You cannot mix tuple typing and single item typing.
   #
-  # You can pass several options when creating an ArraySchema:
-  # +uniq+:     if true, duplicated items are forbidden (false by default).
-  # +min_size+: if set the array must have at least the given number of items
-  #             (nil by default). This option apply only in non-tuple typing.
-  # +max_size+: if set the array must have at most the given number of items
-  #             (nil by default). This option apply only in non-tuple typing.
+  # You can pass several options when creating an {ArraySchema}:
+  # uniq::     if +true+, duplicated items are forbidden (+false+ by default).
+  # min_size:: if set the array must have at least the given number of items
+  #            (+nil+ by default). This option apply only in non-tuple typing.
+  # max_size:: if set the array must have at most the given number of items
+  #            (+nil+ by default). This option apply only in non-tuple typing.
   class ArraySchema < Schema
 
     public_class_method :new
 
     class << self
-      # Overwritten method. See Schema::default_options
+      # Overwritten method. See {Schema.default_options}
       def default_options
         super().merge({
             uniq: false,
@@ -69,7 +69,7 @@ module Respect
       @item = item
     end
 
-    # Set the array of schema that the corresponding item must validate.
+    # Set the array of schema that the corresponding items must validate.
     def items=(items)
       if @item
         raise InvalidSchemaError,
@@ -90,6 +90,7 @@ module Respect
       @extra_items = extra_items
     end
 
+    # Overwritten method. See {Schema#validate}
     def validate(doc)
       unless doc.is_a?(Array)
         raise ValidationError, "document is not an array but a #{doc.class}"

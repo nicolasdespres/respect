@@ -8,16 +8,16 @@ module Respect
   # expression.  In the later case, the associated schema will be used
   # to validate the value of all the properties matching the regular
   # expression. You can get the list of all pattern properties
-  # using the _pattern_properties_ method.
+  # using the {#pattern_properties} method.
   #
   # You can specify optional property by either setting the "required"
   # option to false or y setting a non nil default value.
   # You can get the list of all optional properties using the
-  # _optional_properties_ method.
+  # {#optional_properties} method.
   #
-  # You can pass several options when creating an ArraySchema:
-  # +strict+: if set to true the JSON object must not have any extra
-  #           properties to be validated. (false by default)
+  # You can pass several options when creating an {ObjectSchema}:
+  # strict:: if set to +true+ the JSON object must not have any extra
+  #          properties to be validated. (+false+ by default)
   class ObjectSchema < Schema
 
     class << self
@@ -40,13 +40,13 @@ module Respect
       @properties = other.properties.dup
     end
 
-    # Get the schema for the given property _name_.
+    # Get the schema for the given property +name+.
     def [](name)
       @properties[name]
     end
 
-    # Set the given _schema_ for the given property _name_. A name can be
-    # a symbol, a string or a regular expression.
+    # Set the given +schema+ for the given property +name+. A name can be
+    # a Symbol, a String or a Regexp.
     def []=(name, schema)
       case name
       when Symbol, String, Regexp
@@ -59,8 +59,10 @@ module Respect
       end
     end
 
+    # Returns the set of properties of this schema index by their name.
     attr_reader :properties
 
+    # Overwritten method. See {Schema#validate}.
     def validate(doc)
       # Validate document format.
       unless doc.is_a?(Hash)
@@ -136,22 +138,25 @@ module Respect
       @properties.select{|name, schema| name.is_a?(Regexp) }
     end
 
+    # In-place version of {#merge}. This schema is returned.
     def merge!(object_schema)
       @properties.merge!(object_schema.properties)
       self
     end
 
+    # Merge the given +object_schema+ with this object schema. It works like
+    # {Hash#merge}.
     def merge(object_schema)
       self.dup.merge!(object_schema)
     end
 
-    # Return whether _property_name_ is defined in this object schema.
+    # Return whether +property_name+ is defined in this object schema.
     def has_property?(property_name)
       @properties.has_key?(property_name)
     end
 
     # Evaluate the given block as an object schema definition (i.e. in the context of
-    # Respect::ObjectDef) and merge the result with this object schema.
+    # {Respect::ObjectDef}) and merge the result with this object schema.
     # This is a way to "re-open" this object schema definition to add some more.
     def eval(&block)
       self.merge!(ObjectSchema.define(&block))

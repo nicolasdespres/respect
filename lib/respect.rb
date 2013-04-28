@@ -4,6 +4,18 @@ require 'active_support/core_ext/integer/inflections'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/string/strip'
 
+# Provide methods and classes to define, validate, sanitize and dump JSON schema.
+#
+# Classes in this module are split in 5 groups:
+# * The _schema_ classes are the core of this module since they support the validation
+#   process and are the internal representation of schema specification.
+# * The _definition_ classes (aka _def_ classes) are the front-end of this module since
+#   they implement the schema definition DSL.
+# * The _validator_ classes are support classes implementing the different validators
+#   accessible via the schema's options.
+# * The _dumper_ classes are the back-end of this module since the implement the convertion
+#   of the internal schema representation to different formats.
+# * The _miscellaneous_ classes provides various support for the other categories.
 module Respect
   extend ActiveSupport::Autoload
 
@@ -54,10 +66,10 @@ module Respect
   # Dumper classes
   autoload :DslDumper
   autoload :JsonSchemaV3HashDumper
-  # Helper classes
+  # Miscellaneous classes
   autoload :DocParser
 
-  # Base error of all errors raised by this class.
+  # Base error of all errors raised by this module.
   class RespectError < StandardError
   end
 
@@ -82,7 +94,7 @@ module Respect
   class << self
 
     # Extend the schema definition DSL with the command defined in the given
-    # module _mod_.
+    # module +mod+.
     def extend_dsl_with(mod)
       [
         SchemaDef,
@@ -95,7 +107,7 @@ module Respect
       end
     end
 
-    # Build a schema class name from the given _command_name_.
+    # Build a schema class name from the given +command_name+.
     def schema_name_for(command_name)
       const_name = command_name.to_s
       if const_name == "schema"
@@ -105,12 +117,12 @@ module Respect
       end
     end
 
-    # Return the schema class associated to the given _command_name_.
+    # Return the schema class associated to the given +command_name+.
     #
     # A "valid" schema class must verify the following properties:
-    # - Named like CommnandNameSchema in Respect module.
-    # - Be a sub-class of Respect::Schema.
-    # - Be concrete (i.e. have a public method _new_)
+    # * Named like +CommnandNameSchema+ in {Respect} module.
+    # * Be a sub-class of {Schema}.
+    # * Be concrete (i.e. have a public method +new+)
     def schema_for(command_name)
       klass = Respect.schema_name_for(command_name).safe_constantize
       if klass && klass < Schema && klass.public_methods.include?(:new)
@@ -120,7 +132,7 @@ module Respect
       end
     end
 
-    # Test whether a schema is defined for the given _command_name_.
+    # Test whether a schema is defined for the given +command_name+.
     def schema_defined_for?(command_name)
       !!schema_for(command_name)
     end
@@ -131,13 +143,13 @@ module Respect
       "#{self.name}::#{constraint_name.to_s.camelize}Validator"
     end
 
-    # Turn the given _constraint_name_ into a validator class symbol.
+    # Turn the given +constraint_name+ into a validator class symbol.
     # Return nil if the validator class does not exist.
     def validator_for(constraint_name)
       validator_name_for(constraint_name).safe_constantize
     end
 
-    # Test whether a validator is defined for the given _constraint_name_.
+    # Test whether a validator is defined for the given +constraint_name+.
     def validator_defined_for?(constraint_name)
       !!validator_for(constraint_name)
     end
