@@ -105,6 +105,11 @@ class SchemaTest < Test::Unit::TestCase
       Respect::ObjectSchema.new.to_json(:json_schema_v3))
   end
 
+  def test_schema_to_pretty_json_schema_v3
+    assert_equal("{\n  \"type\": \"object\"\n}",
+      Respect::ObjectSchema.new.to_pretty_json(:json_schema_v3))
+  end
+
   def test_def_class_name
     assert_equal "Respect::SchemaDef", Respect::Schema.def_class_name
     assert_equal "Respect::ArrayDef", Respect::ArraySchema.def_class_name

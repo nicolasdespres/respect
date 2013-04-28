@@ -223,6 +223,10 @@ module Respect
       end
     end
 
+    def to_pretty_json(format = :json_schema_v3)
+      JSON.pretty_generate(self.to_h(format))
+    end
+
     # Return the options with no default value.
     # (Useful when writing a dumper)
     def non_default_options
