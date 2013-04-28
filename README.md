@@ -64,7 +64,7 @@ prints
 }
 ```
 
-As you can see the Ruby specification is 5 lines of code whereas the JSON Schema specification is 20...
+As you can see the Ruby specification is 4 times shorter than the JSON Schema specification...
 
 You can also use this specification to validate JSON documents:
 
