@@ -156,8 +156,30 @@ doc["home"].class                                  #=> Place
 
 # Getting started!
 
-* add this to your Gemfile
-* require 'respect'
+The easiest way to install _Respect_ is to add it to your `Gemfile`:
+
+```ruby
+gem "respect"
+```
+
+Then, install it on the command line:
+
+```
+$ bundle install
+```
+
+Finally, you can start using it in your program like this:
+
+```ruby
+require 'respect'
+
+schema = Respect::ObjectSchema.define do |s|
+  s.string "name"
+  s.integer "age", greater_than: 18
+end
+
+schema.validate?({ "name" => "John", "age" => 30 })
+```
 
 # JSON Schema implementation status
 
