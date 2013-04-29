@@ -98,7 +98,7 @@ module Respect
           end
         end
       end
-      h.merge!(schema.dump_options_as_json_schema_v3_hash)
+      h.merge!(dump_options(schema))
       # Dump documentation
       h["title"] = schema.title if schema.title
       h["description"] = schema.description if schema.description
@@ -200,43 +200,47 @@ module Respect
       "string"
     end
 
-  end
+    def dump_options(schema, *args)
+      dispatch_dump_options(schema.class, schema, *args)
+    end
 
-  class Schema
-    def dump_options_as_json_schema_v3_hash
+    def dispatch_dump_options(klass, schema, *args)
+      symbol = "dump_options_for_#{klass.command_name}"
+      if respond_to? symbol
+        send(symbol, schema, *args)
+      else
+        if klass == Schema
+          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
+        else
+          dispatch_dump_options(klass.superclass, schema, *args)
+        end
+      end
+    end
+
+    def dump_options_for_schema(schema)
       {}
     end
 
-  end
-
-  class UriSchema < StringSchema
-    def dump_options_as_json_schema_v3_hash
+    def dump_options_for_uri(schema)
       { "format" => "uri" }
     end
-  end
 
-  class RegexpSchema < StringSchema
-    def dump_options_as_json_schema_v3_hash
+    def dump_options_for_regexp(schema)
       { "format" => "regex" }
     end
-  end
 
-  class DatetimeSchema < StringSchema
-    def dump_options_as_json_schema_v3_hash
+    def dump_options_for_datetime(schema)
       { "format" => "date-time" }
     end
-  end
 
-  class Ipv4AddrSchema < StringSchema
-    def dump_options_as_json_schema_v3_hash
+    def dump_options_for_ipv4_addr(schema)
       { "format" => "ip-address" }
     end
-  end
 
-  class Ipv6AddrSchema < StringSchema
-    def dump_options_as_json_schema_v3_hash
+    def dump_options_for_ipv6_addr(schema)
       { "format" => "ipv6" }
     end
+
   end
 
 end
