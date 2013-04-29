@@ -220,17 +220,10 @@ module Respect
     def to_json(format = :org3)
       case format
       when :org3
-        require 'json'
         self.to_h(:org3).to_json
       else
         raise ArgumentError, "unknown format '#{format}'"
       end
-    end
-
-    # Serialize this schema to an *indented* JSON string following the given +format+
-    def to_pretty_json(format = :org3)
-      require 'json'
-      JSON.pretty_generate(self.to_h(format))
     end
 
     # Return the options with no default value.
