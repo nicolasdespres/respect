@@ -81,7 +81,7 @@ module Respect
     def dump_schema_for_schema(schema, params = {})
       return nil if !schema.documented?
       h = {}
-      h['type'] = schema.dump_command_name_as_json_schema_v3_hash
+      h['type'] = dump_command_name(schema)
       # Dump generic options.
       schema.options.each do |opt, opt_value|
         next if params[:ignore] && params[:ignore].include?(opt)
@@ -167,35 +167,46 @@ module Respect
       dump_schema(schema.schema, params)
     end
 
+    def dump_command_name(schema, *args)
+      dispatch_dump_command_name(schema.class, schema, *args)
+    end
+
+    def dispatch_dump_command_name(klass, schema, *args)
+      symbol = "dump_command_name_for_#{klass.command_name}"
+      if respond_to? symbol
+        send(symbol, schema, *args)
+      else
+        if klass == Schema
+          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
+        else
+          dispatch_dump_command_name(klass.superclass, schema, *args)
+        end
+      end
+    end
+
+    def dump_command_name_for_schema(schema)
+      schema.class.command_name
+    end
+
+    def dump_command_name_for_numeric(schema)
+      "number"
+    end
+
+    def dump_command_name_for_integer(schema)
+      "integer"
+    end
+
+    def dump_command_name_for_string(schema)
+      "string"
+    end
+
   end
 
   class Schema
-    def dump_command_name_as_json_schema_v3_hash
-      self.class.command_name
-    end
-
     def dump_options_as_json_schema_v3_hash
       {}
     end
 
-  end
-
-  class NumericSchema < Schema
-    def dump_command_name_as_json_schema_v3_hash
-      "number"
-    end
-  end
-
-  class IntegerSchema < NumericSchema
-    def dump_command_name_as_json_schema_v3_hash
-      "integer"
-    end
-  end
-
-  class StringSchema < Schema
-    def dump_command_name_as_json_schema_v3_hash
-      "string"
-    end
   end
 
   class UriSchema < StringSchema
