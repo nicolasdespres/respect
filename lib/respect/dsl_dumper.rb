@@ -53,7 +53,7 @@ module Respect
     def dump_schema(schema)
       self.dump_schema_doc(schema)
       self << "\ns."
-      schema.dump_command_name_as_dsl(self)
+      self.dump_command_name(schema)
       schema.dump_command_arguments_as_dsl(self)
       schema.dump_command_block_as_dsl(self)
       self
@@ -74,12 +74,13 @@ module Respect
         end
       end
     end
+
+    def dump_command_name(schema)
+      self << schema.class.command_name
+    end
   end
 
   class Schema
-    def dump_command_name_as_dsl(dumper)
-      dumper << self.class.command_name
-    end
 
     def dump_command_arguments_as_dsl(dumper)
       # Fetch name if there is one?
