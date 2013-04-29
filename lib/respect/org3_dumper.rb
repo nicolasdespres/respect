@@ -62,20 +62,7 @@ module Respect
     attr_reader :output
 
     def dump_schema(schema, *args)
-      dispatch_dump_schema(schema.class, schema, *args)
-    end
-
-    def dispatch_dump_schema(klass, schema, *args)
-      symbol = "dump_schema_for_#{klass.command_name}"
-      if respond_to? symbol
-        send(symbol, schema, *args)
-      else
-        if klass == Schema
-          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
-        else
-          dispatch_dump_schema(klass.superclass, schema, *args)
-        end
-      end
+      dispatch("dump_schema", schema.class, schema, *args)
     end
 
     def dump_schema_for_schema(schema, params = {})
@@ -105,7 +92,7 @@ module Respect
       h
     end
 
-    def dump_schema_for_object(schema, params = {})
+    def dump_schema_for_object_schema(schema, params = {})
       h = dump_schema_for_schema(schema, params)
       return nil if h.nil?
       props = {}
@@ -143,7 +130,7 @@ module Respect
       h
     end
 
-    def dump_schema_for_array(schema, params = {})
+    def dump_schema_for_array_schema(schema, params = {})
       h = dump_schema_for_schema(schema, params)
       return nil if h.nil?
       if schema.item
@@ -163,82 +150,73 @@ module Respect
       h
     end
 
-    def dump_schema_for_composite(schema, params = {})
+    def dump_schema_for_composite_schema(schema, params = {})
       dump_schema(schema.schema, params)
     end
 
     def dump_command_name(schema, *args)
-      dispatch_dump_command_name(schema.class, schema, *args)
-    end
-
-    def dispatch_dump_command_name(klass, schema, *args)
-      symbol = "dump_command_name_for_#{klass.command_name}"
-      if respond_to? symbol
-        send(symbol, schema, *args)
-      else
-        if klass == Schema
-          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
-        else
-          dispatch_dump_command_name(klass.superclass, schema, *args)
-        end
-      end
+      dispatch("dump_command_name", schema.class, schema, *args)
     end
 
     def dump_command_name_for_schema(schema)
       schema.class.command_name
     end
 
-    def dump_command_name_for_numeric(schema)
+    def dump_command_name_for_numeric_schema(schema)
       "number"
     end
 
-    def dump_command_name_for_integer(schema)
+    def dump_command_name_for_integer_schema(schema)
       "integer"
     end
 
-    def dump_command_name_for_string(schema)
+    def dump_command_name_for_string_schema(schema)
       "string"
     end
 
     def dump_options(schema, *args)
-      dispatch_dump_options(schema.class, schema, *args)
-    end
-
-    def dispatch_dump_options(klass, schema, *args)
-      symbol = "dump_options_for_#{klass.command_name}"
-      if respond_to? symbol
-        send(symbol, schema, *args)
-      else
-        if klass == Schema
-          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
-        else
-          dispatch_dump_options(klass.superclass, schema, *args)
-        end
-      end
+      dispatch("dump_options", schema.class, schema, *args)
     end
 
     def dump_options_for_schema(schema)
       {}
     end
 
-    def dump_options_for_uri(schema)
+    def dump_options_for_uri_schema(schema)
       { "format" => "uri" }
     end
 
-    def dump_options_for_regexp(schema)
+    def dump_options_for_regexp_schema(schema)
       { "format" => "regex" }
     end
 
-    def dump_options_for_datetime(schema)
+    def dump_options_for_datetime_schema(schema)
       { "format" => "date-time" }
     end
 
-    def dump_options_for_ipv4_addr(schema)
+    def dump_options_for_ipv4_addr_schema(schema)
       { "format" => "ip-address" }
     end
 
-    def dump_options_for_ipv6_addr(schema)
+    def dump_options_for_ipv6_addr_schema(schema)
       { "format" => "ipv6" }
+    end
+
+    private
+
+    # Perform a virtual dispatch on a single object.
+    # FIXME(Nicolas Despres): Get me out of here and test me.
+    def dispatch(prefix, klass, object, *args, &block)
+      symbol = "#{prefix}_for_#{klass.name.demodulize.underscore}"
+      if respond_to? symbol
+        send(symbol, object, *args, &block)
+      else
+        if klass == BasicObject
+          raise NoMethodError, "undefined method '#{symbol}' for schema class #{object.class}"
+        else
+          dispatch(prefix, klass.superclass, object, *args, &block)
+        end
+      end
     end
 
   end
