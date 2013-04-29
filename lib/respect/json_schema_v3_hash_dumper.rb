@@ -52,9 +52,14 @@ module Respect
       @schema = schema
     end
 
-    def dump
-      @schema.dump_as_json_schema_v3_hash(ignore: [:required])
+    def dump(output = nil)
+      @output = output
+      @output ||= Hash.new
+      @output = @schema.dump_as_json_schema_v3_hash(ignore: [:required])
+      @output
     end
+
+    attr_reader :output
 
   end
 
