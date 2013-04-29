@@ -10,5 +10,11 @@ module Respect
               "#{value.inspect} must be at most #@max_length long but is #{value.length}"
       end
     end
+
+    private
+
+    def to_h_org3
+      { 'maxLength' => @max_length }
+    end
   end
 end

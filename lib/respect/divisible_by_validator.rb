@@ -9,5 +9,12 @@ module Respect
         raise ValidationError, "#{value} is not divisible by #@divider"
       end
     end
+
+    private
+
+    def to_h_org3
+      { 'divisibleBy' => @divider }
+    end
+
   end
 end

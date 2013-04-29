@@ -10,5 +10,11 @@ module Respect
               "#{value.inspect} must be at least #@min_length long but is #{value.length}"
       end
     end
+
+    private
+
+    def to_h_org3
+      { 'minLength' => @min_length }
+    end
   end
 end

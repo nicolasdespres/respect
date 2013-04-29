@@ -106,5 +106,30 @@ module Respect
         raise ValidationError, "invalid hostname '#{value}'"
       end
     end
+
+    private
+
+    def to_h_org3
+      { 'format' => convert_to_org3_format(@format) }
+    end
+
+    def convert_to_org3_format(format)
+      format_type_map = {
+        regexp: 'regex',
+        datetime: 'date-time',
+        ipv4_addr: 'ip-address',
+        phone_number: 'phone',
+        ipv6_addr: 'ipv6',
+        ip_addr: nil,
+        hostname: 'host-name',
+      }.freeze
+      if format_type_map.has_key?(format)
+        translation_value = format_type_map[format]
+        translation_value unless translation_value.nil?
+      else
+        format.to_s
+      end
+    end
+
   end # class FormatValidator
 end # module Respect

@@ -9,5 +9,11 @@ module Respect
         raise ValidationError, "#{value} is not less than #@max"
       end
     end
+
+    private
+
+    def to_h_org3
+      { "maximum" => @max, "exclusiveMaximum" => true }
+    end
   end
 end
