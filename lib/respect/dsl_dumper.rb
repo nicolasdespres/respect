@@ -55,7 +55,7 @@ module Respect
       self << "\ns."
       self.dump_command_name(schema)
       self.dump_command_arguments(schema)
-      schema.dump_command_block_as_dsl(self)
+      self.dump_command_block(schema)
       self
     end
 
@@ -119,50 +119,47 @@ module Respect
       self
     end
 
-  end
-
-  class Schema
-
-    def dump_command_block_as_dsl(dumper)
+    def dump_command_block(schema)
+      case schema
+      when ObjectSchema
+        dump_command_block_for_object(schema)
+      when ArraySchema
+        dump_command_block_for_array(schema)
+      end
     end
 
-  end
-
-  class ObjectSchema < Schema
-    def dump_command_block_as_dsl(dumper)
-      dumper.dump_block do
-        @properties.each do |name, schema|
-          dumper.context_data[:name] = name
-          dumper.dump_schema(schema)
+    def dump_command_block_for_object(schema)
+      dump_block do
+        schema.properties.each do |name, schema|
+          context_data[:name] = name
+          dump_schema(schema)
         end
       end
     end
-  end
 
-  class ArraySchema < Schema
-    def dump_command_block_as_dsl(dumper)
-      dumper.dump_block do
-        dumper.context_data.delete(:name)
-        if @item
-          dumper.dump_schema(@item)
+    def dump_command_block_for_array(schema)
+      dump_block do
+        context_data.delete(:name)
+        if schema.item
+          dump_schema(schema.item)
         end
-        if @items && !@items.empty?
-          dumper << "\ns.items do |s|"
-          dumper.indent do
-            @items.each do |schema|
-              dumper.dump_schema(schema)
+        if schema.items && !schema.items.empty?
+          self << "\ns.items do |s|"
+          indent do
+            schema.items.each do |schema|
+              dump_schema(schema)
             end
           end
-          dumper << "\nend"
+          self << "\nend"
         end
-        if @extra_items && !@extra_items.empty?
-          dumper << "\ns.extra_items do |s|"
-          dumper.indent do
-            @extra_items.each do |schema|
-              dumper.dump_schema(schema)
+        if schema.extra_items && !schema.extra_items.empty?
+          self << "\ns.extra_items do |s|"
+          indent do
+            schema.extra_items.each do |schema|
+              dump_schema(schema)
             end
           end
-          dumper << "\nend"
+          self << "\nend"
         end
       end
     end
