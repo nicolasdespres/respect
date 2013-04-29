@@ -14,6 +14,7 @@ in the context of a Web application.
 * Contextual validation error.
 * Document sanitizer: turn plain string and integer values into real objects.
 * Extensible API to add your custom validator and sanitizer.
+* Extensible macro definition system to factor you schema definition code.
 
 # Take a Tour!
 
@@ -157,6 +158,49 @@ doc = {
 
 schema.validate!(doc)                              #=> true
 doc["home"].class                                  #=> Place
+```
+
+Sometimes you just want to extend the DSL with a command providing higher level feature than
+the primitive `integer`, `string` or `float`, etc... For instance if you specify identifier
+in your schema like this:
+
+```ruby
+Respect::ObjectSchema.define do |s|
+  s.integer "article_id", greater_than: 0
+  s.string "title"
+  s.object "author" do |s|
+    s.integer "author_id", greater_than: 0
+    s.string "name"
+  end
+end
+```
+
+In such case, you don't need a custom sanitizer. You just want to factor the definition of
+identifier property. You can easily to it like this:
+
+```ruby
+module MyMacros
+  def id(name, options = {})
+    unless name.nil? || name =~ /_id$/
+      name += "_id"
+    end
+    integer(name, { greater_than: 0 }.merge(options))
+  end
+end
+Respect.extend_dsl_with(MyMacros)
+```
+
+Now you can rewrite the original schema this way:
+
+```ruby
+Respect::ObjectSchema.define do |s|
+  s.id "article"
+  s.string "title"
+  s.object "author" do |s|
+    s.id "author"
+    s.string "name"
+  end
+end
 ```
 
 # Getting started!
