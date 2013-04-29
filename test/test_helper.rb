@@ -5,17 +5,6 @@ require 'respect'
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-# Add custom assertions.
-module Test::Unit::Assertions
-  def assert_validate!(schema, doc)
-    result = schema.validate!(doc)
-    if result.nil?
-      message = "schema '#{schema}' does not validate doc '#{doc}' because:#{schema.last_error.context.join("\n")}"
-    end
-    assert_not_nil result, message
-  end
-end
-
 # A module to test command extension helper.
 module EndUserDSLCommand
 
