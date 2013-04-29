@@ -1,3 +1,4 @@
+--private
 lib/**/*.rb
 -
 README.md

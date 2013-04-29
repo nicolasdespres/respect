@@ -14,6 +14,7 @@ YARD::Rake::YardocTask.new do |t|
     'STATUS_MATRIX.html',
     'RELATED_WORK.md',
   ]
+  t.options = %w(--private)
 end
 
 Bundler::GemHelper.install_tasks
