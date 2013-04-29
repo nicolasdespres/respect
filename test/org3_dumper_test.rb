@@ -776,7 +776,9 @@ class Org3Dumper < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_no_doc
+  def test_custom_validator
+    assert_equal({ "type" => "integer", "minimum" => 42, "maximum" => 42 },
+      Respect::IntegerSchema.new(universal: true).to_h(:org3))
   end
 
 end
