@@ -2,7 +2,7 @@ module Respect
   class DatetimeSchema < StringSchema
 
     def validate_format(doc)
-      FormatValidator.new.validate_datetime(doc)
+      FormatValidator.new(:datetime).validate(doc)
     end
 
   end # class DatetimeSchema

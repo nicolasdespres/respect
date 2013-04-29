@@ -10,8 +10,12 @@ module Respect
     # since I don't understand when it is useful.
     HOSTNAME_REGEXP = /^[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)*$/i
 
-    def validate(value, format)
-      send("validate_#{format}", value)
+    def initialize(format)
+      @format = format
+    end
+
+    def validate(value)
+      send("validate_#@format", value)
     end
 
     # Validate the given string _value_ describes a well-formed email
