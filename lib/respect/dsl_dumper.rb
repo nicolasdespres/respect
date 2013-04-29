@@ -101,26 +101,27 @@ module Respect
             self << ","
           end
           self << " "
-          schema.dump_command_options_as_dsl(self)
+          self.dump_command_options(schema)
         end
       end
       self
     end
+
+    def dump_command_options(schema)
+      options = schema.non_default_options
+      option_keys = options.keys
+      option_keys.each do |opt|
+        self << opt.inspect
+        self << " => "
+        self << options[opt].inspect
+        self << ", " unless opt == option_keys.last
+      end
+      self
+    end
+
   end
 
   class Schema
-
-    def dump_command_options_as_dsl(dumper)
-      options = self.non_default_options
-      option_keys = options.keys
-      option_keys.each do |opt|
-        dumper << opt.inspect
-        dumper << " => "
-        dumper << options[opt].inspect
-        dumper << ", " unless opt == option_keys.last
-      end
-      dumper
-    end
 
     def dump_command_block_as_dsl(dumper)
     end
