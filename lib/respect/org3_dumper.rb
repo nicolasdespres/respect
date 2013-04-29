@@ -55,28 +55,42 @@ module Respect
     def dump(output = nil)
       @output = output
       @output ||= Hash.new
-      @output = @schema.dump_as_json_schema_v3_hash(ignore: [:required])
+      @output = dump_schema(@schema, ignore: [:required])
       @output
     end
 
     attr_reader :output
 
-  end
+    def dump_schema(schema, *args)
+      dispatch_dump_schema(schema.class, schema, *args)
+    end
 
-  class Schema
-    def dump_as_json_schema_v3_hash(params = {})
-      return nil if !documented?
+    def dispatch_dump_schema(klass, schema, *args)
+      symbol = "dump_schema_for_#{klass.command_name}"
+      if respond_to? symbol
+        send(symbol, schema, *args)
+      else
+        if klass == Schema
+          raise NoMethoderror, "undefined method '#{symbol}' for schema class #{schema.class}"
+        else
+          dispatch_dump_schema(klass.superclass, schema, *args)
+        end
+      end
+    end
+
+    def dump_schema_for_schema(schema, params = {})
+      return nil if !schema.documented?
       h = {}
-      h['type'] = dump_command_name_as_json_schema_v3_hash
+      h['type'] = schema.dump_command_name_as_json_schema_v3_hash
       # Dump generic options.
-      options.each do |opt, opt_value|
+      schema.options.each do |opt, opt_value|
         next if params[:ignore] && params[:ignore].include?(opt)
         if Org3Dumper::OPTION_MAP.has_key?(opt)
           Org3Dumper::OPTION_MAP[opt].each do |k, v|
             if v == :option_value
               h[k] = (opt_value.is_a?(Numeric) ? opt_value : opt_value.dup)
             elsif v.is_a?(Proc)
-              result = self.instance_exec(opt_value, &v)
+              result = schema.instance_exec(opt_value, &v)
               h[k] = result unless result.nil?
             else
               h[k] = v
@@ -84,13 +98,78 @@ module Respect
           end
         end
       end
-      h.merge!(dump_options_as_json_schema_v3_hash)
+      h.merge!(schema.dump_options_as_json_schema_v3_hash)
       # Dump documentation
-      h["title"] = title if title
-      h["description"] = description if description
+      h["title"] = schema.title if schema.title
+      h["description"] = schema.description if schema.description
       h
     end
 
+    def dump_schema_for_object(schema, params = {})
+      h = dump_schema_for_schema(schema, params)
+      return nil if h.nil?
+      props = {}
+      pattern_props = {}
+      additional_props = {}
+      schema.properties.each do |prop, schema|
+        if prop.is_a?(Regexp)
+          if schema.optional?
+            # FIXME(Nicolas Despres): Find a better warning reporting system.
+            warn "pattern properties cannot be optional in json-schema.org draft v3"
+          else
+            # FIXME(Nicolas Despres): What do we do with regexp options such as 'i'?
+            schema_dump = dump_schema(schema)
+            pattern_props[prop.source] = schema_dump if schema_dump
+          end
+        else
+          if schema.optional?
+            schema_dump = dump_schema(schema)
+            additional_props[prop.to_s] = schema_dump if schema_dump
+          else
+            schema_dump = dump_schema(schema)
+            props[prop.to_s] = schema_dump if schema_dump
+          end
+        end
+      end
+      h['properties'] = props unless props.empty?
+      h['patternProperties'] = pattern_props unless pattern_props.empty?
+      if additional_props.empty?
+        if schema.options[:strict]
+          h['additionalProperties'] = false
+        end
+      else
+        h['additionalProperties'] = additional_props
+      end
+      h
+    end
+
+    def dump_schema_for_array(schema, params = {})
+      h = dump_schema_for_schema(schema, params)
+      return nil if h.nil?
+      if schema.item
+        h['items'] = dump_schema(schema.item, ignore: [:required])
+      else
+        if schema.items && !schema.items.empty?
+          h['items'] = schema.items.map do |x|
+            dump_schema(x, ignore: [:required])
+          end
+        end
+        if schema.extra_items && !schema.extra_items.empty?
+          h['additionalItems'] = schema.extra_items.map do |x|
+            dump_schema(x, ignore: [:required])
+          end
+        end
+      end
+      h
+    end
+
+    def dump_schema_for_composite(schema, params = {})
+      dump_schema(schema.schema, params)
+    end
+
+  end
+
+  class Schema
     def dump_command_name_as_json_schema_v3_hash
       self.class.command_name
     end
@@ -99,68 +178,6 @@ module Respect
       {}
     end
 
-  end
-
-  class ObjectSchema < Schema
-    def dump_as_json_schema_v3_hash(params = {})
-      h = super
-      return nil if h.nil?
-      props = {}
-      pattern_props = {}
-      additional_props = {}
-      @properties.each do |prop, schema|
-        if prop.is_a?(Regexp)
-          if schema.optional?
-            # FIXME(Nicolas Despres): Find a better warning reporting system.
-            warn "pattern properties cannot be optional in json-schema.org draft v3"
-          else
-            # FIXME(Nicolas Despres): What do we do with regexp options such as 'i'?
-            schema_dump = schema.dump_as_json_schema_v3_hash
-            pattern_props[prop.source] = schema_dump if schema_dump
-          end
-        else
-          if schema.optional?
-            schema_dump = schema.dump_as_json_schema_v3_hash
-            additional_props[prop.to_s] = schema_dump if schema_dump
-          else
-            schema_dump = schema.dump_as_json_schema_v3_hash
-            props[prop.to_s] = schema_dump if schema_dump
-          end
-        end
-      end
-      h['properties'] = props unless props.empty?
-      h['patternProperties'] = pattern_props unless pattern_props.empty?
-      if additional_props.empty?
-        if options[:strict]
-          h['additionalProperties'] = false
-        end
-      else
-        h['additionalProperties'] = additional_props
-      end
-      h
-    end
-  end
-
-  class ArraySchema < Schema
-    def dump_as_json_schema_v3_hash(params = {})
-      h = super
-      return nil if h.nil?
-      if @item
-        h['items'] = @item.dump_as_json_schema_v3_hash(ignore: [:required])
-      else
-        if @items && !@items.empty?
-          h['items'] = @items.map do |x|
-            x.dump_as_json_schema_v3_hash(ignore: [:required])
-          end
-        end
-        if @extra_items && !@extra_items.empty?
-          h['additionalItems'] = @extra_items.map do |x|
-            x.dump_as_json_schema_v3_hash(ignore: [:required])
-          end
-        end
-      end
-      h
-    end
   end
 
   class NumericSchema < Schema
@@ -208,12 +225,6 @@ module Respect
   class Ipv6AddrSchema < StringSchema
     def dump_options_as_json_schema_v3_hash
       { "format" => "ipv6" }
-    end
-  end
-
-  class CompositeSchema < Schema
-    def dump_as_json_schema_v3_hash(params = {})
-      @schema.dump_as_json_schema_v3_hash(params)
     end
   end
 
