@@ -57,3 +57,9 @@ This section is not meant to be accurate event if we try to stay objective here.
 ## [Active Model Serializer](https://github.com/rails-api/active_model_serializers)
 
 * Object oriented way to organize JSON view code.
+
+## [StrongParameters](https://github.com/rails/strong_parameters)
+
+* No documentation generation.
+* No sanitizer.
+* No response validation.
