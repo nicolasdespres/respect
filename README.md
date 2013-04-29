@@ -16,7 +16,7 @@ in the context of a Web application.
 * Extensible API to add your custom validator and sanitizer.
 * Extensible macro definition system to factor you schema definition code.
 
-# Take a Tour!
+# Take a Tour
 
 _Respect_ comes with a compact Ruby DSL to specify your JSON schema.  I find it a way more concise than
 [json-schema.org](http://json-schema.org/).  And it is plain Ruby so you can rely on all great Ruby features
@@ -203,7 +203,7 @@ Respect::ObjectSchema.define do |s|
 end
 ```
 
-# Getting started!
+# Getting started
 
 The easiest way to install _Respect_ is to add it to your `Gemfile`:
 
