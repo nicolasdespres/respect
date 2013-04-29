@@ -51,15 +51,15 @@ module Respect
     end
 
     def dump_schema(schema)
-      self.dump_schema_doc(schema)
+      self.dump_doc(schema)
       self << "\ns."
-      self.dump_command_name(schema)
-      self.dump_command_arguments(schema)
-      self.dump_command_block(schema)
+      self.dump_name(schema)
+      self.dump_arguments(schema)
+      self.dump_body(schema)
       self
     end
 
-    def dump_schema_doc(schema, prefix = false)
+    def dump_doc(schema, prefix = false)
       if schema.doc
         if schema.description
           self << "\n"
@@ -75,11 +75,11 @@ module Respect
       end
     end
 
-    def dump_command_name(schema)
+    def dump_name(schema)
       self << schema.class.command_name
     end
 
-    def dump_command_arguments(schema)
+    def dump_arguments(schema)
       # Fetch name if there is one?
       if self.context_data.has_key?(:name)
         name = self.context_data[:name]
@@ -101,13 +101,13 @@ module Respect
             self << ","
           end
           self << " "
-          self.dump_command_options(schema)
+          self.dump_options(schema)
         end
       end
       self
     end
 
-    def dump_command_options(schema)
+    def dump_options(schema)
       options = schema.non_default_options
       option_keys = options.keys
       option_keys.each do |opt|
@@ -119,16 +119,16 @@ module Respect
       self
     end
 
-    def dump_command_block(schema)
+    def dump_body(schema)
       case schema
       when ObjectSchema
-        dump_command_block_for_object(schema)
+        dump_body_for_object(schema)
       when ArraySchema
-        dump_command_block_for_array(schema)
+        dump_body_for_array(schema)
       end
     end
 
-    def dump_command_block_for_object(schema)
+    def dump_body_for_object(schema)
       dump_block do
         schema.properties.each do |name, schema|
           context_data[:name] = name
@@ -137,7 +137,7 @@ module Respect
       end
     end
 
-    def dump_command_block_for_array(schema)
+    def dump_body_for_array(schema)
       dump_block do
         context_data.delete(:name)
         if schema.item
