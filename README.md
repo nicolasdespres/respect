@@ -82,7 +82,7 @@ schema.last_error.context[0]     #=> "15 is not greater than 18"
 schema.last_error.context[1]     #=> "in object property `age'"
 ```
 
-_Respect_ does not parse JSON document by default but it is easy to do so using one of the JSON decoder available in Ruby:
+_Respect_ does not parse JSON document by default but it is easy to do so using one of the JSON parser available in Ruby:
 
 ```ruby
 schema.validate?(JSON.parse('{ "name": "My name", "age": 20, "email": "me@example.com" }'))   #=> true
@@ -93,7 +93,7 @@ _Respect_ does that automatically for you for standard objects:
 
 ```ruby
 schema = Respect::ObjectSchema.define do |s|
-  s.Uris "homepage"
+  s.uri "homepage"
 end
 doc = { "homepage" => "http://example.com" }
 schema.validate!(doc)                            #=> true
@@ -142,7 +142,6 @@ end
 
 Finally, you define the structure of your JSON document as usual. Note that you have
 access to your custom schema via the `place` method.
-
 
 ```ruby
 schema = Respect::ObjectSchema.define do |s|
