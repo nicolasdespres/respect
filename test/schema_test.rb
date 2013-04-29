@@ -92,22 +92,22 @@ class SchemaTest < Test::Unit::TestCase
     s.to_s
   end
 
-  def test_schema_to_json_as_json_schema_v3
+  def test_schema_to_json_org3
     s = Respect::ObjectSchema.new
-    d = Respect::JsonSchemaV3HashDumper.new(s)
-    Respect::JsonSchemaV3HashDumper.expects(:new).with(s).returns(d)
+    d = Respect::Org3Dumper.new(s)
+    Respect::Org3Dumper.expects(:new).with(s).returns(d)
     d.stubs(:dump).at_least_once
     s.to_json
   end
 
-  def test_schema_to_h_as_json_schema_v3
+  def test_schema_to_h_as_org3
     assert_equal('{"type":"object"}',
-      Respect::ObjectSchema.new.to_json(:json_schema_v3))
+      Respect::ObjectSchema.new.to_json(:org3))
   end
 
-  def test_schema_to_pretty_json_schema_v3
+  def test_schema_to_pretty_org3
     assert_equal("{\n  \"type\": \"object\"\n}",
-      Respect::ObjectSchema.new.to_pretty_json(:json_schema_v3))
+      Respect::ObjectSchema.new.to_pretty_json(:org3))
   end
 
   def test_def_class_name

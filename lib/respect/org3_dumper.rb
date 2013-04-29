@@ -1,5 +1,5 @@
 module Respect
-  class JsonSchemaV3HashDumper
+  class Org3Dumper
 
     # Translation table mapping DSL options with json-schema.org v3
     # options. The associated hash is injected in the output. Values
@@ -18,8 +18,8 @@ module Respect
       min_size: { 'minItems' => :option_value },
       max_size: { 'maxItems' => :option_value },
       format: { 'format' => Proc.new do |v|
-          if JsonSchemaV3HashDumper::FORMAT_TYPE_MAP.has_key?(v)
-            translation_value = JsonSchemaV3HashDumper::FORMAT_TYPE_MAP[v]
+          if Org3Dumper::FORMAT_TYPE_MAP.has_key?(v)
+            translation_value = Org3Dumper::FORMAT_TYPE_MAP[v]
             translation_value unless translation_value.nil?
           else
             v.to_s
@@ -71,8 +71,8 @@ module Respect
       # Dump generic options.
       options.each do |opt, opt_value|
         next if params[:ignore] && params[:ignore].include?(opt)
-        if JsonSchemaV3HashDumper::OPTION_MAP.has_key?(opt)
-          JsonSchemaV3HashDumper::OPTION_MAP[opt].each do |k, v|
+        if Org3Dumper::OPTION_MAP.has_key?(opt)
+          Org3Dumper::OPTION_MAP[opt].each do |k, v|
             if v == :option_value
               h[k] = (opt_value.is_a?(Numeric) ? opt_value : opt_value.dup)
             elsif v.is_a?(Proc)
