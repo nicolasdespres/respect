@@ -51,7 +51,7 @@ module Respect
     end
 
     def dump_schema(schema)
-      schema.dump_command_documentation_as_dsl(self)
+      self.dump_schema_doc(schema)
       self << "\ns."
       schema.dump_command_name_as_dsl(self)
       schema.dump_command_arguments_as_dsl(self)
@@ -59,6 +59,21 @@ module Respect
       self
     end
 
+    def dump_schema_doc(schema, prefix = false)
+      if schema.doc
+        if schema.description
+          self << "\n"
+          self << %q{s.doc <<-EOS.strip_heredoc}
+          self.indent do
+            self << "\n"
+            self << schema.doc
+            self << "EOS"
+          end
+        else
+          self << "\ns.doc \"#{schema.title}\""
+        end
+      end
+    end
   end
 
   class Schema
@@ -109,21 +124,6 @@ module Respect
     def dump_command_block_as_dsl(dumper)
     end
 
-    def dump_command_documentation_as_dsl(dumper, prefix = false)
-      if self.doc
-        if self.description
-          dumper << "\n"
-          dumper << %q{s.doc <<-EOS.strip_heredoc}
-          dumper.indent do
-            dumper << "\n"
-            dumper << self.doc
-            dumper << "EOS"
-          end
-        else
-          dumper << "\ns.doc \"#{self.title}\""
-        end
-      end
-    end
   end
 
   class ObjectSchema < Schema
