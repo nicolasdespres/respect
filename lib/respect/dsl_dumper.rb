@@ -120,11 +120,9 @@ module Respect
     end
 
     def dump_body(schema)
-      case schema
-      when ObjectSchema
-        dump_body_for_object(schema)
-      when ArraySchema
-        dump_body_for_array(schema)
+      symbol = "dump_body_for_#{schema.class.command_name}"
+      if respond_to? symbol
+        send(symbol, schema)
       end
     end
 
