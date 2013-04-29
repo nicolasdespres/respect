@@ -1,5 +1,5 @@
 module Respect
-  class GreaterThanOrEqualToValidator
+  class GreaterThanOrEqualToValidator < Validator
     def initialize(min)
       @min = min
     end

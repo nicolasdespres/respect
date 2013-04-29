@@ -1,7 +1,7 @@
 require "ipaddr"
 
 module Respect
-  class FormatValidator
+  class FormatValidator < Validator
 
     PHONE_NUMBER_REGEXP = /^((\+|00)\d{1,2})?\d+$/
 

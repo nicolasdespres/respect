@@ -1,5 +1,5 @@
 module Respect
-  class MinLengthValidator
+  class MinLengthValidator < Validator
     def initialize(min_length)
       @min_length = min_length
     end

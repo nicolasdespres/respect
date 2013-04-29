@@ -1,5 +1,5 @@
 module Respect
-  class MaxLengthValidator
+  class MaxLengthValidator < Validator
     def initialize(max_length)
       @max_length = max_length
     end
