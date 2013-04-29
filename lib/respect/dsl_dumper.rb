@@ -15,7 +15,7 @@ module Respect
       @output ||= String.new
       self << "Respect::Schema.define do |s|"
       self.indent do
-        @schema.dump_as_dsl(self)
+        self.dump_schema(@schema)
       end
       self << "\nend\n"
       @output
@@ -50,18 +50,18 @@ module Respect
       self << "\nend"
     end
 
+    def dump_schema(schema)
+      schema.dump_command_documentation_as_dsl(self)
+      self << "\ns."
+      schema.dump_command_name_as_dsl(self)
+      schema.dump_command_arguments_as_dsl(self)
+      schema.dump_command_block_as_dsl(self)
+      self
+    end
+
   end
 
   class Schema
-    def dump_as_dsl(dumper)
-      dump_command_documentation_as_dsl(dumper)
-      dumper << "\ns."
-      dump_command_name_as_dsl(dumper)
-      dump_command_arguments_as_dsl(dumper)
-      dump_command_block_as_dsl(dumper)
-      dumper
-    end
-
     def dump_command_name_as_dsl(dumper)
       dumper << self.class.command_name
     end
@@ -131,7 +131,7 @@ module Respect
       dumper.dump_block do
         @properties.each do |name, schema|
           dumper.context_data[:name] = name
-          schema.dump_as_dsl(dumper)
+          dumper.dump_schema(schema)
         end
       end
     end
@@ -142,13 +142,13 @@ module Respect
       dumper.dump_block do
         dumper.context_data.delete(:name)
         if @item
-          @item.dump_as_dsl(dumper)
+          dumper.dump_schema(@item)
         end
         if @items && !@items.empty?
           dumper << "\ns.items do |s|"
           dumper.indent do
             @items.each do |schema|
-              schema.dump_as_dsl(dumper)
+              dumper.dump_schema(schema)
             end
           end
           dumper << "\nend"
@@ -157,7 +157,7 @@ module Respect
           dumper << "\ns.extra_items do |s|"
           dumper.indent do
             @extra_items.each do |schema|
-              schema.dump_as_dsl(dumper)
+              dumper.dump_schema(schema)
             end
           end
           dumper << "\nend"
