@@ -54,7 +54,7 @@ module Respect
       self.dump_schema_doc(schema)
       self << "\ns."
       self.dump_command_name(schema)
-      schema.dump_command_arguments_as_dsl(self)
+      self.dump_command_arguments(schema)
       schema.dump_command_block_as_dsl(self)
       self
     end
@@ -78,37 +78,37 @@ module Respect
     def dump_command_name(schema)
       self << schema.class.command_name
     end
-  end
 
-  class Schema
-
-    def dump_command_arguments_as_dsl(dumper)
+    def dump_command_arguments(schema)
       # Fetch name if there is one?
-      if dumper.context_data.has_key?(:name)
-        name = dumper.context_data[:name]
+      if self.context_data.has_key?(:name)
+        name = self.context_data[:name]
       else
         name = nil
       end
       # Compute options to dump.
-      options = self.non_default_options.reject do |opt|
+      options = schema.non_default_options.reject do |opt|
         opt == :doc
       end
       # Dump name and options
       if name || !options.empty?
         if name
-          dumper << " "
-          dumper << name.inspect
+          self << " "
+          self << name.inspect
         end
         if !options.empty?
           if name
-            dumper << ","
+            self << ","
           end
-          dumper << " "
-          dump_command_options_as_dsl(dumper)
+          self << " "
+          schema.dump_command_options_as_dsl(self)
         end
       end
-      dumper
+      self
     end
+  end
+
+  class Schema
 
     def dump_command_options_as_dsl(dumper)
       options = self.non_default_options
