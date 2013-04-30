@@ -456,4 +456,37 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal e, s.documented_properties.keys.sort
   end
 
+  def test_duplicata_are_equal
+    s1 = Respect::ObjectSchema.define do |s|
+      s.integer "i"
+    end
+    assert_equal s1, s1.dup
+  end
+
+  def test_schema_differs_from_options
+    s1 = Respect::ObjectSchema.new(required: true)
+    s2 = Respect::ObjectSchema.new(required: false)
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_doc
+    s1 = Respect::Schema.define do |s|
+      s.doc "hey"
+      s.object
+    end
+    s2 = Respect::Schema.define do |s|
+      s.doc "ho"
+      s.object
+    end
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_properties
+    s1 = Respect::ObjectSchema.new
+    s1["i1"] = Respect::IntegerSchema.new
+    s2 = Respect::ObjectSchema.new
+    s2["i2"] = Respect::IntegerSchema.new
+    assert(s1 != s2)
+  end
+
 end

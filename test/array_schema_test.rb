@@ -361,4 +361,52 @@ class ArraySchemaTest < Test::Unit::TestCase
     assert_equal 1, opts[:opt]
   end
 
+  def test_duplicata_are_equal
+    s1 = Respect::ArraySchema.define do |s|
+      s.integer
+    end
+    assert_equal s1, s1.dup
+  end
+
+  def test_schema_differs_from_options
+    s1 = Respect::ArraySchema.new(required: true)
+    s2 = Respect::ArraySchema.new(required: false)
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_doc
+    s1 = Respect::Schema.define do |s|
+      s.doc "hey"
+      s.array
+    end
+    s2 = Respect::Schema.define do |s|
+      s.doc "ho"
+      s.array
+    end
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_item
+    s1 = Respect::ArraySchema.new
+    s1.item = Respect::IntegerSchema.new
+    s2 = Respect::ArraySchema.new
+    s2.item = Respect::StringSchema.new
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_items
+    s1 = Respect::ArraySchema.new
+    s1.items = [ Respect::IntegerSchema.new ]
+    s2 = Respect::ArraySchema.new
+    s2.items = [ Respect::StringSchema.new ]
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_extra_items
+    s1 = Respect::ArraySchema.new
+    s1.extra_items = [ Respect::IntegerSchema.new ]
+    s2 = Respect::ArraySchema.new
+    s2.extra_items = [ Respect::StringSchema.new ]
+    assert(s1 != s2)
+  end
 end

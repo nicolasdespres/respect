@@ -277,6 +277,12 @@ module Respect
       end
     end
 
+    # Two schema are equal if they have the same type and the set of options.
+    # Sub-class definition may include more attributes.
+    def ==(other)
+      self.class == other.class && @options == other.options
+    end
+
     private
 
     # Used by sub-classes to update the formatted document.

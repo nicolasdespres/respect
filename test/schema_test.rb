@@ -172,6 +172,49 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal "desc", Respect::IntegerSchema.new(doc: doc).description
   end
 
+  def test_duplicata_are_equal
+    s1 = Respect::IntegerSchema.new
+    assert_equal s1, s1.dup
+  end
+
+  def test_schema_differs_from_options
+    s1 = Respect::IntegerSchema.new(required: true)
+    s2 = Respect::IntegerSchema.new(required: false)
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_doc
+    s1 = Respect::Schema.define do |s|
+      s.doc "hey"
+      s.integer
+    end
+    s2 = Respect::Schema.define do |s|
+      s.doc "ho"
+      s.integer
+    end
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_type
+    s1 = Respect::IntegerSchema.new
+    s2 = Respect::StringSchema.new
+    assert(s1 != s2)
+  end
+
+  def test_schema_differs_from_validator
+    s1 = Respect::IntegerSchema.new(equal_to: 42)
+    s2 = Respect::IntegerSchema.new(equal_to: 51)
+    assert(s1 != s2)
+  end
+
+  def test_schema_dont_differs_from_sanitized_doc
+    s1 = Respect::IntegerSchema.new
+    s1.send(:sanitized_doc=, 42)
+    s2 = Respect::IntegerSchema.new
+    s2.send(:sanitized_doc=, 51)
+    assert(s1 == s2)
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)

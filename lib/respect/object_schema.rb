@@ -167,5 +167,9 @@ module Respect
       @properties.select{|name, schema| schema.documented? }
     end
 
+    def ==(other)
+      super && @properties == other.properties
+    end
+
   end
 end

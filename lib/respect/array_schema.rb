@@ -164,6 +164,10 @@ module Respect
       true
     end
 
+    def ==(other)
+      super && @item == other.item && @items == other.items && @extra_items == other.extra_items
+    end
+
     private
 
     def validate_item(index, schema, doc, sanitized_doc)
