@@ -2,3 +2,6 @@
 pkg/
 doc/
 .yardoc
+
+# Do not force other developers to use exactly the same version has mine.
+/Gemfile.lock
