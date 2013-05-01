@@ -6,6 +6,8 @@ validator, a sanitizer and dumpers to generate valid [json-schema.org](http://js
 Respect is named after the contraction of _REST_ and _SPEC_. Indeed, it is first intended to be used to specify REST API
 in the context of a Web application.
 
+There is a plugin called [Respect for Rails](https://github.com/nicolasdespres/respect-rails) which integrate this gem in Rails.
+
 # Features
 
 * Compact Ruby DSL to specify your JSON schema.
