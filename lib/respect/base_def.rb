@@ -1,10 +1,13 @@
 module Respect
   # Base class for all DSL evaluation context classes.
   #
-  # We can evaluate a block using the {#eval} method. A {DefEvaluator}
+  # You can evaluate a block using the {#eval} method. A {DefEvaluator}
   # proxy is used to narrow the evaluation context to a BasicObject so the
   # sub-classes keep Ruby's reflections possibilities without cluttering
   # the DSL itself with many unrelated method names.
+  #
+  # End-users are not supposed to sub-class this class yet. Its API is
+  # *experimental*.
   class BaseDef
 
     class << self
