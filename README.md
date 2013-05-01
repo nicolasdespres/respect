@@ -233,6 +233,12 @@ _Respect_ currently implements most of the features included in the
 
 See the `STATUS_MATRIX` file included in this package for detailed information.
 
+Although, the semantics of the schema definition DSL available in this library may change slightly from the
+_JSON schema standard_, we have tried to keep it as close as possible. For instance the `strict` option of
+object schema is not presented in the standard. However, when a schema is dumped to its _JSON Schema_ version
+the syntax and semantic have been followed. You should note that there is no "loader" available yet in this
+library. In other word, you cannot instantiate a Schema class from a _JSON Schema_ string representation.
+
 # Getting help
 
 The easiest way to get help about how to use this library is to post your question on the
