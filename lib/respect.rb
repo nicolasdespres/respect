@@ -16,6 +16,19 @@ require 'active_support/core_ext/string/strip'
 # * The _dumper_ classes are the back-end of this module since the implement the convertion
 #   of the internal schema representation to different formats.
 # * The _miscellaneous_ classes provides various support for the other categories.
+#
+# You can extend this library in many ways:
+#
+# 1. If you want to add your own schema class, you can sub-class the {CompositeSchema}
+#    class. Sub-classing of the {Schema} class is not well supported yet as it may have
+#    some issues with the current dumpers (see {DslDumper} and {Org3Dumper}). Fortunately,
+#    most of the cases can be handled by {CompositeSchema}.
+# 1. If you want to simply add some commands to the schema definition DSL, you can just
+#    bundle them in a module and call {Respect.extend_dsl_with} (see {BasicCommands} for
+#    further information).
+#
+# Extension of the _validator_ and _dumper_ classes is still experimental. Also, creating
+# custom _definition_ classes is not recommended.
 module Respect
   extend ActiveSupport::Autoload
 
