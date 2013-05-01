@@ -8,7 +8,7 @@ module Respect
     def optionals(&block)
       OptionalPropDef.eval(&block).each do |name, schema|
         schema.options[:required] = false
-        update_result(name, schema)
+        update_context(name, schema)
       end
     end
 
@@ -18,7 +18,7 @@ module Respect
       @object_schema
     end
 
-    def update_result(name, schema)
+    def update_context(name, schema)
       @object_schema[name] = schema
     end
   end

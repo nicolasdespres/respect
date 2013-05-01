@@ -12,7 +12,7 @@ module Respect
       @items
     end
 
-    def update_result(name, schema)
+    def update_context(name, schema)
       @items << schema
       schema
     end

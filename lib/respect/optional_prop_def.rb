@@ -10,7 +10,7 @@ module Respect
       @properties
     end
 
-    def update_result(name, schema)
+    def update_context(name, schema)
       @properties[name] = schema
     end
 

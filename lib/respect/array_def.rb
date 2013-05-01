@@ -20,7 +20,7 @@ module Respect
       @array_schema
     end
 
-    def update_result(name, schema)
+    def update_context(name, schema)
       @array_schema.item = schema
     end
   end

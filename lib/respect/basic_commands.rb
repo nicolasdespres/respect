@@ -20,16 +20,16 @@ module Respect
   # Example:
   #   ObjectSchema.define do |s|
   #     # method_missing calls:
-  #     #   update_result("i", IntegerSchema.define({greater_than: 42}))
+  #     #   update_context("i", IntegerSchema.define({greater_than: 42}))
   #     s.integer "i", greater_than: 42
   #   end
   #   ArraySchema.define do |s|
   #     # method_missing calls:
-  #     #   update_result(nil, IntegerSchema.define({greater_than: 42}))
+  #     #   update_context(nil, IntegerSchema.define({greater_than: 42}))
   #     s.integer greater_than: 42
   #   end
   #
-  # Classes including this module must implement the 'update_result' method
+  # Classes including this module must implement the +update_context+ method
   # which is supposed to update the schema under definition with the given
   # name and schema created by the method.
   #
@@ -70,7 +70,7 @@ module Respect
     #   Define a {ArraySchema} with the given +options+ and +block+ stores it
     #   in the current context using +name+ as index.
     #
-    # Call +update_result+ using the first argument as index and passes the rest
+    # Call +update_context+ using the first argument as index and passes the rest
     # to the {Schema.define} class method of the schema class associated with the method name.
     #
     # The options are merged in the default options which may include the +:doc+
@@ -89,7 +89,7 @@ module Respect
             options = default_options
           end
           @doc = nil
-          update_result name, Respect.schema_for(method_name).define(options, &block)
+          update_context name, Respect.schema_for(method_name).define(options, &block)
         else
           expected_size = args.size > size_range.end ? size_range.end : size_range.begin
           raise ArgumentError, "wrong number of argument (#{args.size} for #{expected_size})"

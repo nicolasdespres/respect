@@ -8,7 +8,7 @@ module Respect
       @schema
     end
 
-    def update_result(name, schema)
+    def update_context(name, schema)
       @schema = schema
     end
   end
