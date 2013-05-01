@@ -6,6 +6,11 @@ module Respect
   # specification but uses Ruby DSL as definition. Using the DSL is not
   # mandatory since you can also defines a schema using its own methods.
   #
+  # Almost all {Schema} sub-classes has an associated command available in
+  # the DSL for defining it. This command is named after the class name
+  # (see {Schema.command_name}). However some classes do not have a command
+  # associated (see {Respect.schema_for}).
+  #
   # You can define such a schema using the
   # {define} method. The {#validate} method allow you do check whether
   # the given JSON document is valid according to this schema.
@@ -83,6 +88,10 @@ module Respect
       end
 
       # Build a command name from this class name.
+      #
+      # Example:
+      #   Schema.command_name                   #=> "schema"
+      #   ObjectSchema.command_name             #=> "object"
       def command_name
         self.name.underscore.sub(/^.*\//, '').sub(/_schema$/, '')
       end
