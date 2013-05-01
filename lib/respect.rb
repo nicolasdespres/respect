@@ -96,15 +96,7 @@ module Respect
     # Extend the schema definition DSL with the command defined in the given
     # module +mod+.
     def extend_dsl_with(mod)
-      [
-        SchemaDef,
-        ArrayDef,
-        ItemsDef,
-        ObjectDef,
-        OptionalPropDef,
-      ].each do |klass|
-        klass.send(:include, mod)
-      end
+      BaseDef.send(:include, mod)
     end
 
     # Build a schema class name from the given +command_name+.
