@@ -89,7 +89,7 @@ module Respect
 
     def respond_to_missing?(symbol, include_all)
       # We ignore include_all since we are only interested in non-private methods.
-      @target.respond_to?(symbol) && !::Object.new.respond_to?(symbol)
+      @target.respond_to?(symbol) && !BaseDef.new.respond_to?(symbol)
     end
 
     # Evaluate the given +block+ in the context of this class and pass it this
