@@ -1,4 +1,19 @@
 module Respect
+  # Dump a schema to a string representation using the DSL syntax so you
+  # can evaluate it and get the same schema back.
+  #
+  # Theoretically, this must always be true:
+  #   eval(DslDumper.new(schema).dump) == schema
+  #
+  # The current implementation covers all the _Schema_ and _Validator_
+  # classes defined in this package. User-defined sub-class of {Schema}
+  # are not guarantee to work. Specially those using a custom "Def" class
+  # or with special attributes. The API of this dumper is *experimental*,
+  # so relying on it to teach the dumper how to dump a user-defined schema
+  # class may break in future releases.
+  #
+  # However, sub-classes of {CompositeSchema} are handled
+  # properly as well as all {Validator} sub-classes.
   class DslDumper
 
     def initialize(schema)
