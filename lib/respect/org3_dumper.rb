@@ -1,4 +1,19 @@
 module Respect
+  # Dump a schema to a hash representation following the format specified
+  # on {json-schema.org standard draft v3}[http://tools.ietf.org/id/draft-zyp-json-schema-03.html].
+  #
+  # The current implementation covers all the _Schema_ and _Validator_ classes
+  # defined in this package. User-defined {Schema} and {Validator} are not guarantee
+  # to work and may never work in the future. The _JSON-Schema_ standard is
+  # a general purpose standard and include only primitive type so it is
+  # very unlikely that it will include your custom schema and validator
+  # out of the box. However, if you can translate your schema/validator
+  # as a composition of primitive type mentioned in the standard it will work.
+  # That's why it is recommended to sub-class {CompositeSchema} when creating
+  # your own schema. User-defined are not properly supported yet as the
+  # API of this dumper is *experimental*. However, an easy way to extend
+  # both the schema and validator class hierarchies will be added in
+  # future releases.
   class Org3Dumper
 
     # Translation table mapping DSL options with json-schema.org v3
