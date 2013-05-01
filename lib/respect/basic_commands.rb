@@ -40,8 +40,8 @@ module Respect
       :phone_number,
       :hostname,
     ].each do |meth_name|
-      define_method(meth_name) do |name, options = {}, &block|
-        string name, options.dup.merge(format: meth_name), &block
+      define_method(meth_name) do |name, options = {}|
+        string name, options.dup.merge(format: meth_name)
       end
     end
 
