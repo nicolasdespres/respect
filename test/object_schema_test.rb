@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SchemaTest < Test::Unit::TestCase
+class ObjectSchemaTest < Test::Unit::TestCase
   def test_validate_return_true_on_success
     s = Respect::ObjectSchema.define do |s|
       s.integer "id", equal_to: 42

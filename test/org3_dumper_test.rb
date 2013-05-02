@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Org3Dumper < Test::Unit::TestCase
+class Org3DumperTest < Test::Unit::TestCase
   def test_dump_basic_types_commands_with_no_options
     [
       :integer,
