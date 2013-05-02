@@ -134,10 +134,9 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
-  def test_cannot_use_object_methods_in_dsl_evaluator
+  def test_can_use_object_methods_in_dsl_evaluator
     for_each_context do |s|
-      assert_raise(NoMethodError,
-        "cannot call Object method from DSL evaluator in #{s.target.class}") do
+      assert_nothing_raised("can call Object method from DSL evaluator in #{s.target.class}") do
         s.class
       end
     end
@@ -145,9 +144,8 @@ class SchemaDefTest < Test::Unit::TestCase
 
   def test_cannot_use_kernel_methods_in_dsl_evaluator
     for_each_context do |s|
-      assert_raise(NoMethodError,
-        "cannot call Kernel method from DSL evaluator in #{s.target.class}") do
-        s.send(:puts, "foo")
+      assert_nothing_raised("can call Kernel method from DSL evaluator in #{s.target.class}") do
+        s.send(:String, "foo")
       end
     end
   end

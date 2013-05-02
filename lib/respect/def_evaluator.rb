@@ -4,16 +4,12 @@ module Respect
   # This class sends all methods it receives to the target object it has
   # received when initialized.
   #
-  # This proxy has the following goals:
-  # 1. Provide two facades to DSL methods: one with a name as first argument
-  #    and one without. See the example below.
-  # 1. Evaluate user block in the context of a BasicObject without
-  #    restricting all the DSL classes to be a sub-class of BasicObject
-  #    this way users can still use Ruby's reflection features via the
-  #    {#target} method.
+  # This proxy provides two facades to DSL methods: one with a name as
+  # first argument and one without. It is a solution to the duplication
+  # code problem described below.
   #
   # The problem is that we have to write two versions of an +integer+ method
-  # in to different context. The code of the two versions is almost the same.
+  # in two different context. The code of the two versions is almost the same.
   #
   #   class ObjectDef
   #     def integer(name, options = {})
@@ -38,9 +34,8 @@ module Respect
   #   Respect.extend_dsl_with Helper
   #
   # If the target {BaseDef.accept_name?} method returns +false+, this proxy
-  # sends +nil+ as first argument to:
-  # - static methods expecting a name as first argument
-  # - dynamic methods.
+  # sends +nil+ as first argument to static methods expecting a name as first
+  # argument and dynamic methods.
   class DefEvaluator < BasicObject
 
     def initialize(target)
@@ -89,7 +84,7 @@ module Respect
 
     def respond_to_missing?(symbol, include_all)
       # We ignore include_all since we are only interested in non-private methods.
-      @target.respond_to?(symbol) && !BaseDef.new.respond_to?(symbol)
+      @target.respond_to?(symbol)
     end
 
     # Evaluate the given +block+ in the context of this class and pass it this

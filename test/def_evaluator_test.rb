@@ -113,6 +113,13 @@ class DefEvaluatorTest < Test::Unit::TestCase
     end
   end
 
+  def test_can_access_target_ancestors_methods
+    @evaluator.eval do |e|
+      assert(e.target.class == e.class, "call to Object method")
+      assert(e.send(:String, :foo) == e.target.send(:String, :foo), "call to Kernel method")
+    end
+  end
+
   private
 
   def assert_argument_error_number(actual, expected, &block)
