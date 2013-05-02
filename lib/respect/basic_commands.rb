@@ -100,6 +100,7 @@ module Respect
         if size_range.include? args.size
           name = args.shift
           default_options = {}
+          default_options.merge!(@options) unless @options.nil?
           default_options[:doc] = @doc unless @doc.nil?
           if options = args.shift
             options = default_options.merge(options)
@@ -154,6 +155,13 @@ module Respect
     #   s["param"].doc                  #=> "A parameter..."
     def doc(text)
       @doc = text
+    end
+
+    # Use +options+ as the default for all schema created within +block+.
+    def with_options(options, &block)
+      @options = options
+      FakeNameProxy.new(self).eval(&block)
+      @options = nil
     end
 
   end # module BasicCommands

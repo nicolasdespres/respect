@@ -89,7 +89,12 @@ class ObjectDefTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.integer "test", equal_to: 42
       s.with_options required: false do |s|
+        assert_nothing_raised("fake name proxy") do
+          s.target
+        end
+        s.doc "doc opt1"
         s.integer "opt1", greater_than: 0
+        s.doc "doc opt2"
         s.integer "opt2", less_than: 0
       end
     end
@@ -97,7 +102,9 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_equal(true, s["test"].options[:required])
     assert_equal(false, s["opt1"].options[:required])
     assert_equal(0, s["opt1"].options[:greater_than])
+    assert_equal("doc opt1", s["opt1"].doc)
     assert_equal(false, s["opt2"].options[:required])
     assert_equal(0, s["opt2"].options[:less_than])
+    assert_equal("doc opt2", s["opt2"].doc)
   end
 end

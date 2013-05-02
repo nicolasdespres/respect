@@ -3,7 +3,6 @@ require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/integer/inflections'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/string/strip'
-require 'active_support/core_ext/object/with_options'
 
 # Provide methods and classes to define, validate, sanitize and dump JSON schema.
 #

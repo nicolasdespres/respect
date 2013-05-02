@@ -78,4 +78,36 @@ class ArrayDefTest < Test::Unit::TestCase
     end
   end
 
+  def test_factor_options_with_with_options
+    s = Respect::ArraySchema.define do |s|
+      s.items do |s|
+        s.doc "integer doc"
+        s.integer equal_to: 42
+        s.with_options required: false do |s|
+          assert_nothing_raised("fake name proxy") do
+            s.target
+          end
+          s.doc "float doc"
+          s.float greater_than: 0
+          s.doc "numeric doc"
+          s.numeric less_than: 0
+        end
+      end
+    end
+
+    assert_equal(Respect::IntegerSchema, s.items[0].class)
+    assert_equal(42, s.items[0].options[:equal_to])
+    assert_equal(true, s.items[0].options[:required])
+    assert_equal("integer doc", s.items[0].doc)
+
+    assert_equal(Respect::FloatSchema, s.items[1].class)
+    assert_equal(false, s.items[1].options[:required])
+    assert_equal(0, s.items[1].options[:greater_than])
+    assert_equal("float doc", s.items[1].doc)
+
+    assert_equal(Respect::NumericSchema, s.items[2].class)
+    assert_equal(false, s.items[2].options[:required])
+    assert_equal(0, s.items[2].options[:less_than])
+    assert_equal("numeric doc", s.items[2].doc)
+  end
 end
