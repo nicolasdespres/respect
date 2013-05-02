@@ -27,10 +27,9 @@ class DefEvaluatorTest < Test::Unit::TestCase
     @evaluator_no_name = Respect::DefEvaluator.new(@def_target_no_name)
   end
 
-  def test_evaluator_target_must_be_dsl_object
-    assert_raise(ArgumentError) do
-      Respect::DefEvaluator.new(Class.new)
-    end
+  def test_consider_name_as_accepted_by_default
+    assert(!@evaluator.__send__(:should_fake_name?))
+    assert(@evaluator_no_name.__send__(:should_fake_name?))
   end
 
   def test_access_to_target

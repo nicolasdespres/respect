@@ -39,10 +39,6 @@ module Respect
   class DefEvaluator < BasicObject
 
     def initialize(target)
-      unless target.is_a?(::Respect::BaseDef)
-        ::Kernel.raise(::ArgumentError,
-          "'#{target}:#{target.class}' must be a BaseDef object")
-      end
       @target = target
     end
 
@@ -54,7 +50,7 @@ module Respect
         # If the target's default behavior for its methods is to not accept a name as
         # first argument (this is the case for ArrayDef), we introspect the method
         # to decide whether we have to send a nil name as first argument.
-        if !@target.class.accept_name?
+        if should_fake_name?
           method = @target.method(symbol)
         else
           method = nil
@@ -105,6 +101,10 @@ module Respect
 
     def has_name_param?(method)
       !method.parameters.empty? && method.parameters.first.last == :name
+    end
+
+    def should_fake_name?
+      @target.class.respond_to?(:accept_name?) && !@target.class.accept_name?
     end
   end
 end
