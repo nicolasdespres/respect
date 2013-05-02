@@ -4,8 +4,8 @@ module Respect
   # This class sends all methods it receives to the target object it has
   # received when initialized.
   #
-  # This proxy provides two facades to DSL methods: one with a name as
-  # first argument and one without. It is a solution to the duplication
+  # This proxy provides two facades to the target's methods: one with a
+  # name as first argument and one without. It is a solution to the duplication
   # code problem described below.
   #
   # The problem is that we have to write two versions of an +integer+ method
@@ -33,10 +33,10 @@ module Respect
   #   end
   #   Respect.extend_dsl_with Helper
   #
-  # If the target {BaseDef.accept_name?} method returns +false+, this proxy
+  # If the target's class respond to +accept_name?+ and returns +false+, this proxy
   # sends +nil+ as first argument to static methods expecting a name as first
   # argument and dynamic methods.
-  class DefEvaluator < BasicObject
+  class FakeNameProxy < BasicObject
 
     def initialize(target)
       @target = target

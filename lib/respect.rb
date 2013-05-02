@@ -76,7 +76,7 @@ module Respect
   autoload :ItemsDef
   autoload :BasicCommands
   autoload :DefWithoutName
-  autoload :DefEvaluator
+  autoload :FakeNameProxy
   # Dumper classes
   autoload :DslDumper
   autoload :Org3Dumper

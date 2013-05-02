@@ -1,6 +1,6 @@
 require "test_helper"
 
-class DefEvaluatorTest < Test::Unit::TestCase
+class FakeNameProxyTest < Test::Unit::TestCase
 
   def setup
     @def_class = Class.new(Respect::BaseDef) do
@@ -19,12 +19,12 @@ class DefEvaluatorTest < Test::Unit::TestCase
       end
     end
     @def_target = @def_class.new
-    @evaluator = Respect::DefEvaluator.new(@def_target)
+    @evaluator = Respect::FakeNameProxy.new(@def_target)
 
     @def_class_no_name = @def_class.clone
     @def_class_no_name.send(:include, Respect::DefWithoutName)
     @def_target_no_name = @def_class_no_name.new
-    @evaluator_no_name = Respect::DefEvaluator.new(@def_target_no_name)
+    @evaluator_no_name = Respect::FakeNameProxy.new(@def_target_no_name)
   end
 
   def test_consider_name_as_accepted_by_default
@@ -87,11 +87,11 @@ class DefEvaluatorTest < Test::Unit::TestCase
 
   def test_block_must_take_one_arg
     assert_raise(ArgumentError) do
-      s = Respect::DefEvaluator.new(@def_target).eval do |s, a|
+      s = Respect::FakeNameProxy.new(@def_target).eval do |s, a|
       end
     end
     assert_raise(ArgumentError) do
-      s = Respect::DefEvaluator.new(@def_target).eval do
+      s = Respect::FakeNameProxy.new(@def_target).eval do
       end
     end
   end

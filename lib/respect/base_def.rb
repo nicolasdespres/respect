@@ -1,8 +1,8 @@
 module Respect
   # Base class for all DSL evaluation context classes.
   #
-  # You can evaluate a block using the {#eval} method. A {DefEvaluator}
-  # proxy is used to narrow the evaluation context to a BasicObject so the
+  # You can evaluate a block using the {#eval} method. A {FakeNameProxy}
+  # is used to narrow the evaluation context to a BasicObject so the
   # sub-classes keep Ruby's reflections possibilities without cluttering
   # the DSL itself with many unrelated method names.
   #
@@ -33,11 +33,11 @@ module Respect
     end
 
     # Evaluate the given +block+ in the context of this class through
-    # a {DefEvaluator} proxy with this class as target.
+    # a {FakeNameProxy} with this class as target.
     # {#evaluation_result} is called at the end to return the
     # result of this evaluation.
     def eval(&block)
-      @def_evaluator ||= DefEvaluator.new(self)
+      @def_evaluator ||= FakeNameProxy.new(self)
       @def_evaluator.eval(&block)
       evaluation_result
     end

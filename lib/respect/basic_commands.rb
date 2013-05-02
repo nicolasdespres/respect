@@ -14,7 +14,7 @@ module Respect
   # used differently depending on the context. In an object it will be used as a
   # a property name whereas it will be simply ignored in the
   # context of an array. Context including the {DefWithoutName} module are arrays
-  # whereas others are objects. The {DefEvaluator} is in charge for transparently
+  # whereas others are objects. The {FakeNameProxy} is in charge for transparently
   # passing +nil+ for the name in contexts including the {DefWithoutName} module.
   #
   # Example:
