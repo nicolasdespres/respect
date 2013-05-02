@@ -1,4 +1,12 @@
 module Respect
+  # A schema validator.
+  #
+  # Validator are an extensible way to validate certain properties of
+  # a schema. There are many validators available in this library (see
+  # all the sub-classes of this class).
+  #
+  # The validator API is *experimental* so it is not recommended to
+  # write your own.
   class Validator
 
     class << self
@@ -8,7 +16,7 @@ module Respect
       end
     end
 
-    def validate(value, arg)
+    def validate(value)
       true
     end
 

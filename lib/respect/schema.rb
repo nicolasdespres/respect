@@ -41,6 +41,15 @@ module Respect
   #             {json-schema.org}[http://json-schema.org/].
   # These options applies to all schema sub-classes.
   #
+  # In addition to these options, you can configure any defined
+  # {Validator}. Validators are run during validation process by
+  # certain schema class like {IntegerSchema}, {StringSchema},
+  # etc... They are mostly non-containers schema. In the
+  # following code the {GreaterThanValidator} will be run at
+  # validation time with the value +o+:
+  #
+  #   IntegerSchema.define greater_than: 0
+  #
   # This class is _abstract_. You cannot instantiate it directly.
   # Use one of its sub-classes instead.
   class Schema
