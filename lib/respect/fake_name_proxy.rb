@@ -4,38 +4,48 @@ module Respect
   # This class sends all methods it receives to the target object it has
   # received when initialized.
   #
-  # This proxy provides two facades to the target's methods: one with a
-  # name as first argument and one without. It is a solution to the duplication
-  # code problem described below.
+  # If the target's response to +accept_name?+ is +false+, this proxy
+  # passes a +nil+ value as first argument to target's dynamic methods
+  # and target's methods expecting a name as first argument.
   #
-  # The problem is that we have to write two versions of an +integer+ method
-  # in two different context. The code of the two versions is almost the same.
+  # This is useful to factor method code that should work in two different
+  # contexts. For instance, in the context of an object schema primitive
+  # commands expect a name as first argument whereas in the context of an
+  # array schema they do not.
   #
+  #   ObjectSchema.define do |s|
+  #     s.integer "age", greater_than: 0
+  #   end
+  #   ArraySchema.define do |s|
+  #     # FakeNameProxy passes +nil+ here as value for the +name+ argument.
+  #     s.integer greater_than: 0
+  #   end
+  #
+  # To factor this code, we define the +integer+ method in a module included
+  # in both context classes.
+  #
+  #   module BasicCommands
+  #     def integer(name, options = {})
+  #       update_context name, IntegerSchema.define(options)
+  #     end
+  #   end
   #   class ObjectDef
-  #     def integer(name, options = {})
-  #       # code...
+  #     include BasicCommands
+  #     def accept_name?; true; end
+  #     def update_context(name, schema)
+  #       @object_schema[name] = schema
   #     end
   #   end
-  #
   #   class ArrayDef
-  #     def integer(options = {})
-  #       # same code...
+  #     include BasicCommands
+  #     def accept_name?; false; end
+  #     def update_context(name, schema)
+  #       @array_schema.item = schema
   #     end
   #   end
   #
-  # Thanks to this proxy users only have to define one +integer+ method like
-  # this:
-  #
-  #   module Helper
-  #     def integer(name, options = {})
-  #       # code which handle the case where name is nil
-  #     end
-  #   end
-  #   Respect.extend_dsl_with Helper
-  #
-  # If the target's class respond to +accept_name?+ and returns +false+, this proxy
-  # sends +nil+ as first argument to static methods expecting a name as first
-  # argument and dynamic methods.
+  # The +update_context+ method simply ignored the name argument in ArrayDef
+  # because it does not make any sens in this context.
   class FakeNameProxy < BasicObject
 
     def initialize(target)
