@@ -214,17 +214,6 @@ class SchemaDefTest < Test::Unit::TestCase
       s.sanitized_doc)
   end
 
-  def test_block_must_take_one_arg
-    assert_raise(ArgumentError) do
-      s = Respect::Schema.define do |s, a|
-      end
-    end
-    assert_raise(ArgumentError) do
-      s = Respect::Schema.define do
-      end
-    end
-  end
-
   def test_format_helper_command_create_string_schema
     FORMAT_HELPER_COMMANDS_LIST.each do |command|
       for_each_context do |s|
@@ -335,6 +324,14 @@ class SchemaDefTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_eval_in_fake_name_proxy
+    for_each_context do |s|
+      assert(s.__id__ != s.target.__id__, "proxy present in #{s.target.class}")
+      assert(s.class == s.target.class, "proxy present in #{s.target.class}")
+    end
+  end
+
 
   private
 

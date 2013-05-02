@@ -96,10 +96,6 @@ module Respect
     # Evaluate the given +block+ in the context of this class and pass it this
     # instance as argument and returns the value returned by the block.
     def eval(&block)
-      if block.arity != 1
-        ::Kernel.raise(::ArgumentError,
-          "given block must take one argument not #{block.arity}")
-      end
       block.call(self)
     end
 

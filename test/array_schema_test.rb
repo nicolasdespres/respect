@@ -329,17 +329,6 @@ class ArraySchemaTest < Test::Unit::TestCase
     assert_equal([ 42, 52 ], s.sanitized_doc)
   end
 
-  def test_block_must_take_one_arg
-    assert_raise(ArgumentError) do
-      s = Respect::ArraySchema.define do |s, a|
-      end
-    end
-    assert_raise(ArgumentError) do
-      s = Respect::ArraySchema.define do
-      end
-    end
-  end
-
   def test_array_schema_merge_default_options
     s = Respect::ArraySchema.new
     assert_equal true, s.options[:required]

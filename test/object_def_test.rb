@@ -56,17 +56,6 @@ class ObjectDefTest < Test::Unit::TestCase
     assert s.validate?({ "test" => [], "opt" => [] })
   end
 
-  def test_block_must_take_one_arg
-    assert_raise(ArgumentError) do
-      s = Respect::ObjectSchema.define do |s, a|
-      end
-    end
-    assert_raise(ArgumentError) do
-      s = Respect::ObjectSchema.define do
-      end
-    end
-  end
-
   def test_cannot_overwrite_property
     assert_raise(Respect::InvalidSchemaError) do
       Respect::ObjectSchema.define do |s|

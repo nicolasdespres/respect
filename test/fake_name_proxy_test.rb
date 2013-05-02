@@ -86,11 +86,11 @@ class FakeNameProxyTest < Test::Unit::TestCase
   end
 
   def test_block_must_take_one_arg
-    assert_raise(ArgumentError) do
+    assert_nothing_raised do
       s = Respect::FakeNameProxy.new(@def_target).eval do |s, a|
       end
     end
-    assert_raise(ArgumentError) do
+    assert_nothing_raised do
       s = Respect::FakeNameProxy.new(@def_target).eval do
       end
     end
@@ -116,6 +116,12 @@ class FakeNameProxyTest < Test::Unit::TestCase
     @evaluator.eval do |e|
       assert(e.target.class == e.class, "call to Object method")
       assert(e.send(:String, :foo) == e.target.send(:String, :foo), "call to Kernel method")
+    end
+  end
+
+  def test_self_does_not_change_in_block
+    @evaluator.eval do
+      assert_kind_of(FakeNameProxyTest, self)
     end
   end
 
