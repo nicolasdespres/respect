@@ -23,7 +23,7 @@ require 'active_support/core_ext/string/strip'
 #    class. Sub-classing of the {Schema} class is not well supported yet as it may have
 #    some issues with the current dumpers (see {DslDumper} and {Org3Dumper}). Fortunately,
 #    most of the cases can be handled by {CompositeSchema}.
-# 1. If you want to simply add some commands to the schema definition DSL, you can just
+# 1. If you want to simply add new statements to the schema definition DSL, you can just
 #    bundle them in a module and call {Respect.extend_dsl_with} (see {CoreStatements} for
 #    further information).
 #
@@ -105,7 +105,7 @@ module Respect
 
   class << self
 
-    # Extend the schema definition DSL with the command defined in the given
+    # Extend the schema definition DSL with the statements defined in the given
     # module +mod+.
     def extend_dsl_with(mod)
       [
@@ -118,9 +118,9 @@ module Respect
       end
     end
 
-    # Build a schema class name from the given +command_name+.
-    def schema_name_for(command_name)
-      const_name = command_name.to_s
+    # Build a schema class name from the given +statement_name+.
+    def schema_name_for(statement_name)
+      const_name = statement_name.to_s
       if const_name == "schema"
         "#{self.name}::Schema"
       else
@@ -128,14 +128,14 @@ module Respect
       end
     end
 
-    # Return the schema class associated to the given +command_name+.
+    # Return the schema class associated to the given +statement_name+.
     #
     # A "valid" schema class must verify the following properties:
-    # * Named like +CommnandNameSchema+ in {Respect} module.
+    # * Named like +StatementNameSchema+ in {Respect} module.
     # * Be a sub-class of {Schema}.
     # * Be concrete (i.e. have a public method +new+)
-    def schema_for(command_name)
-      klass = Respect.schema_name_for(command_name).safe_constantize
+    def schema_for(statement_name)
+      klass = Respect.schema_name_for(statement_name).safe_constantize
       if klass && klass < Schema && klass.public_methods.include?(:new)
         klass
       else
@@ -143,9 +143,9 @@ module Respect
       end
     end
 
-    # Test whether a schema is defined for the given +command_name+.
-    def schema_defined_for?(command_name)
-      !!schema_for(command_name)
+    # Test whether a schema is defined for the given +statement_name+.
+    def schema_defined_for?(statement_name)
+      !!schema_for(statement_name)
     end
 
     # Turn the given string (assuming it is a constraint name) into a

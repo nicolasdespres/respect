@@ -1,15 +1,15 @@
 module Respect
-  # Basic DSL command definition module.
+  # Core DSL statements definition module.
   #
-  # This module holds all the basic commands available in the DSL. It is included
+  # This module holds all the basic statements available in the DSL. It is included
   # in all the DSL context using {Respect.extend_dsl_with}. Thus all basic DSL
   # contexts provides its feature.
   #
-  # Most of the commands are available as dynamic methods.
+  # Most of the statements are available as dynamic methods.
   # For each "FooSchema" class defined in the {Respect} module (and following certain
-  # condition described at {Respect.schema_for}), there is a command
-  # "foo" (see {Schema.command_name}) expecting a name, some options and a block.
-  # This command defines a new "FooSchema" with the given options and block. This
+  # condition described at {Respect.schema_for}), there is a statement
+  # "foo" (see {Schema.statement_name}) expecting a name, some options and a block.
+  # This statement defines a new "FooSchema" with the given options and block. This
   # schema is stored in the current context using the given name. The name may be used
   # used differently depending on the context. In an object it will be used as a
   # a property name whereas it will be simply ignored in the
@@ -38,9 +38,9 @@ module Respect
   # {dynamic module include problem}[http://eigenclass.org/hiki/The+double+inclusion+problem].
   # To extend the DSL use {Respect.extend_dsl_with} instead.
   #
-  # It is recommended that your macros implementation be based on core commands
+  # It is recommended that your macros implementation be based on core statements
   # because +update_context+ API is *experimental*. If you do so anyway your
-  # macro may not work properly with the {#doc} and {#with_options} commands.
+  # macro may not work properly with the {#doc} and {#with_options} statements.
   module CoreStatements
 
     # @!method string(name, options = {})

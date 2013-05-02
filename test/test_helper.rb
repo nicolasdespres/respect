@@ -5,8 +5,8 @@ require 'respect'
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-# A module to test command extension helper.
-module EndUserDSLCommand
+# A module to test statement extension helper.
+module EndUserDSLStatement
 
   def id(name = "id")
     integer name, greater_than: 0
@@ -24,15 +24,15 @@ module EndUserDSLCommand
 
 end
 
-Respect.extend_dsl_with(EndUserDSLCommand)
+Respect.extend_dsl_with(EndUserDSLStatement)
 
-FORMAT_HELPER_COMMANDS_LIST = [
+FORMAT_HELPER_STATEMENTS_LIST = [
   :phone_number,
   :hostname,
   :email,
 ]
 
-PRIMITIVE_COMMANDS_LIST = [
+PRIMITIVE_STATEMENTS_LIST = [
   :integer,
   :string,
   :any,
@@ -48,13 +48,13 @@ PRIMITIVE_COMMANDS_LIST = [
   :ip_addr,
 ]
 
-TERMINAL_COMMANDS_LIST = FORMAT_HELPER_COMMANDS_LIST + PRIMITIVE_COMMANDS_LIST
+TERMINAL_STATEMENTS_LIST = FORMAT_HELPER_STATEMENTS_LIST + PRIMITIVE_STATEMENTS_LIST
 
-COMPOSITE_COMMANDS_LIST = [
+COMPOSITE_STATEMENTS_LIST = [
   :object,
   :array,
 ]
 
-BASIC_COMMANDS_LIST = TERMINAL_COMMANDS_LIST + COMPOSITE_COMMANDS_LIST
+BASIC_STATEMENTS_LIST = TERMINAL_STATEMENTS_LIST + COMPOSITE_STATEMENTS_LIST
 
 require "mocha/setup"

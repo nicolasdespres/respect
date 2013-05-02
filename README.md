@@ -162,7 +162,7 @@ schema.validate!(doc)                              #=> true
 doc["home"].class                                  #=> Place
 ```
 
-Sometimes you just want to extend the DSL with a command providing higher level feature than
+Sometimes you just want to extend the DSL with a new statement providing higher level feature than
 the primitive `integer`, `string` or `float`, etc... For instance if you specify identifier
 in your schema like this:
 

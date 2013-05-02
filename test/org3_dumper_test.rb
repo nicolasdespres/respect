@@ -1,22 +1,22 @@
 require "test_helper"
 
 class Org3DumperTest < Test::Unit::TestCase
-  def test_dump_basic_types_commands_with_no_options
+  def test_dump_basic_types_statements_with_no_options
     [
       :integer,
       :string,
       :any,
       :boolean,
       :null,
-    ].each do |command|
+    ].each do |statement|
       s = Respect::Schema.define do |s|
-        s.__send__(command)
+        s.__send__(statement)
       end
       a = Respect::Org3Dumper.new(s).dump
       e = {
-        "type" => command.to_s,
+        "type" => statement.to_s,
       }
-      assert_equal e, a, "dump command #{command}"
+      assert_equal e, a, "dump statement #{statement}"
     end
   end
 
@@ -50,21 +50,21 @@ class Org3DumperTest < Test::Unit::TestCase
   # TODO(Nicolas Despres): Test IpAddrSchema warn that it can not be dumped.
   # TODO(Nicolas Despres): Test UtcTimeSchema warn that it can not be dumped.
 
-  def test_dump_helper_command
+  def test_dump_helper_statement
     {
       :phone_number => "phone",
       :hostname => "host-name",
       :email => "email",
-    }.each do |command, format|
+    }.each do |statement, format|
       s = Respect::Schema.define do |s|
-        s.__send__(command)
+        s.__send__(statement)
       end
       a = Respect::Org3Dumper.new(s).dump
       e = {
         "type" => "string",
         "format" => format,
       }
-      assert_equal e, a, "dump command #{command}"
+      assert_equal e, a, "dump statement #{statement}"
     end
   end
 
@@ -625,19 +625,19 @@ class Org3DumperTest < Test::Unit::TestCase
         min_size: { value: 42, trans: { "minItems" => 42 } },
         max_size: { value: 42, trans: { "maxItems" => 42 } },
       },
-    }.each do |command, options|
+    }.each do |statement, options|
       options.each do |opt, params|
         s = Respect::Schema.define do |s|
-          s.__send__(command, { opt => params[:value] })
+          s.__send__(statement, { opt => params[:value] })
         end
         a = Respect::Org3Dumper.new(s).dump
-        e = { "type" => command.to_s }.merge(params[:trans])
-        assert_equal e, a, "dump option #{opt} for command #{command}"
+        e = { "type" => statement.to_s }.merge(params[:trans])
+        assert_equal e, a, "dump option #{opt} for statement #{statement}"
         # Test option value are not shared between the hash and the schema.
         params[:trans].each do |k, v|
           unless v.is_a?(Numeric) || v.is_a?(TrueClass) || v.is_a?(FalseClass)
             assert(s.options[opt].object_id != a[k].object_id,
-              "non shared option value for option '#{opt}' for command '#{command}'")
+              "non shared option value for option '#{opt}' for statement '#{statement}'")
           end
         end
       end
@@ -695,9 +695,9 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_no_dump_for_nodoc
-    BASIC_COMMANDS_LIST.each do |command|
+    BASIC_STATEMENTS_LIST.each do |statement|
       s = Respect::Schema.define do |s|
-        s.__send__(command, doc: false)
+        s.__send__(statement, doc: false)
       end
       assert_nil Respect::Org3Dumper.new(s).dump
     end

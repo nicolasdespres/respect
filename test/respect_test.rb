@@ -36,16 +36,16 @@ class RespectTest < Test::Unit::TestCase
       circle: Respect::CircleSchema,
       point: Respect::PointSchema,
       rgba: Respect::RgbaSchema,
-      # valid class but with no command
+      # valid class but with no statement
       request: nil, # not a Schema sub-class
       composite: nil, # abstract
       undefined_schema: nil # undefined
-    }.each do |command, schema_class|
+    }.each do |statement, schema_class|
       klass = nil
-      assert_nothing_raised("nothing raised for '#{command}'") do
-        klass = Respect.schema_for(command)
+      assert_nothing_raised("nothing raised for '#{statement}'") do
+        klass = Respect.schema_for(statement)
       end
-      assert_equal schema_class, klass, "correct class for '#{command}'"
+      assert_equal schema_class, klass, "correct class for '#{statement}'"
     end
   end
 

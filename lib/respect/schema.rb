@@ -6,9 +6,9 @@ module Respect
   # specification but uses Ruby DSL as definition. Using the DSL is not
   # mandatory since you can also defines a schema using its own methods.
   #
-  # Almost all {Schema} sub-classes has an associated command available in
-  # the DSL for defining it. This command is named after the class name
-  # (see {Schema.command_name}). However some classes do not have a command
+  # Almost all {Schema} sub-classes has an associated statement available in
+  # the DSL for defining it. This statement is named after the class name
+  # (see {Schema.statement_name}). However some classes do not have a statement
   # associated (see {Respect.schema_for}).
   #
   # You can define such a schema using the
@@ -87,12 +87,12 @@ module Respect
         self.def_class_name.safe_constantize
       end
 
-      # Build a command name from this class name.
+      # Build a statement name from this class name.
       #
       # Example:
-      #   Schema.command_name                   #=> "schema"
-      #   ObjectSchema.command_name             #=> "object"
-      def command_name
+      #   Schema.statement_name                   #=> "schema"
+      #   ObjectSchema.statement_name             #=> "object"
+      def statement_name
         self.name.underscore.sub(/^.*\//, '').sub(/_schema$/, '')
       end
 

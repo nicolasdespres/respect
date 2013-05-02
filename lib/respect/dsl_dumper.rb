@@ -91,7 +91,7 @@ module Respect
     end
 
     def dump_name(schema)
-      self << schema.class.command_name
+      self << schema.class.statement_name
     end
 
     def dump_arguments(schema)
@@ -135,7 +135,7 @@ module Respect
     end
 
     def dump_body(schema)
-      symbol = "dump_body_for_#{schema.class.command_name}"
+      symbol = "dump_body_for_#{schema.class.statement_name}"
       if respond_to? symbol
         send(symbol, schema)
       end

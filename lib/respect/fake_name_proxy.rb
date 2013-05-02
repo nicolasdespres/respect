@@ -10,7 +10,7 @@ module Respect
   #
   # This is useful to factor method code that should work in two different
   # contexts. For instance, in the context of an object schema primitive
-  # commands expect a name as first argument whereas in the context of an
+  # statements expect a name as first argument whereas in the context of an
   # array schema they do not.
   #
   #   ObjectSchema.define do |s|

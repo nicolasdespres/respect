@@ -18,7 +18,7 @@ module Respect
         new(*args).eval(&block)
       end
 
-      # Return whether the commands of this context accept a name
+      # Return whether the statements declared in this context accept a name
       # as first argument. All classes not including {DefWithoutName}
       # accept names.
       def accept_name?

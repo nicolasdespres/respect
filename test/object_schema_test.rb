@@ -247,7 +247,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
     assert !s.pattern_properties.has_key?("test")
   end
 
-  def test_object_schema_command_expect_name_argument
+  def test_object_schema_statement_expect_name_argument
     [
       :object,
       :integer,

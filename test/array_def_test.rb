@@ -44,7 +44,7 @@ class ArrayDefTest < Test::Unit::TestCase
     assert s.validate?([[]])
   end
 
-  def test_array_schema_command_cannot_accept_name_argument
+  def test_array_schema_statement_cannot_accept_name_argument
     [
       :object,
       :integer,

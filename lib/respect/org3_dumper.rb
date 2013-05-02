@@ -51,7 +51,7 @@ module Respect
     def dump_schema_for_schema(schema, params = {})
       return nil if !schema.documented?
       h = {}
-      h['type'] = dump_command_name(schema)
+      h['type'] = dump_statement_name(schema)
       # Dump generic options.
       schema.options.each do |opt, opt_value|
         next if params[:ignore] && params[:ignore].include?(opt)
@@ -139,23 +139,23 @@ module Respect
       dump_schema(schema.schema, params)
     end
 
-    def dump_command_name(schema, *args)
-      dispatch("dump_command_name", schema.class, schema, *args)
+    def dump_statement_name(schema, *args)
+      dispatch("dump_statement_name", schema.class, schema, *args)
     end
 
-    def dump_command_name_for_schema(schema)
-      schema.class.command_name
+    def dump_statement_name_for_schema(schema)
+      schema.class.statement_name
     end
 
-    def dump_command_name_for_numeric_schema(schema)
+    def dump_statement_name_for_numeric_schema(schema)
       "number"
     end
 
-    def dump_command_name_for_integer_schema(schema)
+    def dump_statement_name_for_integer_schema(schema)
       "integer"
     end
 
-    def dump_command_name_for_string_schema(schema)
+    def dump_statement_name_for_string_schema(schema)
       "string"
     end
 

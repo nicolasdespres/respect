@@ -166,11 +166,11 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
-  def test_dsl_accept_basic_commands_with_no_option
-    BASIC_COMMANDS_LIST.each do |command|
+  def test_dsl_accept_basic_statements_with_no_option
+    BASIC_STATEMENTS_LIST.each do |statement|
       for_each_context do |s|
-        assert_nothing_raised("'#{command}' method accepted in #{s.target.class}") do
-          send_command_in_context(s, command, "fake name")
+        assert_nothing_raised("'#{statement}' method accepted in #{s.target.class}") do
+          send_statement_in_context(s, statement, "fake name")
         end
       end
     end
@@ -214,112 +214,112 @@ class SchemaDefTest < Test::Unit::TestCase
       s.sanitized_doc)
   end
 
-  def test_format_helper_command_create_string_schema
-    FORMAT_HELPER_COMMANDS_LIST.each do |command|
+  def test_format_helper_statement_create_string_schema
+    FORMAT_HELPER_STATEMENTS_LIST.each do |statement|
       for_each_context do |s|
-        schema = send_command_in_context(s, command, "an_command", equal_to: "expected_value")
-        assert schema.is_a?(Respect::StringSchema), "is a StringSchema for #{command} in #{s.target.class}"
-        assert_equal command, schema.options[:format], "format is :#{command} in #{s.target.class}"
-        assert_equal "expected_value", schema.options[:equal_to], "equal_to works for #{command} in #{s.target.class}"
+        schema = send_statement_in_context(s, statement, "an_statement", equal_to: "expected_value")
+        assert schema.is_a?(Respect::StringSchema), "is a StringSchema for #{statement} in #{s.target.class}"
+        assert_equal statement, schema.options[:format], "format is :#{statement} in #{s.target.class}"
+        assert_equal "expected_value", schema.options[:equal_to], "equal_to works for #{statement} in #{s.target.class}"
       end
     end
   end
 
-  def test_command_return_created_schema
-    BASIC_COMMANDS_LIST.each do |command|
+  def test_statement_return_created_schema
+    BASIC_STATEMENTS_LIST.each do |statement|
       for_each_context do |s|
-        schema = send_command_in_context(s, command, "fake name")
-        assert schema.is_a?(Respect::Schema), "'#{command}' returns a schema in #{s.target.class}"
+        schema = send_statement_in_context(s, statement, "fake name")
+        assert schema.is_a?(Respect::Schema), "'#{statement}' returns a schema in #{s.target.class}"
       end
     end
   end
 
-  def test_uri_command_create_uri_schema
+  def test_uri_statement_create_uri_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :uri, "an_uri", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :uri, "an_uri", equal_to: "expected_value")
       assert schema.is_a?(Respect::UriSchema), "is a UriSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_regexp_command_create_regexp_schema
+  def test_regexp_statement_create_regexp_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :regexp, "a_regexp", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :regexp, "a_regexp", equal_to: "expected_value")
       assert schema.is_a?(Respect::RegexpSchema), "is a RegexpSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_datetime_command_create_datetime_schema
+  def test_datetime_statement_create_datetime_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :datetime, "a_datetime", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :datetime, "a_datetime", equal_to: "expected_value")
       assert schema.is_a?(Respect::DatetimeSchema), "is a DatetimeSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_ip_addr_command_create_ipaddr_schema
+  def test_ip_addr_statement_create_ipaddr_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :ip_addr, "a_ip_addr", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :ip_addr, "a_ip_addr", equal_to: "expected_value")
       assert schema.is_a?(Respect::IpAddrSchema), "is a IpAddrSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_ipv4_addr_command_create_ipv4addr_schema
+  def test_ipv4_addr_statement_create_ipv4addr_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :ipv4_addr, "a_ipv4_addr", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :ipv4_addr, "a_ipv4_addr", equal_to: "expected_value")
       assert schema.is_a?(Respect::Ipv4AddrSchema), "is a Ipv4AddrSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_ipv6_addr_command_create_ipv6addr_schema
+  def test_ipv6_addr_statement_create_ipv6addr_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :ipv6_addr, "a_ipv6_addr", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :ipv6_addr, "a_ipv6_addr", equal_to: "expected_value")
       assert schema.is_a?(Respect::Ipv6AddrSchema), "is a Ipv6AddrSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_utc_time_command_create_utc_time_schema
+  def test_utc_time_statement_create_utc_time_schema
     for_each_context do |s|
-      schema = send_command_in_context(s, :utc_time, "a_utc_time", equal_to: "expected_value")
+      schema = send_statement_in_context(s, :utc_time, "a_utc_time", equal_to: "expected_value")
       assert schema.is_a?(Respect::UtcTimeSchema), "is a UtcTimeSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end
 
-  def test_commands_have_doc_option
-    BASIC_COMMANDS_LIST.each do |command|
+  def test_statements_have_doc_option
+    BASIC_STATEMENTS_LIST.each do |statement|
       for_each_context do |s|
-        schema = send_command_in_context(s, command, "a_name", doc: @doc)
-        assert_equal @title, schema.title, "title set by #{command} in #{s.target.class}"
-        assert_equal @description, schema.description, "description set by #{command} in #{s.target.class}"
-        assert_equal @doc, schema.doc, "doc set by #{command} in #{s.target.class}"
+        schema = send_statement_in_context(s, statement, "a_name", doc: @doc)
+        assert_equal @title, schema.title, "title set by #{statement} in #{s.target.class}"
+        assert_equal @description, schema.description, "description set by #{statement} in #{s.target.class}"
+        assert_equal @doc, schema.doc, "doc set by #{statement} in #{s.target.class}"
       end
     end
   end
 
-  def test_doc_command_assign_every_commands
-    BASIC_COMMANDS_LIST.each do |command|
+  def test_doc_statement_assign_every_statements
+    BASIC_STATEMENTS_LIST.each do |statement|
       for_each_context do |s|
-        title = "#@title for '#{command}' in #{s.target.class}"
-        description = "#@description for '#{command}' in #{s.target.class}"
+        title = "#@title for '#{statement}' in #{s.target.class}"
+        description = "#@description for '#{statement}' in #{s.target.class}"
         doc = "#{title}\n\n#{description}"
         s.doc doc
-        schema = send_command_in_context(s, command, "a_name")
-        assert_equal title, schema.title, "title set by #{command} in #{s.target.class}"
-        assert_equal description, schema.description, "description set by #{command} in #{s.target.class}"
-        assert_equal doc, schema.doc, "doc set by #{command} in #{s.target.class}"
+        schema = send_statement_in_context(s, statement, "a_name")
+        assert_equal title, schema.title, "title set by #{statement} in #{s.target.class}"
+        assert_equal description, schema.description, "description set by #{statement} in #{s.target.class}"
+        assert_equal doc, schema.doc, "doc set by #{statement} in #{s.target.class}"
       end
     end
   end
 
-  def test_abstract_schema_class_have_no_dynamic_command
+  def test_abstract_schema_class_have_no_dynamic_statement
     for_each_context do |s|
       assert_raise(NoMethodError,
-        "abstract class have no dynamic command in #{s.target.class}") do
+        "abstract class have no dynamic statement in #{s.target.class}") do
         s.__send__(:composite)
       end
     end
@@ -368,14 +368,14 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
-  # Send the given _command_ to the given _dsl_def_ context. Name is passed
+  # Send the given _statement_ to the given _dsl_def_ context. Name is passed
   # if the context accept a name. All the rest of the arguments and the block
   # are always passed.
-  def send_command_in_context(dsl_def, command, name, *args, &block)
+  def send_statement_in_context(dsl_def, statement, name, *args, &block)
     if dsl_def.target.class.accept_name?
-      dsl_def.__send__(command, name, *args, &block)
+      dsl_def.__send__(statement, name, *args, &block)
     else
-      dsl_def.__send__(command, *args, &block)
+      dsl_def.__send__(statement, *args, &block)
     end
   end
 

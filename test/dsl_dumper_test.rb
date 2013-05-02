@@ -67,13 +67,13 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_terminal_command
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+  def test_dump_terminal_statement
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.object do |s|
-            s.#{command} "property_name"
+            s.#{statement} "property_name"
           end
         end
         EOF
@@ -82,12 +82,12 @@ class DslDumperTest < Test::Unit::TestCase
   end
 
   def test_dump_array_item
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.array do |s|
-            s.#{command}
+            s.#{statement}
           end
         end
         EOF
@@ -96,14 +96,14 @@ class DslDumperTest < Test::Unit::TestCase
   end
 
   def test_dump_array_items
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.array do |s|
             s.items do |s|
-              s.#{command}
-              s.#{command}
+              s.#{statement}
+              s.#{statement}
             end
           end
         end
@@ -113,14 +113,14 @@ class DslDumperTest < Test::Unit::TestCase
   end
 
   def test_dump_array_extra_items
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.array do |s|
             s.extra_items do |s|
-              s.#{command}
-              s.#{command}
+              s.#{statement}
+              s.#{statement}
             end
           end
         end
@@ -130,20 +130,20 @@ class DslDumperTest < Test::Unit::TestCase
   end
 
   def test_dump_array_items_and_extra_items
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.array do |s|
             s.items do |s|
-              s.#{command}
-              s.#{command}
-              s.#{command}
+              s.#{statement}
+              s.#{statement}
+              s.#{statement}
             end
             s.extra_items do |s|
-              s.#{command}
-              s.#{command}
-              s.#{command}
+              s.#{statement}
+              s.#{statement}
+              s.#{statement}
             end
           end
         end
@@ -241,34 +241,34 @@ class DslDumperTest < Test::Unit::TestCase
   end
 
   def test_dump_terminal_schema
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.#{command}
+          s.#{statement}
         end
         EOF
       end
     end
   end
 
-  def test_dump_format_helper_command
-    FORMAT_HELPER_COMMANDS_LIST.each do |command|
+  def test_dump_format_helper_statement
+    FORMAT_HELPER_STATEMENTS_LIST.each do |statement|
       schema = Respect::Schema.define do |s|
-        s.__send__(command)
+        s.__send__(statement)
       end
       expected_result = <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.string :format => #{command.inspect}
+          s.string :format => #{statement.inspect}
         end
       EOF
       assert_equal(expected_result,
         Respect::DslDumper.new(schema).dump,
-        "dump for command #{command}")
+        "dump for statement #{statement}")
     end
   end
 
-  def test_dump_command_with_no_names_and_several_options
+  def test_dump_statement_with_no_names_and_several_options
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
@@ -278,7 +278,7 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_command_with_name_and_several_options
+  def test_dump_statement_with_name_and_several_options
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
@@ -290,7 +290,7 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_command_with_name_and_no_options
+  def test_dump_statement_with_name_and_no_options
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
@@ -302,9 +302,9 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_primitive_command_documentation
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+  def test_dump_primitive_statement_documentation
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.doc <<-EOS.strip_heredoc
@@ -312,36 +312,36 @@ class DslDumperTest < Test::Unit::TestCase
 
             a description
             EOS
-          s.#{command}
+          s.#{statement}
         end
         EOF
       end
     end
   end
 
-  def test_dump_primitive_command_with_no_description
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+  def test_dump_primitive_statement_with_no_description
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.doc "a title"
-          s.#{command}
+          s.#{statement}
         end
         EOF
       end
     end
   end
 
-  def test_dump_primitive_command_with_no_title
-    PRIMITIVE_COMMANDS_LIST.each do |command|
-      assert_bijective_dump("dump command #{command}") do
+  def test_dump_primitive_statement_with_no_title
+    PRIMITIVE_STATEMENTS_LIST.each do |statement|
+      assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
           s.doc <<-EOS.strip_heredoc
             a long...
             ... description
             EOS
-          s.#{command}
+          s.#{statement}
         end
         EOF
       end

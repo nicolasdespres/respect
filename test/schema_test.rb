@@ -124,12 +124,12 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal nil, Respect::StringSchema.def_class
   end
 
-  def test_command_name
-    assert_equal "string", Respect::StringSchema.command_name
-    assert_equal "integer", Respect::IntegerSchema.command_name
-    assert_equal "schema", Respect::Schema.command_name
-    assert_equal "circle", Respect::CircleSchema.command_name
-    assert_equal "point", Respect::PointSchema.command_name
+  def test_statement_name
+    assert_equal "string", Respect::StringSchema.statement_name
+    assert_equal "integer", Respect::IntegerSchema.statement_name
+    assert_equal "schema", Respect::Schema.statement_name
+    assert_equal "circle", Respect::CircleSchema.statement_name
+    assert_equal "point", Respect::PointSchema.statement_name
   end
 
   def test_in_place_validation_always_return_boolean
