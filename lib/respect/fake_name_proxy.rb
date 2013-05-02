@@ -24,20 +24,20 @@ module Respect
   # To factor this code, we define the +integer+ method in a module included
   # in both context classes.
   #
-  #   module BasicCommands
+  #   module CoreStatements
   #     def integer(name, options = {})
   #       update_context name, IntegerSchema.define(options)
   #     end
   #   end
   #   class ObjectDef
-  #     include BasicCommands
+  #     include CoreStatements
   #     def accept_name?; true; end
   #     def update_context(name, schema)
   #       @object_schema[name] = schema
   #     end
   #   end
   #   class ArrayDef
-  #     include BasicCommands
+  #     include CoreStatements
   #     def accept_name?; false; end
   #     def update_context(name, schema)
   #       @array_schema.item = schema

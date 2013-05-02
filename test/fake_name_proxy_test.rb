@@ -4,7 +4,7 @@ class FakeNameProxyTest < Test::Unit::TestCase
 
   def setup
     @def_class = Class.new(Respect::BaseDef) do
-      include Respect::BasicCommands
+      include Respect::CoreStatements
       def accept_name(name)
         name
       end

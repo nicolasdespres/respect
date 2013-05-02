@@ -41,7 +41,7 @@ module Respect
   # It is recommended that your macros implementation be based on core commands
   # because +update_context+ API is *experimental*. If you do so anyway your
   # macro may not work properly with the {#doc} and {#with_options} commands.
-  module BasicCommands
+  module CoreStatements
 
     # @!method string(name, options = {})
     #   Define a {StringSchema} with the given +options+ and stores it in the
@@ -168,5 +168,5 @@ module Respect
       @options = nil
     end
 
-  end # module BasicCommands
+  end # module CoreStatements
 end # module Respect

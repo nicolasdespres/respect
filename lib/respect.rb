@@ -24,7 +24,7 @@ require 'active_support/core_ext/string/strip'
 #    some issues with the current dumpers (see {DslDumper} and {Org3Dumper}). Fortunately,
 #    most of the cases can be handled by {CompositeSchema}.
 # 1. If you want to simply add some commands to the schema definition DSL, you can just
-#    bundle them in a module and call {Respect.extend_dsl_with} (see {BasicCommands} for
+#    bundle them in a module and call {Respect.extend_dsl_with} (see {CoreStatements} for
 #    further information).
 #
 # Extension of the _validator_ and _dumper_ classes is still experimental. Also, creating
@@ -72,7 +72,7 @@ module Respect
   autoload :ObjectDef
   autoload :BaseDef
   autoload :ItemsDef
-  autoload :BasicCommands
+  autoload :CoreStatements
   autoload :DefWithoutName
   autoload :FakeNameProxy
   # Dumper classes
@@ -167,6 +167,6 @@ module Respect
 
   end
 
-  extend_dsl_with(BasicCommands)
+  extend_dsl_with(CoreStatements)
 
 end
