@@ -85,4 +85,19 @@ class ObjectDefTest < Test::Unit::TestCase
     assert s["test"].options[:strict]
   end
 
+  def test_factor_options_with_with_options
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "test", equal_to: 42
+      s.with_options required: false do |s|
+        s.integer "opt1", greater_than: 0
+        s.integer "opt2", less_than: 0
+      end
+    end
+    assert_equal(42, s["test"].options[:equal_to])
+    assert_equal(true, s["test"].options[:required])
+    assert_equal(false, s["opt1"].options[:required])
+    assert_equal(0, s["opt1"].options[:greater_than])
+    assert_equal(false, s["opt2"].options[:required])
+    assert_equal(0, s["opt2"].options[:less_than])
+  end
 end
