@@ -255,11 +255,16 @@ And many more... see the issue tracker with tag FIXME for more information.
 
 The easiest way to get help about how to use this library is to post your question on the
 [Respect discussion group](FIXME). I will be glade to answer. I may have already answered the
-same question so before, you post your question take a bit of time to search the group.
+same question so before you post your question take a bit of time to search the group.
 
 You can also read these documents for further documentation:
 
 * [Repect API reference documentation](FIXME)
+
+# Feedback
+
+I would love to hear what you think about this library. Feel free to post any comments/remarks on the
+[Respect discussion group](FIXME).
 
 # Reporting bugs
 
@@ -282,6 +287,8 @@ on GitHub. Before you start a few reminders:
 1. Every commits must have a comprehensive commit message.
 1. Whenever you are fixing a bug or adding a new features, tests are required.
 1. A bit of documentation so that others can understand your code.
+
+Don't worry these rules are not strict. If you can't make it I will be glade to help.
 
 # License
 
