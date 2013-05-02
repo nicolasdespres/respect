@@ -104,7 +104,7 @@ module Respect
     end
 
     def should_fake_name?
-      @target.class.respond_to?(:accept_name?) && !@target.class.accept_name?
+      @target.respond_to?(:accept_name?) && !@target.accept_name?
     end
   end
 end

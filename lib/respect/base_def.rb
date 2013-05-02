@@ -27,6 +27,11 @@ module Respect
 
     end
 
+    # Shortcut to {BaseDef.accept_name?}.
+    def accept_name?
+      self.class.accept_name?
+    end
+
     # Evaluate the given +block+ in the context of this class through
     # a {DefEvaluator} proxy with this class as target.
     # {#evaluation_result} is called at the end to return the
