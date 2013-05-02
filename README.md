@@ -239,6 +239,18 @@ object schema is not presented in the standard. However, when a schema is dumped
 the syntax and semantic have been followed. You should note that there is no "loader" available yet in this
 library. In other word, you cannot instantiate a Schema class from a _JSON Schema_ string representation.
 
+# Coming soon
+
+Many other great features are planned for the next releases. Here a short list of what is coming soon:
+
+* Non-experimental extensible validator API.
+* More extensible DSL API: define your own definition class, create macros not based on core statements.
+* More extensible Schema API: sub-class Schema not only CompositeSchema.
+* A way to set options for nested schema in custom types.
+* More extensible dumpers API.
+
+And many more... see the issue tracker with tag FIXME for more information.
+
 # Getting help
 
 The easiest way to get help about how to use this library is to post your question on the
