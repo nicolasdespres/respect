@@ -69,6 +69,24 @@ module Respect
     # @!method array(name, options = {})
     #   Define a {ArraySchema} with the given +options+ and +block+ stores it
     #   in the current context using +name+ as index.
+    # @!method datetime(name, options = {})
+    #   Define a {DatetimeSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
+    # @!method ip_addr(name, options = {})
+    #   Define a {IpAddrSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
+    # @!method ipv4_addr(name, options = {})
+    #   Define a {Ipv4AddrSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
+    # @!method ipv6_addr(name, options = {})
+    #   Define a {Ipv6AddrSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
+    # @!method regexp(name, options = {})
+    #   Define a {RegexpSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
+    # @!method utc_time(name, options = {})
+    #   Define a {UtcTimeSchema} with the given +options+ and stores it in the
+    #   current context using +name+ as index.
     #
     # Call +update_context+ using the first argument as index and passes the rest
     # to the {Schema.define} class method of the schema class associated with the method name.
