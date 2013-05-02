@@ -71,7 +71,6 @@ module Respect
   autoload :ArrayDef
   autoload :ObjectDef
   autoload :BaseDef
-  autoload :OptionalPropDef
   autoload :ItemsDef
   autoload :BasicCommands
   autoload :DefWithoutName
@@ -114,7 +113,6 @@ module Respect
         ArrayDef,
         ItemsDef,
         ObjectDef,
-        OptionalPropDef,
       ].each do |klass|
         klass.send(:include, mod)
       end

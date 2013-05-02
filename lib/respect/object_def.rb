@@ -6,10 +6,7 @@ module Respect
     end
 
     def optionals(&block)
-      OptionalPropDef.eval(&block).each do |name, schema|
-        schema.options[:required] = false
-        update_context(name, schema)
-      end
+      with_options(required: false, &block)
     end
 
     private
