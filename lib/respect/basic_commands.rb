@@ -37,6 +37,10 @@ module Respect
   # including it won't be affected due to the
   # {dynamic module include problem}[http://eigenclass.org/hiki/The+double+inclusion+problem].
   # To extend the DSL use {Respect.extend_dsl_with} instead.
+  #
+  # It is recommended that your macros implementation be based on core commands
+  # because +update_context+ API is *experimental*. If you do so anyway your
+  # macro may not work properly with the {#doc} and {#with_options} commands.
   module BasicCommands
 
     # @!method string(name, options = {})
