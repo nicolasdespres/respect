@@ -344,7 +344,7 @@ class SchemaDefTest < Test::Unit::TestCase
     {
       :object => [
         nil,
-        :optionals,
+        :extra,
       ],
       :array => [
         nil,

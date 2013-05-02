@@ -99,7 +99,7 @@ class Org3DumperTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.integer "i"
       s.string "s"
-      s.optionals do |s|
+      s.extra do |s|
         s.string "o_s"
         s.float "o_f"
       end
@@ -231,13 +231,13 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_nested_optionals_properties
+  def test_dump_nested_extra_properties
     s = Respect::ObjectSchema.define do |s|
-      s.optionals do |s|
+      s.extra do |s|
         s.object "o1" do |s|
-          s.optionals do |s|
+          s.extra do |s|
             s.object "o2" do |s|
-              s.optionals do |s|
+              s.extra do |s|
                 s.object "o3" do |s|
                   s.integer "i"
                 end
@@ -287,7 +287,7 @@ class Org3DumperTest < Test::Unit::TestCase
 
   def test_do_not_dump_empty_object_optional_properties
     s = Respect::ObjectSchema.define do |s|
-      s.optionals do |s|
+      s.extra do |s|
       end
     end
     a = Respect::Org3Dumper.new(s).dump
@@ -327,7 +327,7 @@ class Org3DumperTest < Test::Unit::TestCase
 
   def test_do_not_dump_nodoc_object_optional_properties
     s = Respect::ObjectSchema.define do |s|
-      s.optionals do |s|
+      s.extra do |s|
         s.integer "enabled"
         s.integer "nodoc", doc: false
       end
@@ -584,7 +584,7 @@ class Org3DumperTest < Test::Unit::TestCase
       s.integer "required_i"
       s.integer "default_i", default: 42
       s.integer "non_required_i", required: false
-      s.optionals do |s|
+      s.extra do |s|
         s.integer "optional_i"
       end
     end

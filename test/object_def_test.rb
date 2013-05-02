@@ -5,7 +5,7 @@ class ObjectDefTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_integer
     s = Respect::ObjectSchema.define do |s|
       s.integer "test", equal_to: 15
-      s.optionals do |s|
+      s.extra do |s|
         s.integer "opt", equal_to: 43
       end
     end
@@ -16,7 +16,7 @@ class ObjectDefTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_null
     s = Respect::ObjectSchema.define do |s|
       s.null "test"
-      s.optionals do |s|
+      s.extra do |s|
         s.null "opt"
       end
     end
@@ -27,7 +27,7 @@ class ObjectDefTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_float
     s = Respect::ObjectSchema.define do |s|
       s.float "test", equal_to: 1.5
-      s.optionals do |s|
+      s.extra do |s|
         s.float "opt", equal_to: 4.3
       end
     end
@@ -38,7 +38,7 @@ class ObjectDefTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_boolean
     s = Respect::ObjectSchema.define do |s|
       s.boolean "test", equal_to: false
-      s.optionals do |s|
+      s.extra do |s|
         s.boolean "opt", equal_to: false
       end
     end
@@ -49,7 +49,7 @@ class ObjectDefTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_array
     s = Respect::ObjectSchema.define do |s|
       s.array "test"
-      s.optionals do |s|
+      s.extra do |s|
         s.array "opt"
       end
     end
@@ -69,7 +69,7 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_raise(Respect::InvalidSchemaError) do
       Respect::ObjectSchema.define(strict: true) do |s|
         s.integer "test", equal_to: 42
-        s.optionals do |s|
+        s.extra do |s|
           s.integer "test", equal_to: 51
         end
       end

@@ -8,7 +8,7 @@ class AnySchemaTest < Test::Unit::TestCase
     end
     s3 = Respect::ObjectSchema.define do |s|
       s.any "test"
-      s.optionals do |s|
+      s.extra do |s|
         s.any "opt"
       end
     end

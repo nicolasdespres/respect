@@ -5,7 +5,7 @@ module Respect
       @object_schema = ObjectSchema.new(options)
     end
 
-    def optionals(&block)
+    def extra(&block)
       with_options(required: false, &block)
     end
 

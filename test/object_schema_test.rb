@@ -96,7 +96,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
   def test_optional_property
     s1 = Respect::ObjectSchema.define do |s|
       s.integer "test", equal_to: 42
-      s.optionals do |s|
+      s.extra do |s|
         s.integer "opt", equal_to: 51
       end
     end
@@ -122,7 +122,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
   def test_optional_property_with_strict_validation
     s = Respect::ObjectSchema.define(strict: true) do |s|
       s.integer "test", equal_to: 42
-      s.optionals do |s|
+      s.extra do |s|
         s.integer "opt", equal_to: 51
       end
     end
@@ -139,7 +139,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
   def test_symbolized_property_name_are_kept_verbatim
     s = Respect::ObjectSchema.define do |s|
       s.integer :test, equal_to: 42
-      s.optionals do |s|
+      s.extra do |s|
         s.integer :opt, equal_to: 51
       end
       s.string :foo, required: false
@@ -181,10 +181,10 @@ class ObjectSchemaTest < Test::Unit::TestCase
     assert s.validate?({ a: "b" })
   end
 
-  def test_access_to_optionals_properties
+  def test_access_to_extra_properties
     s = Respect::ObjectSchema.define do |s|
       s.integer :test, equal_to: 42
-      s.optionals do |s|
+      s.extra do |s|
         s.integer :opt, equal_to: 51
       end
       s.string :foo, required: false
@@ -266,7 +266,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
       end
       assert_raise(Respect::InvalidSchemaError) do
         Respect::ObjectSchema.define do |s|
-          s.optionals do |s|
+          s.extra do |s|
             s.__send__(meth_name, {})
           end
         end

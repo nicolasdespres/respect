@@ -124,7 +124,7 @@ class NumericSchemaTest < Test::Unit::TestCase
   def test_object_schema_definition_accept_numeric
     s = Respect::ObjectSchema.define do |s|
       s.numeric "test", equal_to: 1.5
-      s.optionals do |s|
+      s.extra do |s|
         s.numeric "opt", equal_to: 4
       end
     end
