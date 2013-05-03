@@ -285,7 +285,7 @@ class SchemaDefTest < Test::Unit::TestCase
   def test_utc_time_statement_create_utc_time_schema
     for_each_context do |s|
       schema = send_statement_in_context(s, :utc_time, "a_utc_time", equal_to: "expected_value")
-      assert schema.is_a?(Respect::UtcTimeSchema), "is a UtcTimeSchema in #{s.target.class}"
+      assert schema.is_a?(Respect::UTCTimeSchema), "is a UTCTimeSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end

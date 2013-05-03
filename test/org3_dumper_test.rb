@@ -48,7 +48,7 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   # TODO(Nicolas Despres): Test IpAddrSchema warn that it can not be dumped.
-  # TODO(Nicolas Despres): Test UtcTimeSchema warn that it can not be dumped.
+  # TODO(Nicolas Despres): Test UTCTimeSchema warn that it can not be dumped.
 
   def test_dump_helper_statement
     {

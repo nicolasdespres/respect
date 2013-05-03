@@ -1,6 +1,6 @@
 module Respect
   # A UTC time. It creates a Time object.
-  class UtcTimeSchema < NumericSchema
+  class UTCTimeSchema < NumericSchema
 
     def validate_format(doc)
       value = super
@@ -11,5 +11,5 @@ module Respect
       Time.at(value)
     end
 
-  end # class UtcTimeSchema
+  end # class UTCTimeSchema
 end # module Respect

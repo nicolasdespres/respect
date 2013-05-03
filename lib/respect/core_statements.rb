@@ -89,7 +89,7 @@ module Respect
     #   Define a {RegexpSchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     # @!method utc_time(name, options = {})
-    #   Define a {UtcTimeSchema} with the given +options+ and stores it in the
+    #   Define a {UTCTimeSchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     #
     # Call +update_context+ using the first argument as index and passes the rest

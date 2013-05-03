@@ -1,9 +1,9 @@
 require "test_helper"
 
-class UtcTimeSchemaTest < Test::Unit::TestCase
+class UTCTimeSchemaTest < Test::Unit::TestCase
 
   def test_utc_time_schema_creates_time_object
-    s = Respect::UtcTimeSchema.new
+    s = Respect::UTCTimeSchema.new
     assert_nil s.sanitized_doc
     t = Time.now.to_i
     assert s.validate?(t.to_s)
@@ -12,7 +12,7 @@ class UtcTimeSchemaTest < Test::Unit::TestCase
   end
 
   def test_utc_time_schema_accept_float
-    s = Respect::UtcTimeSchema.new
+    s = Respect::UTCTimeSchema.new
     assert_nil s.sanitized_doc
     t = Time.now.to_f
     assert s.validate?(t.to_s)
@@ -21,7 +21,7 @@ class UtcTimeSchemaTest < Test::Unit::TestCase
   end
 
   def test_utc_time_schema_do_not_accept_negative
-    s = Respect::UtcTimeSchema.new
+    s = Respect::UTCTimeSchema.new
     begin
       s.validate(-1)
       assert false
