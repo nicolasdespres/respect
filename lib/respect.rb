@@ -4,6 +4,11 @@ require 'active_support/core_ext/integer/inflections'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/string/strip'
 
+# Setup inflection rules for our acronyms
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.acronym "URI"
+end
+
 # Provide methods and classes to define, validate, sanitize and dump JSON schema.
 #
 # Classes in this module are split in 5 groups:
@@ -43,7 +48,7 @@ module Respect
   autoload :AnySchema
   autoload :BooleanSchema
   autoload :NullSchema
-  autoload :UriSchema
+  autoload :URISchema
   autoload :RegexpSchema
   autoload :DatetimeSchema
   autoload :IpAddrSchema

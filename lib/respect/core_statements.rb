@@ -65,7 +65,7 @@ module Respect
     #   Define a {BooleanSchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     # @!method uri(name, options = {})
-    #   Define a {UriSchema} with the given +options+ and stores it in the
+    #   Define a {URISchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     # @!method object(name, options = {}, &block)
     #   Define a {ObjectSchema} with the given +options+ and +block+ stores it

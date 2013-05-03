@@ -1,9 +1,9 @@
 module Respect
-  class UriSchema < StringSchema
+  class URISchema < StringSchema
 
     def validate_format(doc)
       FormatValidator.new(:uri).validate(doc)
     end
 
-  end # class UriSchema
+  end # class URISchema
 end # module Respect

@@ -34,7 +34,7 @@ class Org3DumperTest < Test::Unit::TestCase
 
   def test_dump_extended_simple_schema
     {
-      :UriSchema => "uri",
+      :URISchema => "uri",
       :RegexpSchema => "regex",
       :DatetimeSchema => "date-time",
       :Ipv4AddrSchema => "ip-address",

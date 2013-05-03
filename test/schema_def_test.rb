@@ -237,7 +237,7 @@ class SchemaDefTest < Test::Unit::TestCase
   def test_uri_statement_create_uri_schema
     for_each_context do |s|
       schema = send_statement_in_context(s, :uri, "an_uri", equal_to: "expected_value")
-      assert schema.is_a?(Respect::UriSchema), "is a UriSchema in #{s.target.class}"
+      assert schema.is_a?(Respect::URISchema), "is a URISchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end

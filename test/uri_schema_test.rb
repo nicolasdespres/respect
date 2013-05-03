@@ -1,9 +1,9 @@
 require "test_helper"
 
-class UriSchemaTest < Test::Unit::TestCase
+class URISchemaTest < Test::Unit::TestCase
 
   def test_uri_schema_creates_uri_object
-    s = Respect::UriSchema.new
+    s = Respect::URISchema.new
     assert_nil s.sanitized_doc
     assert s.validate?("http://foo.com")
     assert s.sanitized_doc.is_a?(URI::Generic)
@@ -13,7 +13,7 @@ class UriSchemaTest < Test::Unit::TestCase
   def test_uri_schema_relies_on_format_validator
     doc = "http://foo.com"
     Respect::FormatValidator.any_instance.stubs(:validate_uri).with(doc).at_least_once
-    Respect::UriSchema.new.validate(doc)
+    Respect::URISchema.new.validate(doc)
   end
 
 end

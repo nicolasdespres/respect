@@ -31,7 +31,7 @@ class RespectTest < Test::Unit::TestCase
       numeric: Respect::NumericSchema,
       float: Respect::FloatSchema,
       any: Respect::AnySchema,
-      uri: Respect::UriSchema,
+      uri: Respect::URISchema,
       # user defined schema definition in support/respect
       circle: Respect::CircleSchema,
       point: Respect::PointSchema,
