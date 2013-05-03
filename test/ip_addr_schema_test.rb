@@ -1,9 +1,9 @@
 require "test_helper"
 
-class IpAddrSchemaTest < Test::Unit::TestCase
+class IPAddrSchemaTest < Test::Unit::TestCase
 
   def test_ip_addr_schema_creates_ipaddr_object
-    s = Respect::IpAddrSchema.new
+    s = Respect::IPAddrSchema.new
     assert_nil s.sanitized_doc
     # IPv4
     assert s.validate?("192.168.0.2")
@@ -20,7 +20,7 @@ class IpAddrSchemaTest < Test::Unit::TestCase
   def test_ip_addr_schema_relies_on_format_validator
     doc = "192.168.0.2"
     Respect::FormatValidator.any_instance.stubs(:validate_ip_addr).with(doc).at_least_once
-    Respect::IpAddrSchema.new.validate(doc)
+    Respect::IPAddrSchema.new.validate(doc)
   end
 
 end

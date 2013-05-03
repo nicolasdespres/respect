@@ -261,7 +261,7 @@ class SchemaDefTest < Test::Unit::TestCase
   def test_ip_addr_statement_create_ipaddr_schema
     for_each_context do |s|
       schema = send_statement_in_context(s, :ip_addr, "a_ip_addr", equal_to: "expected_value")
-      assert schema.is_a?(Respect::IpAddrSchema), "is a IpAddrSchema in #{s.target.class}"
+      assert schema.is_a?(Respect::IPAddrSchema), "is a IPAddrSchema in #{s.target.class}"
       assert_equal "expected_value", schema.options[:equal_to], "equal_to works in #{s.target.class}"
     end
   end

@@ -8,6 +8,7 @@ require 'active_support/core_ext/string/strip'
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym "URI"
   inflect.acronym "UTC"
+  inflect.acronym "IP"
 end
 
 # Provide methods and classes to define, validate, sanitize and dump JSON schema.
@@ -52,7 +53,7 @@ module Respect
   autoload :URISchema
   autoload :RegexpSchema
   autoload :DatetimeSchema
-  autoload :IpAddrSchema
+  autoload :IPAddrSchema
   autoload :Ipv4AddrSchema
   autoload :Ipv6AddrSchema
   autoload :UTCTimeSchema

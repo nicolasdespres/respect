@@ -77,7 +77,7 @@ module Respect
     #   Define a {DatetimeSchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     # @!method ip_addr(name, options = {})
-    #   Define a {IpAddrSchema} with the given +options+ and stores it in the
+    #   Define a {IPAddrSchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
     # @!method ipv4_addr(name, options = {})
     #   Define a {Ipv4AddrSchema} with the given +options+ and stores it in the
