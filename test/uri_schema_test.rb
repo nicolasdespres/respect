@@ -5,7 +5,7 @@ class URISchemaTest < Test::Unit::TestCase
   def test_uri_schema_creates_uri_object
     s = Respect::URISchema.new
     assert_nil s.sanitized_doc
-    assert s.validate?("http://foo.com")
+    assert_schema_validate s, "http://foo.com"
     assert s.sanitized_doc.is_a?(URI::Generic)
     assert_equal "http://foo.com", s.sanitized_doc.to_s
   end

@@ -22,7 +22,7 @@ class BooleanSchemaTest < Test::Unit::TestCase
       end
       # Check sanitized_doc
       assert_nil s.sanitized_doc
-      assert_equal (data[1].nil? ? false : true), s.validate?(data[0]), data[2]
+      assert_schema_validation_is (data[1].nil? ? false : true), s, data[0], data[2]
       unless data[1].nil?
         assert_equal data[1], s.sanitized_doc, data[2]
       end
@@ -31,12 +31,12 @@ class BooleanSchemaTest < Test::Unit::TestCase
 
   def test_boolean_schema_accept_constraint_equal_to
     s_true = Respect::BooleanSchema.new equal_to: true
-    assert_equal true, s_true.validate?("true")
-    assert_equal false, s_true.validate?("false")
+    assert_schema_validation_is true, s_true, "true"
+    assert_schema_validation_is false, s_true, "false"
 
     s_false = Respect::BooleanSchema.new equal_to: false
-    assert_equal false, s_false.validate?("true")
-    assert_equal true, s_false.validate?("false")
+    assert_schema_validation_is false, s_false, "true"
+    assert_schema_validation_is true, s_false, "false"
   end
 
 end

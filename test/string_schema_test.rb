@@ -34,38 +34,38 @@ class StringSchemaTest < Test::Unit::TestCase
 
   def test_string_value_is_in_set
     s = Respect::StringSchema.new(in: ["foo", "bar"])
-    assert s.validate?("foo")
-    assert s.validate?("bar")
-    assert !s.validate?("not included")
+    assert_schema_validate s, "foo"
+    assert_schema_validate s, "bar"
+    assert_schema_invalidate s, "not included"
   end
 
   def test_string_value_match_pattern
     s = Respect::StringSchema.new(match: /foo*/)
-    assert s.validate?("_foo_")
-    assert s.validate?("fo")
-    assert s.validate?("fol")
-    assert s.validate?("foooooooooooo")
-    assert !s.validate?("f_b")
+    assert_schema_validate s, "_foo_"
+    assert_schema_validate s, "fo"
+    assert_schema_validate s, "fol"
+    assert_schema_validate s, "foooooooooooo"
+    assert_schema_invalidate s, "f_b"
   end
 
   def test_string_value_has_min_length
     s = Respect::StringSchema.new(min_length: 2)
-    assert s.validate?("foo")
-    assert s.validate?("fo")
-    assert !s.validate?("f")
+    assert_schema_validate s, "foo"
+    assert_schema_validate s, "fo"
+    assert_schema_invalidate s, "f"
   end
 
   def test_string_value_has_max_length
     s = Respect::StringSchema.new(max_length: 2)
-    assert !s.validate?("foo")
-    assert s.validate?("fo")
-    assert s.validate?("f")
+    assert_schema_invalidate s, "foo"
+    assert_schema_validate s, "fo"
+    assert_schema_validate s, "f"
   end
 
   def test_string_accept_equal_to_constraint
     s = Respect::StringSchema.new(equal_to: "41")
-    assert s.validate?("41")
-    assert !s.validate?("52")
+    assert_schema_validate s, "41"
+    assert_schema_invalidate s, "52"
   end
 
   def test_string_validate_email_format
@@ -158,7 +158,7 @@ class StringSchemaTest < Test::Unit::TestCase
   def assert_validate_string_format(format, result, doc)
     s = Respect::StringSchema.new(format: format)
     assert_nil s.sanitized_doc
-    assert_equal result, s.validate?(doc), "validate '#{doc}'"
+    assert_schema_validation_is result, s, doc, "validate '#{doc}'"
     if result
       assert s.sanitized_doc.is_a?(String), "is a String for '#{doc}'"
       assert_equal doc, s.sanitized_doc, "sanitize '#{doc}'"

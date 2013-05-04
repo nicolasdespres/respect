@@ -23,10 +23,10 @@ class AnySchemaTest < Test::Unit::TestCase
       [ nil, true, "null" ],
       [ Object.new, false, "unknown type" ],
     ].each do |data|
-      assert_equal data[1], s1.validate?(data[0]), data[2]
-      assert_equal data[1], s2.validate?(data[0]), data[2]
-      assert_equal data[1], s3["test"].validate?(data[0]), data[2]
-      assert_equal data[1], s3.optional_properties["opt"].validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s1, data[0], data[2]
+      assert_schema_validation_is data[1], s2, data[0], data[2]
+      assert_schema_validation_is data[1], s3["test"], data[0], data[2]
+      assert_schema_validation_is data[1], s3.optional_properties["opt"], data[0], data[2]
     end
   end
 

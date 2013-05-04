@@ -5,7 +5,7 @@ class Ipv4AddrSchemaTest < Test::Unit::TestCase
   def test_ipv4_addr_schema_creates_ipaddr_object
     s = Respect::Ipv4AddrSchema.new
     assert_nil s.sanitized_doc
-    assert s.validate?("192.168.0.2")
+    assert_schema_validate s, "192.168.0.2"
     assert s.sanitized_doc.is_a?(IPAddr)
     assert s.sanitized_doc.ipv4?
     assert_equal("192.168.0.2", s.sanitized_doc.to_s)

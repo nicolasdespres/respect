@@ -28,15 +28,15 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.string "test", equal_to: "value"
     end
-    assert s.validate?({ "test" => "value" })
-    assert !s.validate?({ "test" => "invalid" })
+    assert_schema_validate s, { "test" => "value" }
+    assert_schema_invalidate s, { "test" => "invalid" }
   end
 
   def test_non_collection_object_validation_error_have_context
     s = Respect::Schema.define do |s|
       s.string equal_to: "value"
     end
-    assert !s.validate?("invalid")
+    assert_schema_invalidate s, "invalid"
     assert_equal 1, s.last_error.context.size
     assert (s.last_error.message == s.last_error.context.first)
   end
@@ -45,7 +45,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.string "test", equal_to: "value"
     end
-    assert !s.validate?({ "test" => "invalid" })
+    assert_schema_invalidate s, { "test" => "invalid" }
     assert_equal 2, s.last_error.context.size
     assert_object_context_error_message("test", s.last_error.context.last)
   end
@@ -54,7 +54,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::ArraySchema.define do |s|
       s.numeric
     end
-    assert !s.validate?([1, "invalid", 3])
+    assert_schema_invalidate s, [1, "invalid", 3]
     assert_equal 2, s.last_error.context.size
     assert_array_context_error_message(1, s.last_error.context.last)
   end
@@ -76,7 +76,7 @@ class SchemaTest < Test::Unit::TestCase
         ]
       }
     }
-    assert !s.validate?(doc)
+    assert_schema_invalidate s, doc
     assert_equal 5, s.last_error.context.size
     assert_object_context_error_message("level_4", s.last_error.context[1])
     assert_array_context_error_message("0", s.last_error.context[2])

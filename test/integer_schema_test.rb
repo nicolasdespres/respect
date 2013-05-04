@@ -43,8 +43,8 @@ class IntegerSchemaTest < Test::Unit::TestCase
 
   def test_integer_accept_equal_to_constraint
     s = Respect::IntegerSchema.new(equal_to: 41)
-    assert s.validate?(41)
-    assert !s.validate?(52)
+    assert_schema_validate s, 41
+    assert_schema_invalidate s, 52
   end
 
   def test_greater_than_constraint_works
@@ -87,27 +87,27 @@ class IntegerSchemaTest < Test::Unit::TestCase
 
   def test_integer_value_is_in_set
     s = Respect::IntegerSchema.new(in: [42, 51])
-    assert s.validate?(42)
-    assert s.validate?(51)
-    assert !s.validate?(1664)
+    assert_schema_validate s, 42
+    assert_schema_validate s, 51
+    assert_schema_invalidate s, 1664
   end
 
   def test_integer_value_is_in_range
     s = Respect::IntegerSchema.new(in: 1..4)
-    assert !s.validate?(0)
-    assert s.validate?(1)
-    assert s.validate?(2)
-    assert s.validate?(3)
-    assert s.validate?(4)
-    assert !s.validate?(5)
+    assert_schema_invalidate s, 0
+    assert_schema_validate s, 1
+    assert_schema_validate s, 2
+    assert_schema_validate s, 3
+    assert_schema_validate s, 4
+    assert_schema_invalidate s, 5
 
     s = Respect::IntegerSchema.new(in: 1...4)
-    assert !s.validate?(0)
-    assert s.validate?(1)
-    assert s.validate?(2)
-    assert s.validate?(3)
-    assert !s.validate?(4)
-    assert !s.validate?(5)
+    assert_schema_invalidate s, 0
+    assert_schema_validate s, 1
+    assert_schema_validate s, 2
+    assert_schema_validate s, 3
+    assert_schema_invalidate s, 4
+    assert_schema_invalidate s, 5
   end
 
 end

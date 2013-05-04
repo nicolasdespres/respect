@@ -6,12 +6,12 @@ class IPAddrSchemaTest < Test::Unit::TestCase
     s = Respect::IPAddrSchema.new
     assert_nil s.sanitized_doc
     # IPv4
-    assert s.validate?("192.168.0.2")
+    assert_schema_validate s, "192.168.0.2"
     assert s.sanitized_doc.is_a?(IPAddr)
     assert s.sanitized_doc.ipv4?
     assert_equal("192.168.0.2", s.sanitized_doc.to_s)
     # IPv6
-    assert s.validate?("3ffe:505:2::1")
+    assert_schema_validate s, "3ffe:505:2::1"
     assert s.sanitized_doc.is_a?(IPAddr)
     assert s.sanitized_doc.ipv6?
     assert_equal("3ffe:505:2::1", s.sanitized_doc.to_s)

@@ -6,7 +6,7 @@ class UTCTimeSchemaTest < Test::Unit::TestCase
     s = Respect::UTCTimeSchema.new
     assert_nil s.sanitized_doc
     t = Time.now.to_i
-    assert s.validate?(t.to_s)
+    assert_schema_validate s, t.to_s
     assert_equal Time, s.sanitized_doc.class
     assert_equal(t, s.sanitized_doc.to_i)
   end
@@ -15,7 +15,7 @@ class UTCTimeSchemaTest < Test::Unit::TestCase
     s = Respect::UTCTimeSchema.new
     assert_nil s.sanitized_doc
     t = Time.now.to_f
-    assert s.validate?(t.to_s)
+    assert_schema_validate s, t.to_s
     assert_equal Time, s.sanitized_doc.class
     assert_equal(t, s.sanitized_doc.to_f)
   end

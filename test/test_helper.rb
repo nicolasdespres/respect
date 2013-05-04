@@ -1,6 +1,7 @@
 require 'test/unit'
 
 require 'respect'
+require 'respect/unit_test_helper'
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }

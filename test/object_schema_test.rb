@@ -24,7 +24,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.integer "id", equal_to: 42
     end
-    assert !s.validate?({ "asdf" => 42 })
+    assert_schema_invalidate s, { "asdf" => 42 }
   end
 
   def test_recursive_schema
@@ -33,7 +33,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
         s.integer "test", equal_to: 42
       end
     end
-    assert s.validate?({ "test" => { "test" => 42 } })
+    assert_schema_validate s, { "test" => { "test" => 42 } }
   end
 
   def test_object_validate
@@ -45,7 +45,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
       [ { "foo" => 42 }, false, "no expected property" ],
       [ { "test" => 42, "foo" => 60 }, true, "extra property" ],
     ].each do |data|
-      assert_equal data[1], s.validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s, data[0], data[2]
     end
   end
 
@@ -57,7 +57,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
       [ { "foo" => 42 }, true, "no expected property" ],
       [ { "test" => 42, "foo" => 60 }, true, "extra property" ],
     ].each do |data|
-      assert_equal data[1], s.validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s, data[0], data[2]
     end
   end
 
@@ -89,7 +89,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
       [ { "p1" => 3 }, false, "not enough properties" ],
       [ { "p1" => 3, "p2" => "val", "additional" => "foo" }, false, "too many properties" ],
     ].each do |data|
-      assert_equal data[1], s.validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s, data[0], data[2]
     end
   end
 
@@ -114,8 +114,8 @@ class ObjectSchemaTest < Test::Unit::TestCase
       [ { "test" => 42, "extra" => 1, "opt" => 51 }, true, "extra and optional property" ],
       [ { "test" => 42, "extra" => 1 }, true, "extra property" ],
     ].each do |data|
-      assert_equal data[1], s1.validate?(data[0]), data[2]
-      assert_equal data[1], s2.validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s1, data[0], data[2]
+      assert_schema_validation_is data[1], s2, data[0], data[2]
     end
   end
 
@@ -132,7 +132,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
       [ { "test" => 42, "opt" => 51 }, true, "required and optional properties" ],
       [ { "test" => 42, }, true, "only required property" ],
     ].each do |data|
-      assert_equal data[1], s.validate?(data[0]), data[2]
+      assert_schema_validation_is data[1], s, data[0], data[2]
     end
   end
 
@@ -159,7 +159,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.integer :test, equal_to: 42
     end
-    assert s.validate?({ "test" => 42 })
+    assert_schema_validate s, { "test" => 42 }
     assert s.properties.has_key?(:test)
   end
 
@@ -168,8 +168,8 @@ class ObjectSchemaTest < Test::Unit::TestCase
       s.object strict: true
     end
     assert_equal true, s.options[:strict]
-    assert s.validate({})
-    assert !s.validate?({ a: "b" })
+    assert_schema_validate s, {}
+    assert_schema_invalidate s, { a: "b" }
   end
 
   def test_can_define_empty_object_schema
@@ -177,8 +177,8 @@ class ObjectSchemaTest < Test::Unit::TestCase
       s.object
     end
     assert_equal false, s.options[:strict]
-    assert s.validate({})
-    assert s.validate?({ a: "b" })
+    assert_schema_validate s, {}
+    assert_schema_validate s, { a: "b" }
   end
 
   def test_access_to_extra_properties
@@ -224,8 +224,8 @@ class ObjectSchemaTest < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.integer /test/, equal_to: 42
     end
-    assert s.validate?({ "test" => 42, "_test_" => 42, "unmatch" => 51 })
-    assert !s.validate?({ "test" => 42, "_test_" => 51, "unmatch" => 51 })
+    assert_schema_validate s, { "test" => 42, "_test_" => 42, "unmatch" => 51 }
+    assert_schema_invalidate s, { "test" => 42, "_test_" => 51, "unmatch" => 51 }
   end
 
   def test_integer_invalid_property_name

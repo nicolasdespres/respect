@@ -30,7 +30,7 @@ class NumericSchemaTest < Test::Unit::TestCase
       "-+42",
       "+-42",
     ].each do |test_value|
-      assert !s.validate?(test_value), "#{test_value} is invalid"
+      assert_schema_invalidate s, test_value, "#{test_value} is invalid"
     end
   end
 
@@ -103,22 +103,22 @@ class NumericSchemaTest < Test::Unit::TestCase
     s = Respect::Schema.define do |s|
       s.numeric equal_to: 1.5
     end
-    assert s.validate?("1.5")
-    assert s.validate?(1.5)
+    assert_schema_validate s, "1.5"
+    assert_schema_validate s, 1.5
 
     s = Respect::Schema.define do |s|
       s.numeric equal_to: 1
     end
-    assert s.validate?("1")
-    assert s.validate?(1)
+    assert_schema_validate s, "1"
+    assert_schema_validate s, 1
   end
 
   def test_schema_definition_accept_numeric_with_no_option
     s = Respect::Schema.define do |s|
       s.numeric
     end
-    assert s.validate?(42)
-    assert s.validate?(42.5)
+    assert_schema_validate s, 42
+    assert_schema_validate s, 42.5
   end
 
   def test_object_schema_definition_accept_numeric
@@ -128,98 +128,98 @@ class NumericSchemaTest < Test::Unit::TestCase
         s.numeric "opt", equal_to: 4
       end
     end
-    assert s.validate?({ "test" => "1.5", "opt" => "4" })
-    assert s.validate?({ "test" => 1.5, "opt" => 4 })
+    assert_schema_validate s, { "test" => "1.5", "opt" => "4" }
+    assert_schema_validate s, { "test" => 1.5, "opt" => 4 }
   end
 
   def test_array_schema_definition_accept_numeric
     s = Respect::ArraySchema.define do |s|
       s.numeric equal_to: 1.5
     end
-    assert s.validate?(["1.5"])
-    assert s.validate?([1.5])
+    assert_schema_validate s, ["1.5"]
+    assert_schema_validate s, [1.5]
 
     s = Respect::ArraySchema.define do |s|
       s.numeric equal_to: 1
     end
-    assert s.validate?(["1"])
-    assert s.validate?([1])
+    assert_schema_validate s, ["1"]
+    assert_schema_validate s, [1]
   end
 
   def test_numeric_is_in_set
     s = Respect::NumericSchema.new(in: [42.5, 51.5, 42, 51])
-    assert s.validate?(42.5)
-    assert s.validate?(51.5)
-    assert s.validate?(42)
-    assert s.validate?(51)
-    assert !s.validate?(1664.5)
-    assert !s.validate?(1664)
+    assert_schema_validate s, 42.5
+    assert_schema_validate s, 51.5
+    assert_schema_validate s, 42
+    assert_schema_validate s, 51
+    assert_schema_invalidate s, 1664.5
+    assert_schema_invalidate s, 1664
   end
 
   def test_numeric_value_is_in_range
     s = Respect::NumericSchema.new(in: 1.5..4.5)
-    assert !s.validate?(0.0)
-    assert !s.validate?(1.4)
-    assert s.validate?(1.5)
-    assert s.validate?(2.0)
-    assert s.validate?(3.0)
-    assert s.validate?(4.0)
-    assert s.validate?(4.5)
-    assert !s.validate?(4.6)
-    assert !s.validate?(5.0)
+    assert_schema_invalidate s, 0.0
+    assert_schema_invalidate s, 1.4
+    assert_schema_validate s, 1.5
+    assert_schema_validate s, 2.0
+    assert_schema_validate s, 3.0
+    assert_schema_validate s, 4.0
+    assert_schema_validate s, 4.5
+    assert_schema_invalidate s, 4.6
+    assert_schema_invalidate s, 5.0
 
     s = Respect::NumericSchema.new(in: 1.5...4.5)
-    assert !s.validate?(0.0)
-    assert !s.validate?(1.4)
-    assert s.validate?(1.5)
-    assert s.validate?(2.0)
-    assert s.validate?(3.0)
-    assert s.validate?(4.0)
-    assert !s.validate?(4.5)
-    assert !s.validate?(4.6)
-    assert !s.validate?(5.0)
+    assert_schema_invalidate s, 0.0
+    assert_schema_invalidate s, 1.4
+    assert_schema_validate s, 1.5
+    assert_schema_validate s, 2.0
+    assert_schema_validate s, 3.0
+    assert_schema_validate s, 4.0
+    assert_schema_invalidate s, 4.5
+    assert_schema_invalidate s, 4.6
+    assert_schema_invalidate s, 5.0
 
     s = Respect::NumericSchema.new(in: 1..4)
-    assert !s.validate?(0)
-    assert s.validate?(1)
-    assert s.validate?(2)
-    assert s.validate?(3)
-    assert s.validate?(4)
-    assert !s.validate?(5)
+    assert_schema_invalidate s, 0
+    assert_schema_validate s, 1
+    assert_schema_validate s, 2
+    assert_schema_validate s, 3
+    assert_schema_validate s, 4
+    assert_schema_invalidate s, 5
 
     s = Respect::NumericSchema.new(in: 1...4)
-    assert !s.validate?(0)
-    assert s.validate?(1)
-    assert s.validate?(2)
-    assert s.validate?(3)
-    assert !s.validate?(4)
-    assert !s.validate?(5)
+    assert_schema_invalidate s, 0
+    assert_schema_validate s, 1
+    assert_schema_validate s, 2
+    assert_schema_validate s, 3
+    assert_schema_invalidate s, 4
+    assert_schema_invalidate s, 5
   end
 
   def test_numeric_accept_equal_to_constraint
     s = Respect::NumericSchema.new(equal_to: 41)
-    assert s.validate?(41)
-    assert s.validate?(41.0)
-    assert s.validate?("41")
-    assert s.validate?("41.0")
-    assert !s.validate?(41.55)
-    assert !s.validate?(42)
+    assert_schema_validate s, 41
+    assert_schema_validate s, 41.0
+    assert_schema_validate s, "41"
+    assert_schema_validate s, "41.0"
+    assert_schema_invalidate s, 41.55
+    assert_schema_invalidate s, 42
   end
 
   def test_divisible_by_and_multiple_of_option_works
     [ :divisible_by, :multiple_of ].each do |opt|
       # Works with integer
       s = Respect::NumericSchema.new(opt => 2)
-      assert s.validate?(4), "validate #{opt}"
-      assert s.validate?(2), "validate #{opt}"
-      assert !s.validate?(1), "invalidate #{opt}"
-      assert !s.validate?(3), "invalidate #{opt}"
+      assert_schema_validate s, 4, "validate #{opt}"
+      assert_schema_validate s, 2, "validate #{opt}"
+      assert_schema_invalidate s, 1, "invalidate #{opt}"
+      assert_schema_invalidate s, 3, "invalidate #{opt}"
       # Works with float
       s = Respect::NumericSchema.new(opt => 2.1)
-      assert s.validate?(4.2), "validate #{opt}"
-      assert s.validate?(2.1), "validate #{opt}"
-      assert !s.validate?(1.4), "invalidate #{opt}"
-      assert !s.validate?(3.4), "invalidate #{opt}"
+      assert_schema_validate s, 4.2, "validate #{opt}"
+      assert_schema_validate s, 2.1, "validate #{opt}"
+      assert_schema_invalidate s, 1.4, "invalidate #{opt}"
+      assert_schema_invalidate s, 3.4, "invalidate #{opt}"
     end
   end
 

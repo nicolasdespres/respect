@@ -7,8 +7,8 @@ class ValidatorTest < Test::Unit::TestCase
 
   def test_end_user_validator
     s = Respect::IntegerSchema.new(universal: true)
-    assert !s.validate?(52)
-    assert s.validate?(42)
+    assert_schema_invalidate s, 52
+    assert_schema_validate s, 42
   end
 
   def test_end_user_validate_get_called

@@ -5,7 +5,7 @@ class Ipv6AddrSchemaTest < Test::Unit::TestCase
   def test_ipv6_addr_schema_creates_ipaddr_object
     s = Respect::Ipv6AddrSchema.new
     assert_nil s.sanitized_doc
-    assert s.validate?("3ffe:505:2::1")
+    assert_schema_validate s, "3ffe:505:2::1"
     assert s.sanitized_doc.is_a?(IPAddr)
     assert s.sanitized_doc.ipv6?
     assert_equal("3ffe:505:2::1", s.sanitized_doc.to_s)

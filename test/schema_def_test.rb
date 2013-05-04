@@ -16,60 +16,60 @@ class SchemaDefTest < Test::Unit::TestCase
     s = Respect::Schema.define do |s|
       s.string
     end
-    assert s.validate?("foo")
+    assert_schema_validate s, "foo"
   end
 
   def test_schema_definition_accept_integer
     s = Respect::Schema.define do |s|
       s.integer equal_to: 15
     end
-    assert s.validate?("15")
-    assert s.validate?(15)
+    assert_schema_validate s, "15"
+    assert_schema_validate s, 15
   end
 
   def test_schema_definition_accept_integer_with_no_option
     s = Respect::Schema.define do |s|
       s.integer
     end
-    assert s.validate?(42)
+    assert_schema_validate s, 42
   end
 
   def test_schema_definition_accept_null
     s = Respect::Schema.define do |s|
       s.null
     end
-    assert s.validate?("null")
+    assert_schema_validate s, "null"
   end
 
   def test_schema_definition_accept_float
     s = Respect::Schema.define do |s|
       s.float equal_to: 1.5
     end
-    assert s.validate?("1.5")
-    assert s.validate?(1.5)
+    assert_schema_validate s, "1.5"
+    assert_schema_validate s, 1.5
   end
 
   def test_schema_definition_accept_float_with_no_option
     s = Respect::Schema.define do |s|
       s.float
     end
-    assert s.validate?(42.5)
+    assert_schema_validate s, 42.5
   end
 
   def test_schema_definition_accept_boolean
     s = Respect::Schema.define do |s|
       s.boolean equal_to: true
     end
-    assert s.validate?("true")
-    assert s.validate?(true)
+    assert_schema_validate s, "true"
+    assert_schema_validate s, true
   end
 
   def test_schema_definition_accept_boolean_with_no_option
     s = Respect::Schema.define do |s|
       s.boolean
     end
-    assert s.validate?(true)
-    assert s.validate?(false)
+    assert_schema_validate s, true
+    assert_schema_validate s, false
   end
 
   def test_schema_definition_accept_array
@@ -78,14 +78,14 @@ class SchemaDefTest < Test::Unit::TestCase
         s.integer
       end
     end
-    assert s.validate?([1])
+    assert_schema_validate s, [1]
   end
 
   def test_schema_definition_accept_array_with_no_option
     s = Respect::Schema.define do |s|
       s.array
     end
-    assert s.validate?([1])
+    assert_schema_validate s, [1]
   end
 
   def test_can_factor_object_definition
@@ -98,8 +98,8 @@ class SchemaDefTest < Test::Unit::TestCase
     s2 = Respect::ObjectSchema.define do |s|
       s.eval(&object_def)
     end
-    assert s1.validate?({ "n" => 42 })
-    assert s2.validate?({ "n" => 42 })
+    assert_schema_validate s1, { "n" => 42 }
+    assert_schema_validate s2, { "n" => 42 }
   end
 
   def test_can_factor_array_definition
@@ -112,8 +112,8 @@ class SchemaDefTest < Test::Unit::TestCase
     s2 = Respect::ArraySchema.define do |s|
       s.eval(&array_def)
     end
-    assert s1.validate?([ 42 ])
-    assert s2.validate?([ 42 ])
+    assert_schema_validate s1, [ 42 ]
+    assert_schema_validate s2, [ 42 ]
   end
 
   def test_can_factor_options
@@ -122,7 +122,7 @@ class SchemaDefTest < Test::Unit::TestCase
       s.integer "int", options
       s.numeric "num", options
     end
-    assert s.validate?({ "int" => 42, "num" => 42.0 })
+    assert_schema_validate s, { "int" => 42, "num" => 42.0 }
   end
 
   def test_method_missing_is_raised_in_dsl
@@ -185,11 +185,11 @@ class SchemaDefTest < Test::Unit::TestCase
         s.id
       end
     end
-    assert s.validate?({ "id" => 42, "table_id" => 12, "array" => [ 1, 2 ]})
-    assert !s.validate?({ "id" => 42, "table_id" => 12, "array" => [ -1, 2 ]})
-    assert !s.validate?({ "id" => 0, "table_id" => 12, "array" => [ 1, 2 ]})
-    assert !s.validate?({ "id" => 42, "table_id" => 12, "array" => [ 1, -2 ]})
-    assert !s.validate?({ "id" => 42, "table_id" => 0, "array" => [ 1, 2 ]})
+    assert_schema_validate s, { "id" => 42, "table_id" => 12, "array" => [ 1, 2 ]}
+    assert_schema_invalidate s, { "id" => 42, "table_id" => 12, "array" => [ -1, 2 ]}
+    assert_schema_invalidate s, { "id" => 0, "table_id" => 12, "array" => [ 1, 2 ]}
+    assert_schema_invalidate s, { "id" => 42, "table_id" => 12, "array" => [ 1, -2 ]}
+    assert_schema_invalidate s, { "id" => 42, "table_id" => 0, "array" => [ 1, 2 ]}
   end
 
   def test_can_convert_doc_to_custom_type
@@ -201,15 +201,15 @@ class SchemaDefTest < Test::Unit::TestCase
       end
     end
     # Check validation works.
-    assert s.validate?({ "origin" => { "x" => 1.0, "y" => 0.0 },
-        "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] })
-    assert !s.validate?({ "origin" => { "x" => 1.0 },
-        "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] })
-    assert !s.validate?({ "origin" => { "x" => 1.0, "y" => 0.0 },
-        "polygon" => [ { "x" => 2.0 } ] })
+    assert_schema_validate s, { "origin" => { "x" => 1.0, "y" => 0.0 },
+        "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] }
+    assert_schema_invalidate s, { "origin" => { "x" => 1.0 },
+        "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] }
+    assert_schema_invalidate s, { "origin" => { "x" => 1.0, "y" => 0.0 },
+        "polygon" => [ { "x" => 2.0 } ] }
     # Check conversion works.
     doc = { "origin" => { "x" => 1.0, "y" => 0.0 }, "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] }
-    assert s.validate?(doc)
+    assert_schema_validate s, doc
     assert_equal({ "origin" => Point.new(1.0, 0.0), "polygon" => [ Point.new(2.0, 3.0) ]},
       s.sanitized_doc)
   end

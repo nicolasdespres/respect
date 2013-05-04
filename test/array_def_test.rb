@@ -6,32 +6,32 @@ class ArrayDefTest < Test::Unit::TestCase
     s = Respect::ArraySchema.define do |s|
       s.integer equal_to: 15
     end
-    assert s.validate?(["15"])
-    assert s.validate?([15])
+    assert_schema_validate s, ["15"]
+    assert_schema_validate s, [15]
   end
 
   def test_array_schema_definition_accept_null
     s = Respect::ArraySchema.define do |s|
       s.null
     end
-    assert s.validate?(["null"])
-    assert s.validate?([nil])
+    assert_schema_validate s, ["null"]
+    assert_schema_validate s, [nil]
   end
 
   def test_array_schema_definition_accept_float
     s = Respect::ArraySchema.define do |s|
       s.float equal_to: 1.5
     end
-    assert s.validate?(["1.5"])
-    assert s.validate?([1.5])
+    assert_schema_validate s, ["1.5"]
+    assert_schema_validate s, [1.5]
   end
 
   def test_array_schema_definition_accept_boolean
     s = Respect::ArraySchema.define do |s|
       s.boolean equal_to: true
     end
-    assert s.validate?(["true"])
-    assert s.validate?([true])
+    assert_schema_validate s, ["true"]
+    assert_schema_validate s, [true]
   end
 
   def test_array_schema_definition_accept_array
@@ -40,8 +40,8 @@ class ArrayDefTest < Test::Unit::TestCase
         s.array
       end
     end
-    assert s.validate?([[]])
-    assert s.validate?([[]])
+    assert_schema_validate s, [[]]
+    assert_schema_validate s, [[]]
   end
 
   def test_array_schema_statement_cannot_accept_name_argument

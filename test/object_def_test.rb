@@ -9,8 +9,8 @@ class ObjectDefTest < Test::Unit::TestCase
         s.integer "opt", equal_to: 43
       end
     end
-    assert s.validate?({ "test" => "15", "opt" => "43" })
-    assert s.validate?({ "test" => 15, "opt" => 43 })
+    assert_schema_validate s, { "test" => "15", "opt" => "43" }
+    assert_schema_validate s, { "test" => 15, "opt" => 43 }
   end
 
   def test_object_schema_definition_accept_null
@@ -20,8 +20,8 @@ class ObjectDefTest < Test::Unit::TestCase
         s.null "opt"
       end
     end
-    assert s.validate?({ "test" => "null", "opt" => "null" })
-    assert s.validate?({ "test" => nil, "opt" => nil })
+    assert_schema_validate s, { "test" => "null", "opt" => "null" }
+    assert_schema_validate s, { "test" => nil, "opt" => nil }
   end
 
   def test_object_schema_definition_accept_float
@@ -31,8 +31,8 @@ class ObjectDefTest < Test::Unit::TestCase
         s.float "opt", equal_to: 4.3
       end
     end
-    assert s.validate?({ "test" => "1.5", "opt" => "4.3" })
-    assert s.validate?({ "test" => 1.5, "opt" => 4.3 })
+    assert_schema_validate s, { "test" => "1.5", "opt" => "4.3" }
+    assert_schema_validate s, { "test" => 1.5, "opt" => 4.3 }
   end
 
   def test_object_schema_definition_accept_boolean
@@ -42,8 +42,8 @@ class ObjectDefTest < Test::Unit::TestCase
         s.boolean "opt", equal_to: false
       end
     end
-    assert s.validate?({ "test" => "false", "opt" => "false" })
-    assert s.validate?({ "test" => false, "opt" => false })
+    assert_schema_validate s, { "test" => "false", "opt" => "false" }
+    assert_schema_validate s, { "test" => false, "opt" => false }
   end
 
   def test_object_schema_definition_accept_array
@@ -53,7 +53,7 @@ class ObjectDefTest < Test::Unit::TestCase
         s.array "opt"
       end
     end
-    assert s.validate?({ "test" => [], "opt" => [] })
+    assert_schema_validate s, { "test" => [], "opt" => [] }
   end
 
   def test_cannot_overwrite_property
