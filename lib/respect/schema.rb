@@ -215,9 +215,9 @@ module Respect
       valid
     end
 
-    # Sanitize the given +doc+ if it validates this schema. The sanitized document
+    # Sanitize the given +doc+ *in-place* if it validates this schema. The sanitized document
     # is returned. {ValidationError} is raised on error.
-    def sanitize(doc)
+    def sanitize!(doc)
       validate(doc)
       sanitize_doc!(doc, sanitized_doc)
     end

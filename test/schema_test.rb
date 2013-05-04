@@ -145,10 +145,10 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::Schema.define do |s|
       s.boolean
     end
-    assert_equal false, s.sanitize(false)
-    assert_equal true, s.sanitize(true)
+    assert_equal false, s.sanitize!(false)
+    assert_equal true, s.sanitize!(true)
     assert_raise(Respect::ValidationError) do
-      s.sanitize(nil)
+      s.sanitize!(nil)
     end
   end
 
