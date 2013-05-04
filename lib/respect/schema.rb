@@ -190,11 +190,12 @@ module Respect
       end
     end
 
-    # Return the validation last error that happens during the
-    # validation process. (set by {#validate})
+    # Return the last validation error that happens during the
+    # validation process. (set by {#validate?}).
+    # Reset each time {#validate?} is called.
     attr_reader :last_error
 
-    # Raise a ValidationError if the given +doc+ is not validated by this schema.
+    # Raise a {ValidationError} if the given +doc+ is not validated by this schema.
     # Returns true otherwise. A sanitized version of the document is built during
     # this process and you can access it via {#sanitized_doc}.
     # Rewrite it in sub-classes.
@@ -204,6 +205,8 @@ module Respect
 
     # Return +true+ or +false+ whether this schema validates the given +doc+.
     # If it does the document is updated in-place with the sanitized value.
+    # This method does not raise a {ValidationError}. You can access the error
+    # using {#last_error}.
     def validate!(doc)
       valid = validate?(doc)
       if valid
