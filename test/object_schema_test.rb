@@ -427,6 +427,16 @@ class ObjectSchemaTest < Test::Unit::TestCase
     end
   end
 
+  def test_merge_uses_merge_shebang_on_duplicata
+    s1 = Respect::ObjectSchema.new
+    s2 = Respect::ObjectSchema.new
+    result = Respect::ObjectSchema.new
+    dup_s1 = Respect::ObjectSchema.new
+    s1.stubs(:dup).returns(dup_s1).once
+    dup_s1.stubs(:merge!).with(s2).returns(result).once
+    assert_equal result, s1.merge(s2)
+  end
+
   def test_dup_duplicate_properties_and_options
     s1 = Respect::ObjectSchema.define strict: true do |s|
       s.integer "s11"
