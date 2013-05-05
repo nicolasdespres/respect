@@ -141,6 +141,7 @@ module Respect
 
     # In-place version of {#merge}. This schema is returned.
     def merge!(object_schema)
+      @options.merge!(object_schema.options)
       @properties.merge!(object_schema.properties)
       self
     end

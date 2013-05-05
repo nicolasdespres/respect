@@ -391,11 +391,11 @@ class ObjectSchemaTest < Test::Unit::TestCase
   end
 
   def test_merge_object_schema_in_place
-    s1 = Respect::ObjectSchema.define do |s|
+    s1 = Respect::ObjectSchema.define opt0: false, opt1: false do |s|
       s.integer "s11"
       s.integer "s12"
     end
-    s2 = Respect::ObjectSchema.define do |s|
+    s2 = Respect::ObjectSchema.define opt1: true, opt2: true do |s|
       s.integer "s21"
       s.integer "s22"
     end
@@ -403,6 +403,9 @@ class ObjectSchemaTest < Test::Unit::TestCase
     %w(s11 s12 s21 s22).each do |prop|
       assert s1.has_property?(prop), "has prop #{prop}"
     end
+    assert_equal false, s1.options[:opt0]
+    assert_equal true, s1.options[:opt1]
+    assert_equal true, s1.options[:opt2]
   end
 
   def test_merge_object_schema
