@@ -215,6 +215,13 @@ class SchemaTest < Test::Unit::TestCase
     assert(s1 == s2)
   end
 
+  def test_dup_duplicate_options
+    s1 = Respect::IntegerSchema.define equal_to: 42
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert_equal(42, s2.options[:equal_to])
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)

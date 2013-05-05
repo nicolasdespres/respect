@@ -424,13 +424,16 @@ class ObjectSchemaTest < Test::Unit::TestCase
     end
   end
 
-  def test_dup_duplicate_properties
-    s1 = Respect::ObjectSchema.define do |s|
+  def test_dup_duplicate_properties_and_options
+    s1 = Respect::ObjectSchema.define strict: true do |s|
       s.integer "s11"
     end
     s2 = s1.dup
     assert(s2.object_id != s1.object_id)
     assert(s1.properties.object_id != s2.properties.object_id)
+    assert(s2.has_property?("s11"))
+    assert_equal(true, s2.options[:strict])
+    assert(s1["s11"].object_id == s2["s11"].object_id)
   end
 
   def test_eval_add_more_properties

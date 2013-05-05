@@ -37,6 +37,7 @@ module Respect
     end
 
     def initialize_copy(other)
+      super
       @properties = other.properties.dup
     end
 

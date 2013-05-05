@@ -123,6 +123,10 @@ module Respect
       @options = self.class.default_options.merge(options)
     end
 
+    def initialize_copy(other)
+      @options = other.options.dup
+    end
+
     # Returns the sanitized document. It is +nil+ as long as you have not
     # validated any document. It is overwritten every times you call
     # {#validate}.
