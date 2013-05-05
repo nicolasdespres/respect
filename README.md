@@ -261,6 +261,17 @@ You can also read these documents for further documentation:
 
 * [Repect API reference documentation](FIXME)
 
+# Compatibility
+
+_Respect_ has been tested with:
+
+* Ruby 1.9.3-p392 (should be compatible with all 1.9.x family)
+* ActiveSupport 3.2.13
+
+Note that **it does not depend on any JSON parsing library**. It works only on primitive Ruby data type. So,
+any JSON parser returning normal basic types like `Hash`, `Array`, `String`, `Numeric`, `TrueClass`,
+`FalseClass`, `NilClass`, should work.
+
 # Feedback
 
 I would love to hear what you think about this library. Feel free to post any comments/remarks on the
