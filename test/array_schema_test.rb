@@ -398,4 +398,49 @@ class ArraySchemaTest < Test::Unit::TestCase
     s2.extra_items = [ Respect::StringSchema.new ]
     assert(s1 != s2)
   end
+
+  def test_dup_duplicate_options
+    s1 = Respect::ArraySchema.define uniq: true
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert_equal(true, s2.options[:uniq])
+  end
+
+  def test_dup_dont_duplicate_item
+    s1 = Respect::ArraySchema.define do |s|
+      s.integer
+    end
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert(s1.item.object_id == s2.item.object_id)
+  end
+
+  def test_dup_duplicate_items
+    s1 = Respect::ArraySchema.define do |s|
+      s.items do |s|
+        s.integer
+        s.string
+      end
+    end
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert(s1.items.object_id != s2.items.object_id)
+    assert(s1.items[0].object_id == s2.items[0].object_id)
+    assert(s1.items[1].object_id == s2.items[1].object_id)
+  end
+
+  def test_dup_duplicate_extra_items
+    s1 = Respect::ArraySchema.define do |s|
+      s.extra_items do |s|
+        s.integer
+        s.string
+      end
+    end
+    s2 = s1.dup
+    assert(s2.object_id != s1.object_id)
+    assert(s1.extra_items.object_id != s2.extra_items.object_id)
+    assert(s1.extra_items[0].object_id == s2.extra_items[0].object_id)
+    assert(s1.extra_items[1].object_id == s2.extra_items[1].object_id)
+  end
+
 end

@@ -60,6 +60,12 @@ module Respect
       super(self.class.default_options.merge(options))
     end
 
+    def initialize_copy(other)
+      super
+      @items = other.items.dup unless other.items.nil?
+      @extra_items = other.extra_items.dup unless other.extra_items.nil?
+    end
+
     # Set the schema that all items in the array must validate.
     def item=(item)
       if @items
