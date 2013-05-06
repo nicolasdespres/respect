@@ -2,7 +2,7 @@ module Respect
   # A UTC time. It creates a Time object.
   class UTCTimeSchema < NumericSchema
 
-    def validate_format(doc)
+    def validate_type(doc)
       value = super
       if value < 0
         raise ValidationError,

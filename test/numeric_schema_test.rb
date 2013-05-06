@@ -44,7 +44,7 @@ class NumericSchemaTest < Test::Unit::TestCase
       [  "42",  42 ],
     ].each do |test_data|
       s = Respect::NumericSchema.new
-      assert_equal test_data[1], s.validate_format(test_data[0])
+      assert_equal test_data[1], s.validate_type(test_data[0])
       assert_nil s.sanitized_doc
       s.validate(test_data[0])
       assert_equal test_data[1], s.sanitized_doc

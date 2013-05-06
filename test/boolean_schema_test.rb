@@ -1,7 +1,7 @@
 require "test_helper"
 
 class BooleanSchemaTest < Test::Unit::TestCase
-  def test_boolean_schema_validate_format
+  def test_boolean_schema_validate_type
     [
       [ "42", nil, "integer in string" ],
       [ { "test" => 42 }, nil, "object" ],
@@ -12,13 +12,13 @@ class BooleanSchemaTest < Test::Unit::TestCase
       [ "nil", nil, "nil in string" ],
     ].each do |data|
       s = Respect::BooleanSchema.new
-      # Check validate_format
+      # Check validate_type
       if data[1].nil?
         assert_raise(Respect::ValidationError) do
-          s.validate_format(data[0])
+          s.validate_type(data[0])
         end
       else
-        assert_equal data[1], s.validate_format(data[0]), data[2]
+        assert_equal data[1], s.validate_type(data[0]), data[2]
       end
       # Check sanitized_doc
       assert_nil s.sanitized_doc

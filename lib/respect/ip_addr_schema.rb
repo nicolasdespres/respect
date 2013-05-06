@@ -1,7 +1,7 @@
 module Respect
   class IPAddrSchema < StringSchema
 
-    def validate_format(doc)
+    def validate_type(doc)
       FormatValidator.new(:ip_addr).validate(doc)
     end
 

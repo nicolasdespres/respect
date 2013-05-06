@@ -4,7 +4,7 @@ module Respect
 
     public_class_method :new
 
-    def validate_format(doc)
+    def validate_type(doc)
       case doc
       when String
         if match_data = /^[-+]?\d+(\.\d+)?$/.match(doc)

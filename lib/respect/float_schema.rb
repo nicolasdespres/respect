@@ -1,7 +1,7 @@
 module Respect
   class FloatSchema < NumericSchema
 
-    def validate_format(doc)
+    def validate_type(doc)
       case doc
       when String
         if doc =~ /^[-+]?\d+(\.\d+)?$/

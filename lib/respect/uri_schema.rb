@@ -1,7 +1,7 @@
 module Respect
   class URISchema < StringSchema
 
-    def validate_format(doc)
+    def validate_type(doc)
       FormatValidator.new(:uri).validate(doc)
     end
 

@@ -10,7 +10,7 @@ module Respect
     end
 
     def validate(doc)
-      sanitized_doc = validate_format(doc)
+      sanitized_doc = validate_type(doc)
       validate_constraints(sanitized_doc)
       self.sanitized_doc = sanitized_doc
       true

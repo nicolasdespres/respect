@@ -10,7 +10,7 @@ class StringSchemaTest < Test::Unit::TestCase
 
   def test_non_string_value_get_converted
     s = Respect::StringSchema.new
-    assert_equal "42", s.validate_format(42)
+    assert_equal "42", s.validate_type(42)
     assert_nil s.sanitized_doc
     s.validate(42)
     assert_equal "42", s.sanitized_doc
