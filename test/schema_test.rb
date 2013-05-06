@@ -222,6 +222,22 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal(42, s2.options[:equal_to])
   end
 
+  def test_validate_query_returns_true_when_no_error
+    s = Respect::Schema.send(:new)
+    doc = {}
+    s.stubs(:validate).with(doc).returns(nil).once
+    assert_equal true, s.validate?(doc)
+  end
+
+  def test_validate_query_returns_false_on_error_and_store_last_error
+    s = Respect::Schema.send(:new)
+    doc = {}
+    error = Respect::ValidationError.new("message")
+    s.stubs(:validate).with(doc).raises(error).once
+    assert_equal false, s.validate?(doc)
+    assert_equal error, s.last_error
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)
