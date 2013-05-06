@@ -253,6 +253,28 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal false, s.validate!(doc)
   end
 
+  def test_sanitize_shebang_raises_exception_on_error
+    s = Respect::Schema.send(:new)
+    doc = {}
+    error = Respect::ValidationError.new("message")
+    s.stubs(:validate).with(doc).raises(error).once
+    begin
+      s.sanitize!(doc)
+      assert false, "nothing raised"
+    rescue Respect::ValidationError => e
+      assert_equal error, e
+    end
+  end
+
+  def test_sanitize_shebang_sanitize_on_success
+    s = Respect::Schema.send(:new)
+    doc = {}
+    s.stubs(:validate).with(doc).once
+    result = Object.new
+    s.stubs(:sanitize_doc!).with(doc).returns(result).once
+    assert_equal result.object_id, s.sanitize!(doc).object_id
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)
