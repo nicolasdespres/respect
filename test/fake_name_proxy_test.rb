@@ -3,7 +3,7 @@ require "test_helper"
 class FakeNameProxyTest < Test::Unit::TestCase
 
   def setup
-    @def_class = Class.new(Respect::BaseDef) do
+    @def_class = Class.new(Respect::GlobalDef) do
       include Respect::CoreStatements
       def accept_name(name)
         name

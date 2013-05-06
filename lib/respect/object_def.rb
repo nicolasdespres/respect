@@ -1,5 +1,5 @@
 module Respect
-  class ObjectDef < BaseDef
+  class ObjectDef < GlobalDef
 
     def initialize(options = {})
       @object_schema = ObjectSchema.new(options)

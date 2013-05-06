@@ -1,5 +1,5 @@
 module Respect
-  class ItemsDef < BaseDef
+  class ItemsDef < GlobalDef
     include DefWithoutName
 
     def initialize

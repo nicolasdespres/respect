@@ -17,7 +17,7 @@ end
 # * The _schema_ classes are the core of this module since they support the validation
 #   process and are the internal representation of schema specification (see {Schema}).
 # * The _definition_ classes (aka _def_ classes) are the front-end of this module since
-#   they implement the schema definition DSL (see {BaseDef}).
+#   they implement the schema definition DSL (see {GlobalDef}).
 # * The _validator_ classes implement validation routine you can attach to your schema.
 #   accessible via the schema's options (see {Validator}).
 # * The _dumper_ classes are the back-end of this module since they implement the
@@ -77,7 +77,7 @@ module Respect
   autoload :SchemaDef
   autoload :ArrayDef
   autoload :ObjectDef
-  autoload :BaseDef
+  autoload :GlobalDef
   autoload :ItemsDef
   autoload :CoreStatements
   autoload :DefWithoutName

@@ -1,5 +1,5 @@
 module Respect
-  class ArrayDef < BaseDef
+  class ArrayDef < GlobalDef
     include DefWithoutName
 
     def initialize(options = {})

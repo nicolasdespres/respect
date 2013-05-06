@@ -1,14 +1,17 @@
 module Respect
-  # Base class for all DSL evaluation context classes.
+  # Global context of the schema definition DSL.
   #
-  # You can evaluate a block using the {#eval} method. A {FakeNameProxy}
-  # is used to narrow the evaluation context to a BasicObject so the
-  # sub-classes keep Ruby's reflections possibilities without cluttering
-  # the DSL itself with many unrelated method names.
+  # This is the base class of all DSL evaluation context. It provides
+  # minimal evaluation support. Any methods added to this class will
+  # be available in every context of DSL.
+  #
+  # You can evaluate a block using the {#eval} method. Sub-classes must
+  # implement the +evalulation_result+ methods (which must returns the
+  # result of the evaluation) or provides their own +eval+ methods.
   #
   # End-users are not supposed to sub-class this class yet. Its API is
   # *experimental*.
-  class BaseDef
+  class GlobalDef
 
     class << self
 
@@ -27,7 +30,7 @@ module Respect
 
     end
 
-    # Shortcut to {BaseDef.accept_name?}.
+    # Shortcut to {GlobalDef.accept_name?}.
     def accept_name?
       self.class.accept_name?
     end

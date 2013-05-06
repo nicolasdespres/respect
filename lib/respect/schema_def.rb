@@ -1,5 +1,5 @@
 module Respect
-  class SchemaDef < BaseDef
+  class SchemaDef < GlobalDef
     include DefWithoutName
 
     private
