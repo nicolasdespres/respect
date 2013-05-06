@@ -176,10 +176,9 @@ module Respect
     # A sanitized document contains value with more specific data type. Like a URI
     # object instead of a plain string.
     #
-    # Non-validated value are not touch (i.e. values present in the document but not
-    # specified in the schema for example). However +doc["key"]+ and +doc[:key]+
-    # are considered as referring to the same value, but they original key would be
-    # preserved.
+    # Non-sanitized value are not touch (i.e. values present in +doc+ but not in
+    # +sanitized_doc+). However, +doc["key"]+ and +doc[:key]+ are considered as
+    # referring to the same value, but they original key would be preserved.
     #
     # Example:
     #   doc = { "int" => "42" }

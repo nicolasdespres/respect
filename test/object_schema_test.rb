@@ -209,7 +209,7 @@ class ObjectSchemaTest < Test::Unit::TestCase
     assert_equal({ "test" => 42 }, s.sanitized_doc)
     # Object with extra property.
     s.validate({ "foo" => 51 })
-    assert_equal({ "test" => 42, "foo" => 51 }, s.sanitized_doc)
+    assert_equal({ "test" => 42 }, s.sanitized_doc)
   end
 
   def test_default_value_do_not_overwrite_defined_one
@@ -551,6 +551,24 @@ class ObjectSchemaTest < Test::Unit::TestCase
     assert_schema_validate(s, { b: false })
     assert_schema_validate(s, { "b" => false })
     assert_schema_invalidate(s, { })
+  end
+
+  def test_sanitized_doc_only_include_validated_keys
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "i"
+    end
+    assert_schema_validate(s, { i: "42", foo: "bar" })
+    assert_equal({ "i" => 42 }, s.sanitized_doc)
+  end
+
+  def test_sanitized_doc_include_optional_keys_when_present
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "i", required: false
+    end
+    assert_schema_validate(s, { i: "42", foo: "bar" })
+    assert_equal({ "i" => 42 }, s.sanitized_doc)
+    assert_schema_validate(s, { foo: "bar" })
+    assert_equal({ }, s.sanitized_doc)
   end
 
 end

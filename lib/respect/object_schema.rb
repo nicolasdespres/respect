@@ -21,7 +21,8 @@ module Respect
   # The document object passed is left untouched. The sanitized document
   # is a hash with indifferent access. Note that when a document
   # is sanitized in-place, its original keys are kept
-  # (see {Respect.sanitize_doc!}).
+  # (see {Respect.sanitize_doc!}). Only validated keys are included
+  # in the sanitized document.
   #
   # You can pass several options when creating an {ObjectSchema}:
   # strict:: if set to +true+ the JSON object must not have any extra
@@ -99,13 +100,6 @@ module Respect
         doc.each do |name, schema|
           unless sanitized_doc.has_key? name
             raise ValidationError, "unexpected key `#{name}'"
-          end
-        end
-      else
-        # Copy extra properties verbatim.
-        doc.each do |name, schema|
-          unless sanitized_doc.has_key? name
-            sanitized_doc[name] = schema
           end
         end
       end
