@@ -105,7 +105,6 @@ module Respect
     def validate_property_with_options(name, schema, doc, sanitized_doc)
       if doc.has_key? name
         validate_property(name, schema, doc, sanitized_doc)
-        sanitized_doc[name] = schema.sanitized_doc
       else
         if schema.required?
           raise ValidationError, "missing key `#{name}'"
