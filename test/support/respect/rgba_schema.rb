@@ -2,7 +2,7 @@ module Respect
   # Test class proving that users can easily extend the schema hierarchy
   # with a composite schema based on an array schema.
   class RgbaSchema < CompositeSchema
-    def schema
+    def schema_definition
       ArraySchema.define do |s|
         s.items do |s|
           s.color_channel # red

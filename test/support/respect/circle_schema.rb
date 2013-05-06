@@ -2,7 +2,7 @@ module Respect
   # Test class proving that users can easily extend the schema hierarchy
   # with a custom type based on another custom type.
   class CircleSchema < CompositeSchema
-    def schema
+    def schema_definition
       ObjectSchema.define do |s|
         s.point "center"
         s.float "radius", greater_than: 0.0

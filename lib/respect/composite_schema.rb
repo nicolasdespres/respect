@@ -2,14 +2,14 @@ module Respect
   # A composite schema is a schema composed of another schema.
   #
   # Sub-classing {CompositeSchema} is the easiest way to add a user-defined
-  # schema. Indeed, you just have to overwrite {#schema} and optionally
+  # schema. Indeed, you just have to overwrite {#schema_definition} and optionally
   # {#sanitize}. Your schema will be handled properly by all other part
   # of the library (i.e. mainly dumpers and the DSL).
   #
   # Example:
   #   module Respect
   #     class PointSchema < CompositeSchema
-  #       def schema
+  #       def schema_defintion
   #         ObjectSchema.define do |s|
   #           s.numeric "x"
   #           s.numeric "y"
@@ -40,9 +40,13 @@ module Respect
 
     def initialize(options = {})
       super
-      @schema = self.schema
+      @schema = self.schema_definition
     end
 
+    # Returns the schema composing this schema.
+    attr_reader :schema
+
+    # Overloaded methods (see {Schema#validate}).
     def validate(doc)
       @schema.validate(doc)
       self.sanitized_doc = sanitize(@schema.sanitized_doc)
@@ -51,7 +55,7 @@ module Respect
 
     # Returns the schema composing this composite schema.
     # Overwrite this methods in sub-class.
-    def schema
+    def schema_definition
       raise NoMethodError, "implement me in sub-class"
     end
 

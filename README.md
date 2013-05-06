@@ -126,8 +126,8 @@ two methods.
 ```ruby
 module Respect
   class PlaceSchema < CompositeSchema
-    # The 'schema' method returns the schema specification for your custom type.
-    def schema
+    # This method returns the schema specification for your custom type.
+    def schema_definition
       Respect::ObjectSchema.define do |s|
         s.float "latitude"
         s.float "longitude"

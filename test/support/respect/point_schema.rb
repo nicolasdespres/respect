@@ -4,7 +4,7 @@ module Respect
   # sanitizer block.
   class PointSchema < CompositeSchema
 
-    def schema
+    def schema_definition
       ObjectSchema.define do |s|
         s.float "x"
         s.float "y"
