@@ -505,4 +505,52 @@ class ObjectSchemaTest < Test::Unit::TestCase
     assert(s1 != s2)
   end
 
+  def test_indifferent_access_to_doc_key
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "i", equal_to: 42
+    end
+    assert_schema_validate(s, { i: "42" })
+    assert_schema_validate(s, { "i" => "42" })
+    assert_schema_invalidate(s, { })
+  end
+
+  def test_doc_sanitized_in_place_keep_original_access
+    s = Respect::ObjectSchema.define do |s|
+      s.integer "i_string", equal_to: 42
+      s.integer :i_symbol, equal_to: 51
+    end
+
+    doc = { i_string: "42", "i_symbol" => "51" }
+    assert_schema_validate(s, doc)
+    assert !doc.is_a?(HashWithIndifferentAccess)
+    assert_equal(42, s.sanitized_doc[:i_string])
+    assert_equal(42, s.sanitized_doc["i_string"])
+    assert_equal(51, s.sanitized_doc[:i_symbol])
+    assert_equal(51, s.sanitized_doc["i_symbol"])
+
+    assert s.sanitized_doc.is_a?(HashWithIndifferentAccess)
+    assert_equal({ "i_string" => 42, "i_symbol" => 51 }, s.sanitized_doc)
+
+    s.sanitize_doc!(doc)
+    assert_equal({ i_string: 42, "i_symbol" => 51 }, doc)
+  end
+
+  def test_indifferent_access_to_doc_nil_values
+    s = Respect::ObjectSchema.define do |s|
+      s.null "n"
+    end
+    assert_schema_validate(s, { n: nil })
+    assert_schema_validate(s, { "n" => nil })
+    assert_schema_invalidate(s, { })
+  end
+
+  def test_indifferent_access_to_doc_false_values
+    s = Respect::ObjectSchema.define do |s|
+      s.boolean "b", equal_to: false
+    end
+    assert_schema_validate(s, { b: false })
+    assert_schema_validate(s, { "b" => false })
+    assert_schema_invalidate(s, { })
+  end
+
 end

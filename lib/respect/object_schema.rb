@@ -15,6 +15,14 @@ module Respect
   # You can get the list of all optional properties using the
   # {#optional_properties} method.
   #
+  # Access to the document's value being validated is done using either
+  # string key or symbol key. In other word +{ i: "42" }+ and
+  # +{ "i" => "42" }+ are the same document for the {#validate} method.
+  # The document object passed is left untouched. The sanitized document
+  # is a hash with indifferent access. Note that when a document
+  # is sanitized in-place, its original keys are kept
+  # (see {Respect.sanitize_doc!}).
+  #
   # You can pass several options when creating an {ObjectSchema}:
   # strict:: if set to +true+ the JSON object must not have any extra
   #          properties to be validated. (+false+ by default)
@@ -68,6 +76,9 @@ module Respect
       # Validate document format.
       unless doc.is_a?(Hash)
         raise ValidationError, "document is not a hash but a #{doc.class}"
+      end
+      unless doc.is_a?(HashWithIndifferentAccess)
+        doc = doc.with_indifferent_access
       end
       sanitized_doc = {}.with_indifferent_access
       # Validate expected properties.

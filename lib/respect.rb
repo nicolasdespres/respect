@@ -177,7 +177,17 @@ module Respect
     # object instead of a plain string.
     #
     # Non-validated value are not touch (i.e. values present in the document but not
-    # specified in the schema for example).
+    # specified in the schema for example). However +doc["key"]+ and +doc[:key]+
+    # are considered as referring to the same value, but they original key would be
+    # preserved.
+    #
+    # Example:
+    #   doc = { "int" => "42" }
+    #   Respect.sanitized_doc!(doc, { "int" => 42 }
+    #   doc                                     #=> { "int" => 42 }
+    #   doc = { :int => "42" }
+    #   Respect.sanitized_doc!(doc, { "int" => 42 }
+    #   doc                                     #=> { :int => 42 }
     #
     # The sanitized document is accessible via the {Schema#sanitized_doc} method after a
     # successful validation.
@@ -186,7 +196,11 @@ module Respect
       when Hash
         if sanitized_doc.is_a? Hash
           sanitized_doc.each do |name, value|
-            doc[name] = sanitize_doc!(doc[name], value)
+            if doc.has_key?(name)
+              doc[name] = sanitize_doc!(doc[name], value)
+            else
+              doc[name.to_sym] = sanitize_doc!(doc[name.to_sym], value)
+            end
           end
           doc
         else
