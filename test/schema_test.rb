@@ -238,6 +238,21 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal error, s.last_error
   end
 
+  def test_validate_shebang_returns_true_on_success_and_sanitize
+    s = Respect::Schema.send(:new)
+    doc = {}
+    s.stubs(:validate?).with(doc).returns(true).once
+    s.stubs(:sanitize_doc!).with(doc).once
+    assert_equal true, s.validate!(doc)
+  end
+
+  def test_validate_shebang_returns_false_on_failure
+    s = Respect::Schema.send(:new)
+    doc = {}
+    s.stubs(:validate?).with(doc).returns(false).once
+    assert_equal false, s.validate!(doc)
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)
