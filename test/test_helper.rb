@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'debugger'
 
 require 'respect'
 require 'respect/unit_test_helper'
