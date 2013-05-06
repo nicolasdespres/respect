@@ -5,6 +5,15 @@ module Respect
   # a schema. There are many validators available in this library (see
   # all the sub-classes of this class).
   #
+  # You can attach a validator to any schema through its options
+  # parameters when initializing it. Any schema including the
+  # {HasConstraints} module will execute them when its {Schema#validate}
+  # method is called.
+  #
+  # Example:
+  #   # Will call GreaterThanValidator.new(42).validate(-1)
+  #   IntegerSchema.define(greater_than: 42).validate?(-1)     #=> true
+  #
   # The validator API is *experimental* so it is not recommended to
   # write your own.
   class Validator

@@ -15,13 +15,13 @@ end
 #
 # Classes in this module are split in 5 groups:
 # * The _schema_ classes are the core of this module since they support the validation
-#   process and are the internal representation of schema specification.
+#   process and are the internal representation of schema specification (see {Schema}).
 # * The _definition_ classes (aka _def_ classes) are the front-end of this module since
-#   they implement the schema definition DSL.
-# * The _validator_ classes are support classes implementing the different validators
-#   accessible via the schema's options.
-# * The _dumper_ classes are the back-end of this module since the implement the convertion
-#   of the internal schema representation to different formats.
+#   they implement the schema definition DSL (see {BaseDef}).
+# * The _validator_ classes implement validation routine you can attach to your schema.
+#   accessible via the schema's options (see {Validator}).
+# * The _dumper_ classes are the back-end of this module since they implement the
+#   convertion of the internal schema representation to different formats.
 # * The _miscellaneous_ classes provides various support for the other categories.
 #
 # You can extend this library in many ways:
@@ -35,7 +35,7 @@ end
 #    further information).
 #
 # Extension of the _validator_ and _dumper_ classes is still experimental. Also, creating
-# custom _definition_ classes is not recommended.
+# custom _definition_ classes is not recommended yet.
 module Respect
   extend ActiveSupport::Autoload
 

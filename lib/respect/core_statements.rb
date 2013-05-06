@@ -40,7 +40,7 @@ module Respect
   #
   # It is recommended that your macros implementation be based on core statements
   # because +update_context+ API is *experimental*. If you do so anyway your
-  # macro may not work properly with the {#doc} and {#with_options} statements.
+  # macros may not work properly with the {#doc} and {#with_options} statements.
   module CoreStatements
 
     # @!method string(name, options = {})
@@ -94,8 +94,10 @@ module Respect
     #
     # Call +update_context+ using the first argument as index and passes the rest
     # to the {Schema.define} class method of the schema class associated with the method name.
+    # As a consequence any call to missing method +foo+ will define a +FooSchema+
+    # schema using +FooSchema.define+.
     #
-    # The options are merged in the default options which may include the +:doc+
+    # The options are merged with the default options which may include the +:doc+
     # option if {#doc} has been called before. The current documentation is reset
     # after this call.
     def method_missing(method_name, *args, &block)
