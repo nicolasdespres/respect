@@ -172,6 +172,40 @@ module Respect
       !!validator_for(constraint_name)
     end
 
+    # Sanitize the given +doc+ *in-place* according to the given +sanitized_doc+.
+    # A sanitized document contains value with more specific data type. Like a URI
+    # object instead of a plain string.
+    #
+    # Non-validated value are not touch (i.e. values present in the document but not
+    # specified in the schema for example).
+    #
+    # The sanitized document is accessible via the {Schema#sanitized_doc} method after a
+    # successful validation.
+    def sanitize_doc!(doc, sanitized_doc)
+      case doc
+      when Hash
+        if sanitized_doc.is_a? Hash
+          sanitized_doc.each do |name, value|
+            doc[name] = sanitize_doc!(doc[name], value)
+          end
+          doc
+        else
+          sanitized_doc
+        end
+      when Array
+        if sanitized_doc.is_a? Array
+          sanitized_doc.each_with_index do |value, index|
+            doc[index] = sanitize_doc!(doc[index], value)
+          end
+          doc
+        else
+          sanitized_doc
+        end
+      else
+        sanitized_doc
+      end
+    end
+
   end
 
   extend_dsl_with(CoreStatements)

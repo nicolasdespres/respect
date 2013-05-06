@@ -214,7 +214,7 @@ module Respect
     def validate!(doc)
       valid = validate?(doc)
       if valid
-        sanitize_doc!(doc, sanitized_doc)
+        sanitize_doc!(doc)
       end
       valid
     end
@@ -223,7 +223,12 @@ module Respect
     # is returned. {ValidationError} is raised on error.
     def sanitize!(doc)
       validate(doc)
-      sanitize_doc!(doc, sanitized_doc)
+      sanitize_doc!(doc)
+    end
+
+    # A shortcut for {Respect.sanitize_doc!}.
+    def sanitize_doc!(doc)
+      Respect.sanitize_doc!(doc, self.sanitized_doc)
     end
 
     # Returns a string containing a human-readable representation of this schema.
@@ -265,40 +270,6 @@ module Respect
         Org3Dumper.new(self).dump
       else
         raise ArgumentError, "unknown format '#{format}'"
-      end
-    end
-
-    # Sanitize the given +doc+ *in-place* according to the given +sanitized_doc+.
-    # A sanitized document contains value with more specific data type. Like a URI
-    # object instead of a plain string.
-    #
-    # Non-validated value are not touch (i.e. values present in the document but not
-    # specified in the schema for example).
-    #
-    # The sanitized document is accessible via the {#sanitized_doc} method after a
-    # successful validation.
-    def sanitize_doc!(doc, sanitized_doc)
-      case doc
-      when Hash
-        if sanitized_doc.is_a? Hash
-          sanitized_doc.each do |name, value|
-            doc[name] = sanitize_doc!(doc[name], value)
-          end
-          doc
-        else
-          sanitized_doc
-        end
-      when Array
-        if sanitized_doc.is_a? Array
-          sanitized_doc.each_with_index do |value, index|
-            doc[index] = sanitize_doc!(doc[index], value)
-          end
-          doc
-        else
-          sanitized_doc
-        end
-      else
-        sanitized_doc
       end
     end
 
