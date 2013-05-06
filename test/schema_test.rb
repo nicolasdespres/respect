@@ -275,6 +275,16 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal result.object_id, s.sanitize!(doc).object_id
   end
 
+  def test_sanitize_doc_shebang
+    s = Respect::Schema.send(:new)
+    doc = {}
+    sanitized_doc = {}
+    s.stubs(:sanitized_doc).with().returns(sanitized_doc).once
+    result = Object.new
+    Respect.stubs(:sanitize_doc!).with(doc, sanitized_doc).returns(result).once
+    assert_equal result.object_id, s.sanitize_doc!(doc).object_id
+  end
+
   private
 
   def assert_object_context_error_message(prop_name, message)
