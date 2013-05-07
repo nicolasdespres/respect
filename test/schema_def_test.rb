@@ -332,6 +332,14 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
+  def test_can_define_user_def_class
+    s = Respect::Schema.define do |s|
+      s.color do |s|
+        s.red 255
+      end
+    end
+    assert_schema_validate(s, "#ff000000")
+  end
 
   private
 
