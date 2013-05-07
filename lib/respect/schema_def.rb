@@ -1,5 +1,6 @@
 module Respect
   class SchemaDef < GlobalDef
+    include_core_statements
     include DefWithoutName
 
     private

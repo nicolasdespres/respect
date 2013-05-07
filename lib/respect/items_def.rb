@@ -1,5 +1,6 @@
 module Respect
   class ItemsDef < GlobalDef
+    include_core_statements
     include DefWithoutName
 
     def initialize

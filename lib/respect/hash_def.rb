@@ -1,5 +1,6 @@
 module Respect
   class HashDef < GlobalDef
+    include_core_statements
 
     def initialize(options = {})
       @hash_schema = HashSchema.new(options)

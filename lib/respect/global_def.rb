@@ -28,6 +28,20 @@ module Respect
         !(self < DefWithoutName)
       end
 
+      @@core_contexts = Set.new
+
+      # Call this method in "def" class willing to offer core statements.
+      # Do not include {CoreStatements} directly.
+      def include_core_statements
+        @@core_contexts << self
+        include CoreStatements
+      end
+
+      # Return the list of all classes including {CoreStatements}.
+      def core_contexts
+        @@core_contexts
+      end
+
     end
 
     # Shortcut to {GlobalDef.accept_name?}.

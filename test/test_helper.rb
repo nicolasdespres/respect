@@ -7,6 +7,15 @@ require 'respect/unit_test_helper'
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
+# It *MUST* be defined before EndUserDSLStatement.
+module Respect
+  # A class to test DSL extension.
+  class CoreDef < GlobalDef
+    include_core_statements
+    include DefWithoutName
+  end
+end
+
 # A module to test statement extension helper.
 module EndUserDSLStatement
 

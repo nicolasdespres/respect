@@ -113,16 +113,15 @@ module Respect
   class << self
 
     # Extend the schema definition DSL with the statements defined in the given
-    # module +mod+.
+    # module +mod+. Its methods would be available to each definition class
+    # calling {GlobalDef.include_core_statements}.
     def extend_dsl_with(mod)
-      [
-        SchemaDef,
-        ArrayDef,
-        ItemsDef,
-        HashDef,
-      ].each do |klass|
-        klass.send(:include, mod)
-      end
+      raise ArugmentError, "cannot extend DSL with CoreStatements" if mod == CoreStatements
+      CoreStatements.send(:include, mod)
+      # We must "refresh" all the classes include "CoreStatements" by re-including it to
+      # work around the
+      # {dynamic module include problem}[http://eigenclass.org/hiki/The+double+inclusion+problem]
+      GlobalDef.core_contexts.each{|c| c.send(:include, CoreStatements) }
     end
 
     # Build a schema class name from the given +statement_name+.
@@ -220,7 +219,5 @@ module Respect
     end
 
   end
-
-  extend_dsl_with(CoreStatements)
 
 end

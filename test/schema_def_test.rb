@@ -349,6 +349,13 @@ class SchemaDefTest < Test::Unit::TestCase
     end
   end
 
+  def test_core_def_has_core_statements
+    core_def = Respect::CoreDef.new
+    assert_respond_to core_def, :string, "from CoreStatements"
+    assert_respond_to core_def, :color_channel, "from UserMacros"
+    assert_respond_to core_def, :id, "from EndUserDSLStatement"
+  end
+
   private
 
   # Run the given block in each context of the DSL.
