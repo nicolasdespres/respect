@@ -341,6 +341,14 @@ class SchemaDefTest < Test::Unit::TestCase
     assert_schema_validate(s, "#ff000000")
   end
 
+  def test_color_def_reject_core_statement
+    Respect::ColorSchema.define do |s|
+      assert_raises(NoMethodError) do
+        s.string
+      end
+    end
+  end
+
   private
 
   # Run the given block in each context of the DSL.
