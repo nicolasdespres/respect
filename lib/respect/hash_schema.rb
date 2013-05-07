@@ -1,7 +1,7 @@
 module Respect
-  # A schema to specify a JSON object.
+  # A schema to specify the structure of a hash.
   #
-  # This schema defines the structure of a JSON object by listing
+  # This schema defines the structure of a hash by listing
   # the expected property name and they associated schema.
   #
   # Property can be define by using a symbol, a string or a regular
@@ -24,10 +24,10 @@ module Respect
   # (see {Respect.sanitize_doc!}). Only validated keys are included
   # in the sanitized document.
   #
-  # You can pass several options when creating an {ObjectSchema}:
-  # strict:: if set to +true+ the JSON object must not have any extra
+  # You can pass several options when creating an {HashSchema}:
+  # strict:: if set to +true+ the hash must not have any extra
   #          properties to be validated. (+false+ by default)
-  class ObjectSchema < Schema
+  class HashSchema < Schema
 
     class << self
       # Overwritten method. See Schema::default_options
@@ -127,7 +127,7 @@ module Respect
         schema.validate(doc[name])
         sanitized_doc[name] = schema.sanitized_doc
       rescue ValidationError => e
-        e.context << "in object property `#{name}'"
+        e.context << "in hash property `#{name}'"
         raise e
       end
     end
@@ -144,28 +144,28 @@ module Respect
     end
 
     # In-place version of {#merge}. This schema is returned.
-    def merge!(object_schema)
-      @options.merge!(object_schema.options)
-      @properties.merge!(object_schema.properties)
+    def merge!(hash_schema)
+      @options.merge!(hash_schema.options)
+      @properties.merge!(hash_schema.properties)
       self
     end
 
-    # Merge the given +object_schema+ with this object schema. It works like
+    # Merge the given +hash_schema+ with this object schema. It works like
     # +Hash.merge+.
-    def merge(object_schema)
-      self.dup.merge!(object_schema)
+    def merge(hash_schema)
+      self.dup.merge!(hash_schema)
     end
 
-    # Return whether +property_name+ is defined in this object schema.
+    # Return whether +property_name+ is defined in this hash schema.
     def has_property?(property_name)
       @properties.has_key?(property_name)
     end
 
-    # Evaluate the given block as an object schema definition (i.e. in the context of
-    # {Respect::ObjectDef}) and merge the result with this object schema.
-    # This is a way to "re-open" this object schema definition to add some more.
+    # Evaluate the given block as a hash schema definition (i.e. in the context of
+    # {Respect::HashDef}) and merge the result with this hash schema.
+    # This is a way to "re-open" this hash schema definition to add some more.
     def eval(&block)
-      self.merge!(ObjectSchema.define(&block))
+      self.merge!(HashSchema.define(&block))
     end
 
     # Return all the properties with a non-false documentation.

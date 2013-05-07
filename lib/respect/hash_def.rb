@@ -1,8 +1,8 @@
 module Respect
-  class ObjectDef < GlobalDef
+  class HashDef < GlobalDef
 
     def initialize(options = {})
-      @object_schema = ObjectSchema.new(options)
+      @hash_schema = HashSchema.new(options)
     end
 
     def extra(&block)
@@ -12,11 +12,11 @@ module Respect
     private
 
     def evaluation_result
-      @object_schema
+      @hash_schema
     end
 
     def update_context(name, schema)
-      @object_schema[name] = schema
+      @hash_schema[name] = schema
     end
   end
 end

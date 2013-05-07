@@ -88,15 +88,15 @@ class SchemaDefTest < Test::Unit::TestCase
     assert_schema_validate s, [1]
   end
 
-  def test_can_factor_object_definition
-    object_def = Proc.new do |s|
+  def test_can_factor_hash_definition
+    hash_def = Proc.new do |s|
       s.numeric "n", equal_to: 42
     end
-    s1 = Respect::ObjectSchema.define do |s|
-      s.eval(&object_def)
+    s1 = Respect::HashSchema.define do |s|
+      s.eval(&hash_def)
     end
-    s2 = Respect::ObjectSchema.define do |s|
-      s.eval(&object_def)
+    s2 = Respect::HashSchema.define do |s|
+      s.eval(&hash_def)
     end
     assert_schema_validate s1, { "n" => 42 }
     assert_schema_validate s2, { "n" => 42 }
@@ -118,7 +118,7 @@ class SchemaDefTest < Test::Unit::TestCase
 
   def test_can_factor_options
     options = { equal_to: 42 }
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.integer "int", options
       s.numeric "num", options
     end
@@ -178,7 +178,7 @@ class SchemaDefTest < Test::Unit::TestCase
 
   def test_can_extend_dsl_with_custom_module
     # See DSL extension module defined in test_helper.rb.
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.id
       s.id "table_id"
       s.array "array" do |s|
@@ -194,7 +194,7 @@ class SchemaDefTest < Test::Unit::TestCase
 
   def test_can_convert_doc_to_custom_type
     # See DSL extension module defined in test_helper.rb.
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.point "origin"
       s.array "polygon" do |s|
         s.point
@@ -342,7 +342,7 @@ class SchemaDefTest < Test::Unit::TestCase
     Respect::Schema.define {|s| instance_exec(s, &block) }
     # In all contexts.
     {
-      :object => [
+      :hash => [
         nil,
         :extra,
       ],

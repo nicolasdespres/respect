@@ -4,7 +4,7 @@ class BooleanSchemaTest < Test::Unit::TestCase
   def test_boolean_schema_validate_type
     [
       [ "42", nil, "integer in string" ],
-      [ { "test" => 42 }, nil, "object" ],
+      [ { "test" => 42 }, nil, "hash" ],
       [ "true", true, "valid true value" ],
       [ "false", false, "valid false value" ],
       [ true, true, "true" ],

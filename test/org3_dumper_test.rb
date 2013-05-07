@@ -68,8 +68,8 @@ class Org3DumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_object_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_dump_hash_properties
+    s = Respect::HashSchema.define do |s|
       s.integer "i"
       s.string "s"
       s.float "f"
@@ -95,8 +95,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_object_optional_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_dump_hash_optional_properties
+    s = Respect::HashSchema.define do |s|
       s.integer "i"
       s.string "s"
       s.extra do |s|
@@ -125,8 +125,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_object_pattern_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_dump_hash_pattern_properties
+    s = Respect::HashSchema.define do |s|
       s.integer "i"
       s.string /s.*t/
     end
@@ -149,11 +149,11 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_nested_object
-    s = Respect::ObjectSchema.define do |s|
-      s.object "o1" do |s|
-        s.object "o2" do |s|
-          s.object "o3" do |s|
+  def test_dump_nested_hash
+    s = Respect::HashSchema.define do |s|
+      s.hash "o1" do |s|
+        s.hash "o2" do |s|
+          s.hash "o3" do |s|
             s.integer "i"
           end
         end
@@ -191,10 +191,10 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_dump_nested_pattern_properties
-    s = Respect::ObjectSchema.define do |s|
-      s.object /o1/ do |s|
-        s.object /o2/ do |s|
-          s.object /o3/ do |s|
+    s = Respect::HashSchema.define do |s|
+      s.hash /o1/ do |s|
+        s.hash /o2/ do |s|
+          s.hash /o3/ do |s|
             s.integer "i"
           end
         end
@@ -232,13 +232,13 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_dump_nested_extra_properties
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.extra do |s|
-        s.object "o1" do |s|
+        s.hash "o1" do |s|
           s.extra do |s|
-            s.object "o2" do |s|
+            s.hash "o2" do |s|
               s.extra do |s|
-                s.object "o3" do |s|
+                s.hash "o3" do |s|
                   s.integer "i"
                 end
               end
@@ -275,8 +275,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_do_not_dump_empty_object_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_do_not_dump_empty_hash_properties
+    s = Respect::HashSchema.define do |s|
     end
     a = Respect::Org3Dumper.new(s).dump
     e = {
@@ -285,8 +285,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_do_not_dump_empty_object_optional_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_do_not_dump_empty_hash_optional_properties
+    s = Respect::HashSchema.define do |s|
       s.extra do |s|
       end
     end
@@ -297,8 +297,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_dump_object_in_strict_mode
-    s = Respect::ObjectSchema.define strict: true do |s|
+  def test_dump_hash_in_strict_mode
+    s = Respect::HashSchema.define strict: true do |s|
       s.integer "i"
       s.string /s/
     end
@@ -312,8 +312,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_do_not_dump_nodoc_object_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_do_not_dump_nodoc_hash_properties
+    s = Respect::HashSchema.define do |s|
       s.integer "enabled"
       s.integer "nodoc", doc: false
     end
@@ -325,8 +325,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_do_not_dump_nodoc_object_optional_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_do_not_dump_nodoc_hash_optional_properties
+    s = Respect::HashSchema.define do |s|
       s.extra do |s|
         s.integer "enabled"
         s.integer "nodoc", doc: false
@@ -340,8 +340,8 @@ class Org3DumperTest < Test::Unit::TestCase
     assert_equal e, a
   end
 
-  def test_do_not_dump_nodoc_object_pattern_properties
-    s = Respect::ObjectSchema.define do |s|
+  def test_do_not_dump_nodoc_hash_pattern_properties
+    s = Respect::HashSchema.define do |s|
       s.integer /enabled/
       s.integer /nodoc/, doc: false
     end
@@ -580,7 +580,7 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_dump_option_required
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.integer "required_i"
       s.integer "default_i", default: 42
       s.integer "non_required_i", required: false
@@ -703,9 +703,9 @@ class Org3DumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_no_dump_for_non_empty_object
+  def test_no_dump_for_non_empty_hash
     s = Respect::Schema.define do |s|
-      s.object doc: false do |s|
+      s.hash doc: false do |s|
         s.integer "i"
         s.string "s"
       end
@@ -723,7 +723,7 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_dump_composite_schema
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.point "origin"
     end
     a = Respect::Org3Dumper.new(s).dump
@@ -744,7 +744,7 @@ class Org3DumperTest < Test::Unit::TestCase
   end
 
   def test_dump_nested_composite_schema
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.circle "area"
     end
     a = Respect::Org3Dumper.new(s).dump

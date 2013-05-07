@@ -28,7 +28,7 @@ module Respect
   #
   # You can pass several options when creating a Schema:
   # required::  whether this property associated to this schema is
-  #             required in the object schema (+true+ by default).
+  #             required in the hash schema (+true+ by default).
   # default::   the default value to use for the associated property
   #             if it is not present. Setting a default value make
   #             the property private. (+nil+ by default)
@@ -80,7 +80,7 @@ module Respect
       # Return the associated _def_ class name for this class.
       # Example:
       #   ArraySchema.def_class_name  #=> "ArrayDef"
-      #   ObjectSchema.def_class_name #=> "ObjectDef"
+      #   HashSchema.def_class_name #=> "HashDef"
       #   Schema.def_class_name       #=> "SchemaDef"
       def def_class_name
         if self == Schema
@@ -99,8 +99,8 @@ module Respect
       # Build a statement name from this class name.
       #
       # Example:
-      #   Schema.statement_name                   #=> "schema"
-      #   ObjectSchema.statement_name             #=> "object"
+      #   Schema.statement_name                 #=> "schema"
+      #   HashSchema.statement_name             #=> "hash"
       def statement_name
         self.name.underscore.sub(/^.*\//, '').sub(/_schema$/, '')
       end

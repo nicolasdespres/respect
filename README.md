@@ -27,7 +27,7 @@ to factor your specification code.
 For instance, this ruby code specify how one could structure a very simple user profile:
 
 ```ruby
-schema = Respect::ObjectSchema.define do |s|
+schema = Respect::HashSchema.define do |s|
   s.string "name"
   s.integer "age", greater_than: 18
   s.string "homepage", format: :email
@@ -82,7 +82,7 @@ When it fails to validate a document, you get descriptive error messages with co
 schema.last_error                #=> "15 is not greater than 18"
 schema.last_error.message        #=> "15 is not greater than 18"
 schema.last_error.context[0]     #=> "15 is not greater than 18"
-schema.last_error.context[1]     #=> "in object property `age'"
+schema.last_error.context[1]     #=> "in hash property `age'"
 ```
 
 _Respect_ does not parse JSON document by default but it is easy to do so using one of the JSON parser available in Ruby:
@@ -95,7 +95,7 @@ Once a JSON document has been validated, we often want to turn its basic strings
 _Respect_ does that automatically for you for standard objects:
 
 ```ruby
-schema = Respect::ObjectSchema.define do |s|
+schema = Respect::HashSchema.define do |s|
   s.uri "homepage"
 end
 doc = { "homepage" => "http://example.com" }
@@ -128,7 +128,7 @@ module Respect
   class PlaceSchema < CompositeSchema
     # This method returns the schema specification for your custom type.
     def schema_definition
-      Respect::ObjectSchema.define do |s|
+      Respect::HashSchema.define do |s|
         s.float "latitude"
         s.float "longitude"
       end
@@ -147,7 +147,7 @@ Finally, you define the structure of your JSON document as usual. Note that you 
 access to your custom schema via the `place` method.
 
 ```ruby
-schema = Respect::ObjectSchema.define do |s|
+schema = Respect::HashSchema.define do |s|
   s.place "home"
 end
 
@@ -167,10 +167,10 @@ the primitive `integer`, `string` or `float`, etc... For instance if you specify
 in your schema like this:
 
 ```ruby
-Respect::ObjectSchema.define do |s|
+Respect::HashSchema.define do |s|
   s.integer "article_id", greater_than: 0
   s.string "title"
-  s.object "author" do |s|
+  s.hash "author" do |s|
     s.integer "author_id", greater_than: 0
     s.string "name"
   end
@@ -195,10 +195,10 @@ Respect.extend_dsl_with(MyMacros)
 Now you can rewrite the original schema this way:
 
 ```ruby
-Respect::ObjectSchema.define do |s|
+Respect::HashSchema.define do |s|
   s.id "article"
   s.string "title"
-  s.object "author" do |s|
+  s.hash "author" do |s|
     s.id "author"
     s.string "name"
   end
@@ -218,7 +218,7 @@ Then, after running the `bundle install` command, you can start to validate JSON
 ```ruby
 require 'respect'
 
-schema = Respect::ObjectSchema.define do |s|
+schema = Respect::HashSchema.define do |s|
   s.string "name"
   s.integer "age", greater_than: 18
 end
@@ -235,7 +235,7 @@ See the `STATUS_MATRIX` file included in this package for detailed information.
 
 Although, the semantics of the schema definition DSL available in this library may change slightly from the
 _JSON schema standard_, we have tried to keep it as close as possible. For instance the `strict` option of
-object schema is not presented in the standard. However, when a schema is dumped to its _JSON Schema_ version
+hash schema is not presented in the standard. However, when a schema is dumped to its _JSON Schema_ version
 the syntax and semantic have been followed. You should note that there is no "loader" available yet in this
 library. In other word, you cannot instantiate a Schema class from a _JSON Schema_ string representation.
 

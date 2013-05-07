@@ -9,11 +9,11 @@ module Respect
   # and target's methods expecting a name as first argument.
   #
   # This is useful to factor method code that should work in two different
-  # contexts. For instance, in the context of an object schema primitive
-  # statements expect a name as first argument whereas in the context of an
-  # array schema they do not.
+  # contexts. For instance, in the context of a hash schema definition,
+  # core statements expect a name as first argument whereas in the context
+  # of an array schema definition they do not.
   #
-  #   ObjectSchema.define do |s|
+  #   HashSchema.define do |s|
   #     s.integer "age", greater_than: 0
   #   end
   #   ArraySchema.define do |s|
@@ -29,11 +29,11 @@ module Respect
   #       update_context name, IntegerSchema.define(options)
   #     end
   #   end
-  #   class ObjectDef
+  #   class HashDef
   #     include CoreStatements
   #     def accept_name?; true; end
   #     def update_context(name, schema)
-  #       @object_schema[name] = schema
+  #       @hash_schema[name] = schema
   #     end
   #   end
   #   class ArrayDef

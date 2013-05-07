@@ -10,7 +10,7 @@ module Respect
   #   module Respect
   #     class PointSchema < CompositeSchema
   #       def schema_defintion
-  #         ObjectSchema.define do |s|
+  #         HashSchema.define do |s|
   #           s.numeric "x"
   #           s.numeric "y"
   #         end
@@ -27,7 +27,7 @@ module Respect
   # your schema like that:
   #
   # Example:
-  #   ObjectSchema.define do |s|
+  #   HashSchema.define do |s|
   #     s.point "origin"
   #   end
   class CompositeSchema < Schema

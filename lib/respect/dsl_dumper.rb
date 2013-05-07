@@ -141,7 +141,7 @@ module Respect
       end
     end
 
-    def dump_body_for_object(schema)
+    def dump_body_for_hash(schema)
       dump_block do
         schema.properties.each do |name, schema|
           context_data[:name] = name

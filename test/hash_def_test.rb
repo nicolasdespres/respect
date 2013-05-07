@@ -1,9 +1,9 @@
 require "test_helper"
 
-class ObjectDefTest < Test::Unit::TestCase
+class HashDefTest < Test::Unit::TestCase
 
-  def test_object_schema_definition_accept_integer
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_integer
+    s = Respect::HashSchema.define do |s|
       s.integer "test", equal_to: 15
       s.extra do |s|
         s.integer "opt", equal_to: 43
@@ -13,8 +13,8 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_schema_validate s, { "test" => 15, "opt" => 43 }
   end
 
-  def test_object_schema_definition_accept_null
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_null
+    s = Respect::HashSchema.define do |s|
       s.null "test"
       s.extra do |s|
         s.null "opt"
@@ -24,8 +24,8 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_schema_validate s, { "test" => nil, "opt" => nil }
   end
 
-  def test_object_schema_definition_accept_float
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_float
+    s = Respect::HashSchema.define do |s|
       s.float "test", equal_to: 1.5
       s.extra do |s|
         s.float "opt", equal_to: 4.3
@@ -35,8 +35,8 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_schema_validate s, { "test" => 1.5, "opt" => 4.3 }
   end
 
-  def test_object_schema_definition_accept_boolean
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_boolean
+    s = Respect::HashSchema.define do |s|
       s.boolean "test", equal_to: false
       s.extra do |s|
         s.boolean "opt", equal_to: false
@@ -46,8 +46,8 @@ class ObjectDefTest < Test::Unit::TestCase
     assert_schema_validate s, { "test" => false, "opt" => false }
   end
 
-  def test_object_schema_definition_accept_array
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_array
+    s = Respect::HashSchema.define do |s|
       s.array "test"
       s.extra do |s|
         s.array "opt"
@@ -58,7 +58,7 @@ class ObjectDefTest < Test::Unit::TestCase
 
   def test_cannot_overwrite_property
     assert_raise(Respect::InvalidSchemaError) do
-      Respect::ObjectSchema.define do |s|
+      Respect::HashSchema.define do |s|
         s.integer "id", equal_to: 42
         s.integer "id", equal_to: 51
       end
@@ -67,7 +67,7 @@ class ObjectDefTest < Test::Unit::TestCase
 
   def test_extra_properties_overwrite_expected_ones
     assert_raise(Respect::InvalidSchemaError) do
-      Respect::ObjectSchema.define(strict: true) do |s|
+      Respect::HashSchema.define(strict: true) do |s|
         s.integer "test", equal_to: 42
         s.extra do |s|
           s.integer "test", equal_to: 51
@@ -76,9 +76,9 @@ class ObjectDefTest < Test::Unit::TestCase
     end
   end
 
-  def test_object_scope_accept_options
-    s = Respect::ObjectSchema.define do |s|
-      s.object "test", strict: true do |s|
+  def test_hash_scope_accept_options
+    s = Respect::HashSchema.define do |s|
+      s.hash "test", strict: true do |s|
         s.integer "test", equal_to: 42
       end
     end
@@ -86,7 +86,7 @@ class ObjectDefTest < Test::Unit::TestCase
   end
 
   def test_factor_options_with_with_options
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.integer "test", equal_to: 42
       s.with_options required: false do |s|
         assert_nothing_raised("fake name proxy") do

@@ -41,7 +41,7 @@ module Respect
 
   # Schema classes
   autoload :Schema
-  autoload :ObjectSchema
+  autoload :HashSchema
   autoload :IntegerSchema
   autoload :FloatSchema
   autoload :NumericSchema
@@ -76,7 +76,7 @@ module Respect
   # DSL classes
   autoload :SchemaDef
   autoload :ArrayDef
-  autoload :ObjectDef
+  autoload :HashDef
   autoload :GlobalDef
   autoload :ItemsDef
   autoload :CoreStatements
@@ -119,7 +119,7 @@ module Respect
         SchemaDef,
         ArrayDef,
         ItemsDef,
-        ObjectDef,
+        HashDef,
       ].each do |klass|
         klass.send(:include, mod)
       end

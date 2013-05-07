@@ -3,7 +3,7 @@ module Respect
   # with a custom type based on another custom type.
   class CircleSchema < CompositeSchema
     def schema_definition
-      ObjectSchema.define do |s|
+      HashSchema.define do |s|
         s.point "center"
         s.float "radius", greater_than: 0.0
       end

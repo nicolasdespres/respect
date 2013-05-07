@@ -46,7 +46,7 @@ class ArrayDefTest < Test::Unit::TestCase
 
   def test_array_schema_statement_cannot_accept_name_argument
     [
-      :object,
+      :hash,
       :integer,
       :string,
       :array,

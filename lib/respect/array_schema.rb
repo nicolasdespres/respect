@@ -1,5 +1,5 @@
 module Respect
-  # A schema to specify a JSON array.
+  # A schema to specify the structure of an array.
   #
   # They are two approaches to specify the structure of a JSON array.
   #

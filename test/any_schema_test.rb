@@ -6,14 +6,14 @@ class AnySchemaTest < Test::Unit::TestCase
     s2 = Respect::Schema.define do |s|
       s.any
     end
-    s3 = Respect::ObjectSchema.define do |s|
+    s3 = Respect::HashSchema.define do |s|
       s.any "test"
       s.extra do |s|
         s.any "opt"
       end
     end
     [
-      [ { "test" => 42 }, true, "object" ],
+      [ { "test" => 42 }, true, "hash" ],
       [ [ 42 ], true, "array" ],
       [ 42, true, "integer" ],
       [ 42.5, true, "float" ],
@@ -32,7 +32,7 @@ class AnySchemaTest < Test::Unit::TestCase
 
   def test_any_schema_do_not_convert_anything
     [
-      [ { "test" => 42 }, "object" ],
+      [ { "test" => 42 }, "hash" ],
       [ [ 42 ], "array" ],
       [ 42, "integer" ],
       [ 42.5, "float" ],

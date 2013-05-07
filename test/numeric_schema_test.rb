@@ -121,8 +121,8 @@ class NumericSchemaTest < Test::Unit::TestCase
     assert_schema_validate s, 42.5
   end
 
-  def test_object_schema_definition_accept_numeric
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_schema_definition_accept_numeric
+    s = Respect::HashSchema.define do |s|
       s.numeric "test", equal_to: 1.5
       s.extra do |s|
         s.numeric "opt", equal_to: 4

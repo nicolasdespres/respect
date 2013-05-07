@@ -176,9 +176,9 @@ class ArraySchemaTest < Test::Unit::TestCase
     assert_schema_invalidate s, [ 1, 2, 1, 2 ], "two duplicated items"
   end
 
-  def test_object_in_array_validate
+  def test_hash_in_array_validate
     s = Respect::ArraySchema.define do |s|
-      s.object do |s|
+      s.hash do |s|
         s.numeric "prop", equal_to: 51
       end
     end
@@ -186,10 +186,10 @@ class ArraySchemaTest < Test::Unit::TestCase
     assert_schema_invalidate s, [ { "prop" => 42 } ]
   end
 
-  def test_object_in_array_in_object_validate
-    s = Respect::ObjectSchema.define do |s|
+  def test_hash_in_array_in_object_validate
+    s = Respect::HashSchema.define do |s|
       s.array "level_1" do |s|
-        s.object do |s|
+        s.hash do |s|
           s.numeric "level_3", equal_to: 51
         end
       end
@@ -208,7 +208,7 @@ class ArraySchemaTest < Test::Unit::TestCase
   end
 
   def test_doc_updated_with_sanitized_value_with_custom_type
-    s = Respect::ObjectSchema.define do |s|
+    s = Respect::HashSchema.define do |s|
       s.rgba "color"
     end
     doc = { "color" => [ "0.0", "0.5", "1.0", "0.2" ] }

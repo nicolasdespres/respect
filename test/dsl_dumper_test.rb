@@ -1,12 +1,12 @@
 require "test_helper"
 
 class DslDumperTest < Test::Unit::TestCase
-  def test_dump_nested_objects
+  def test_dump_nested_hashs
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
-          s.object "o" do |s|
+        s.hash do |s|
+          s.hash "o" do |s|
             s.integer "i"
           end
         end
@@ -15,11 +15,11 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_object_with_multiple_integer
+  def test_dump_hash_with_multiple_integer
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
+        s.hash do |s|
           s.integer "i1"
           s.integer "i2"
           s.integer "i3"
@@ -29,22 +29,22 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_nested_object_with_multiple_integer
+  def test_dump_nested_hash_with_multiple_integer
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
-          s.object "o1" do |s|
+        s.hash do |s|
+          s.hash "o1" do |s|
             s.integer "i1"
             s.integer "i2"
             s.integer "i3"
           end
-          s.object "o2" do |s|
+          s.hash "o2" do |s|
             s.integer "i1"
             s.integer "i2"
             s.integer "i3"
           end
-          s.object "o3" do |s|
+          s.hash "o3" do |s|
             s.integer "i1"
             s.integer "i2"
             s.integer "i3"
@@ -59,7 +59,7 @@ class DslDumperTest < Test::Unit::TestCase
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
+        s.hash do |s|
           s.string "s\\""
         end
       end
@@ -72,7 +72,7 @@ class DslDumperTest < Test::Unit::TestCase
       assert_bijective_dump("dump statement #{statement}") do
         <<-EOF.strip_heredoc
         Respect::Schema.define do |s|
-          s.object do |s|
+          s.hash do |s|
             s.#{statement} "property_name"
           end
         end
@@ -216,15 +216,15 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_nested_array_and_object
+  def test_dump_nested_array_and_hash
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
         s.array do |s|
-          s.object do |s|
+          s.hash do |s|
             s.integer "i"
             s.array "a" do |s|
-              s.object do |s|
+              s.hash do |s|
                 s.integer "i"
                 s.array "a" do |s|
                   s.integer
@@ -282,7 +282,7 @@ class DslDumperTest < Test::Unit::TestCase
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
+        s.hash do |s|
           s.integer "an_int", :greater_than => 42, :equal_to => 51
         end
       end
@@ -294,7 +294,7 @@ class DslDumperTest < Test::Unit::TestCase
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
-        s.object do |s|
+        s.hash do |s|
           s.integer "an_int"
         end
       end
@@ -348,7 +348,7 @@ class DslDumperTest < Test::Unit::TestCase
     end
   end
 
-  def test_dump_object_documentation
+  def test_dump_hash_documentation
     assert_bijective_dump do
       <<-EOF.strip_heredoc
       Respect::Schema.define do |s|
@@ -357,7 +357,7 @@ class DslDumperTest < Test::Unit::TestCase
 
           a description
           EOS
-        s.object do |s|
+        s.hash do |s|
           s.integer "i"
           s.string "s"
         end

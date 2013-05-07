@@ -11,14 +11,15 @@ module Respect
   # "foo" (see {Schema.statement_name}) expecting a name, some options and a block.
   # This statement defines a new "FooSchema" with the given options and block. This
   # schema is stored in the current context using the given name. The name may be used
-  # used differently depending on the context. In an object it will be used as a
-  # a property name whereas it will be simply ignored in the
-  # context of an array. Context including the {DefWithoutName} module are arrays
-  # whereas others are objects. The {FakeNameProxy} is in charge for transparently
-  # passing +nil+ for the name in contexts including the {DefWithoutName} module.
+  # used differently depending on the context. In a hash definition context it will be
+  # used as a property name whereas it will be simply ignored in the
+  # context of an array. Context classes including the {DefWithoutName} module ignore
+  # the name argument whereas others do not. The {FakeNameProxy} is in charge of
+  # transparently passing +nil+ for the name in contexts including the {DefWithoutName}
+  # module.
   #
   # Example:
-  #   ObjectSchema.define do |s|
+  #   HashSchema.define do |s|
   #     # method_missing calls:
   #     #   update_context("i", IntegerSchema.define({greater_than: 42}))
   #     s.integer "i", greater_than: 42
@@ -67,8 +68,8 @@ module Respect
     # @!method uri(name, options = {})
     #   Define a {URISchema} with the given +options+ and stores it in the
     #   current context using +name+ as index.
-    # @!method object(name, options = {}, &block)
-    #   Define a {ObjectSchema} with the given +options+ and +block+ stores it
+    # @!method hash(name, options = {}, &block)
+    #   Define a {HashSchema} with the given +options+ and +block+ stores it
     #   in the current context using +name+ as index.
     # @!method array(name, options = {})
     #   Define a {ArraySchema} with the given +options+ and +block+ stores it
@@ -149,7 +150,7 @@ module Respect
     # to a schema.
     #
     # Example:
-    #   s = ObjectSchema.define do |s|
+    #   s = HashSchema.define do |s|
     #     s.doc "A magic number"
     #     s.integer "magic"
     #     s.integer "nodoc"

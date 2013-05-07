@@ -5,7 +5,7 @@ module Respect
   class PointSchema < CompositeSchema
 
     def schema_definition
-      ObjectSchema.define do |s|
+      HashSchema.define do |s|
         s.float "x"
         s.float "y"
       end

@@ -55,6 +55,8 @@ class RespectTest < Test::Unit::TestCase
     assert_equal false, Respect.schema_defined_for?("composite"), "abstract"
     assert_equal false, Respect.schema_defined_for?("schema"), "root"
     assert_equal false, Respect.schema_defined_for?("undefined"), "undefined"
+    assert_equal true, Respect.schema_defined_for?("hash"), "hash"
+    assert_equal false, Respect.schema_defined_for?("object"), "object"
   end
 
   def test_validator_name_for

@@ -77,7 +77,7 @@ module Respect
       h
     end
 
-    def dump_schema_for_object_schema(schema, params = {})
+    def dump_schema_for_hash_schema(schema, params = {})
       h = dump_schema_for_schema(schema, params)
       return nil if h.nil?
       props = {}
@@ -145,6 +145,10 @@ module Respect
 
     def dump_statement_name_for_schema(schema)
       schema.class.statement_name
+    end
+
+    def dump_statement_name_for_hash_schema(schema)
+      "object"
     end
 
     def dump_statement_name_for_numeric_schema(schema)
