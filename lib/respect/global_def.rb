@@ -12,6 +12,8 @@ module Respect
   # End-users are not supposed to sub-class this class yet. Its API is
   # *experimental*.
   class GlobalDef
+    undef_method :hash
+
 
     class << self
 
