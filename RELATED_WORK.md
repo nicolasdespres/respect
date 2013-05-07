@@ -38,28 +38,3 @@ This section is not meant to be accurate event if we try to stay objective here.
 * Seems no longer maintained.
 * Not compliant with json-schema.org spec.
 * No sanitizer.
-
-## [Doctorj](https://github.com/coopernurse/doctorj)
-
-* No Ruby DSL but uses a Markdown file as input.
-  * Syntax to describe schema in Markdown looks compact and close to what we have
-    in our Ruby DSL.
-* Generate API documentation in HTML.
-* Not integrated in Rails.
-  * Not bind to the routes.
-  * No HTTP headers validation possible.
-* No sanitizer.
-
-## [Rails::API](https://github.com/rails-api/rails-api)
-
-* Lighter Rails for JSON only application.
-
-## [Active Model Serializer](https://github.com/rails-api/active_model_serializers)
-
-* Object oriented way to organize JSON view code.
-
-## [StrongParameters](https://github.com/rails/strong_parameters)
-
-* No documentation generation.
-* No sanitizer.
-* No response validation.
