@@ -4,7 +4,7 @@ This section describes some projects sharing more or less the same purpose as _R
 The goal is to have an overview of the eco-system around this topic to borrow ideas and
 to drive implementation.
 
-This section is not meant to be accurate event if we try to stay objective here.
+This section is not meant to be accurate even if we try to stay objective here.
 
 ## [json-schema](https://github.com/hoxworth/json-schema)
 
