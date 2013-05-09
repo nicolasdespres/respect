@@ -14,6 +14,8 @@ integrate this gem in Rails.
 
 # Features
 
+Already available:
+
 * Compact Ruby DSL to specify your schema.
 * Standard [json-schema.org](http://json-schema.org/) specification generator.
 * Validator for JSON document or the like.
@@ -21,6 +23,20 @@ integrate this gem in Rails.
 * Document sanitizer: turn plain string and integer values into real objects.
 * Extensible API to add your custom validator and sanitizer.
 * Extensible macro definition system to factor you schema definition code.
+
+Coming soon:
+
+* More way to specify hash key's value.
+* Extensible validator API.
+* More extensible DSL API: define your own definition class, create macros not based on core
+  statements.
+* More extensible Schema API: sub-class Schema not only CompositeSchema.
+* A way to set options for nested schema in custom types.
+* More extensible dumpers API.
+
+Later:
+
+* A JSON schema loader.
 
 # Take a Tour
 
@@ -242,18 +258,6 @@ _JSON schema standard_, we have tried to keep it as close as possible. For insta
 hash schema is not presented in the standard. However, when a schema is dumped to its _JSON Schema_ version
 the syntax and semantic have been followed. You should note that there is no "loader" available yet in this
 library. In other word, you cannot instantiate a Schema class from a _JSON Schema_ string representation.
-
-# Coming soon
-
-Many other great features are planned for the next releases. Here a short list of what is coming soon:
-
-* Non-experimental extensible validator API.
-* More extensible DSL API: define your own definition class, create macros not based on core statements.
-* More extensible Schema API: sub-class Schema not only CompositeSchema.
-* A way to set options for nested schema in custom types.
-* More extensible dumpers API.
-
-And many more... see the issue tracker with tag FIXME for more information.
 
 # Getting help
 
