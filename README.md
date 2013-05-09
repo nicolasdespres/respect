@@ -1,18 +1,22 @@
 # Welcome to Respect
 
-_Respect_ is a JSON schema validation system providing a DSL to concisely write your schema. It also comes with a
-validator, a sanitizer and dumpers to generate valid [json-schema.org](http://json-schema.org/) compliant specifications.
+_Respect_ is a DSL to concisely describe the structure of common data such as Hash and Array using
+Ruby code. It comes with a validator, a sanitizer and dumpers to generate valid
+[json-schema.org](http://json-schema.org/) compliant specifications. Although it was designed to
+specify JSON schema, it can be used for any data represented as Hash and Array. It does not require
+any JSON parser since it works only on data.
 
-Respect is named after the contraction of _REST_ and _SPEC_. Indeed, it is first intended to be used to specify REST API
-in the context of a Web application.
+Respect is named after the contraction of _REST_ and _SPEC_. Indeed, it is first intended to be
+used to specify REST API in the context of a Web application.
 
-There is a plugin called [Respect for Rails](https://github.com/nicolasdespres/respect-rails) which integrate this gem in Rails.
+There is a plugin called [Respect for Rails](https://github.com/nicolasdespres/respect-rails) which
+integrate this gem in Rails.
 
 # Features
 
-* Compact Ruby DSL to specify your JSON schema.
+* Compact Ruby DSL to specify your schema.
 * Standard [json-schema.org](http://json-schema.org/) specification generator.
-* JSON document validator.
+* Validator for JSON document or the like.
 * Contextual validation error.
 * Document sanitizer: turn plain string and integer values into real objects.
 * Extensible API to add your custom validator and sanitizer.
