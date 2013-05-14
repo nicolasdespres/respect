@@ -10,6 +10,14 @@ module Respect
       with_options(required: false, &block)
     end
 
+    # Shortcut to say a schema +key+ must be equal to a given +value+. When it
+    # does not recognize the value type it creates a "any" schema.
+    #
+    # Example:
+    #   HashSchema.define do |s|
+    #     s["a_string"] = "value"       # equivalent to: s.string("a_string", equal_to: "value")
+    #     s["a_key"] = 0..5             # equivalent to: s.any("a_key", equal_to: "0..5")
+    #   end
     def []=(key, value)
       case value
       when String
