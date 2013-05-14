@@ -242,7 +242,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::Schema.send(:new)
     doc = {}
     s.stubs(:validate?).with(doc).returns(true).once
-    s.stubs(:sanitize_doc!).with(doc).once
+    s.stubs(:sanitize_object!).with(doc).once
     assert_equal true, s.validate!(doc)
   end
 
@@ -271,7 +271,7 @@ class SchemaTest < Test::Unit::TestCase
     doc = {}
     s.stubs(:validate).with(doc).once
     result = Object.new
-    s.stubs(:sanitize_doc!).with(doc).returns(result).once
+    s.stubs(:sanitize_object!).with(doc).returns(result).once
     assert_equal result.object_id, s.sanitize!(doc).object_id
   end
 
@@ -281,8 +281,8 @@ class SchemaTest < Test::Unit::TestCase
     sanitized_object = {}
     s.stubs(:sanitized_object).with().returns(sanitized_object).once
     result = Object.new
-    Respect.stubs(:sanitize_doc!).with(doc, sanitized_object).returns(result).once
-    assert_equal result.object_id, s.sanitize_doc!(doc).object_id
+    Respect.stubs(:sanitize_object!).with(doc, sanitized_object).returns(result).once
+    assert_equal result.object_id, s.sanitize_object!(doc).object_id
   end
 
   private

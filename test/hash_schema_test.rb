@@ -531,7 +531,7 @@ class HashSchemaTest < Test::Unit::TestCase
     assert s.sanitized_object.is_a?(HashWithIndifferentAccess)
     assert_equal({ "i_string" => 42, "i_symbol" => 51 }, s.sanitized_object)
 
-    s.sanitize_doc!(doc)
+    s.sanitize_object!(doc)
     assert_equal({ i_string: 42, "i_symbol" => 51 }, doc)
   end
 

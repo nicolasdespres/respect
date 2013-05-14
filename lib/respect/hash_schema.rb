@@ -21,7 +21,7 @@ module Respect
   # The document object passed is left untouched. The sanitized document
   # is a hash with indifferent access. Note that when a document
   # is sanitized in-place, its original keys are kept
-  # (see {Respect.sanitize_doc!}). Only validated keys are included
+  # (see {Respect.sanitize_object!}). Only validated keys are included
   # in the sanitized document.
   #
   # You can pass several options when creating an {HashSchema}:

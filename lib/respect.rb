@@ -186,23 +186,23 @@ module Respect
     #
     # Example:
     #   doc = { "int" => "42" }
-    #   Respect.sanitize_doc!(doc, { "int" => 42 }
+    #   Respect.sanitize_object!(doc, { "int" => 42 }
     #   doc                                     #=> { "int" => 42 }
     #   doc = { :int => "42" }
-    #   Respect.sanitize_doc!(doc, { "int" => 42 }
+    #   Respect.sanitize_object!(doc, { "int" => 42 }
     #   doc                                     #=> { :int => 42 }
     #
     # The sanitized document is accessible via the {Schema#sanitized_object} method after a
     # successful validation.
-    def sanitize_doc!(doc, sanitized_object)
+    def sanitize_object!(doc, sanitized_object)
       case doc
       when Hash
         if sanitized_object.is_a? Hash
           sanitized_object.each do |name, value|
             if doc.has_key?(name)
-              doc[name] = sanitize_doc!(doc[name], value)
+              doc[name] = sanitize_object!(doc[name], value)
             else
-              doc[name.to_sym] = sanitize_doc!(doc[name.to_sym], value)
+              doc[name.to_sym] = sanitize_object!(doc[name.to_sym], value)
             end
           end
           doc
@@ -212,7 +212,7 @@ module Respect
       when Array
         if sanitized_object.is_a? Array
           sanitized_object.each_with_index do |value, index|
-            doc[index] = sanitize_doc!(doc[index], value)
+            doc[index] = sanitize_object!(doc[index], value)
           end
           doc
         else

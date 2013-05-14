@@ -224,7 +224,7 @@ module Respect
     def validate!(doc)
       valid = validate?(doc)
       if valid
-        sanitize_doc!(doc)
+        sanitize_object!(doc)
       end
       valid
     end
@@ -233,12 +233,12 @@ module Respect
     # is returned. {ValidationError} is raised on error.
     def sanitize!(doc)
       validate(doc)
-      sanitize_doc!(doc)
+      sanitize_object!(doc)
     end
 
-    # A shortcut for {Respect.sanitize_doc!}.
-    def sanitize_doc!(doc)
-      Respect.sanitize_doc!(doc, self.sanitized_object)
+    # A shortcut for {Respect.sanitize_object!}.
+    def sanitize_object!(doc)
+      Respect.sanitize_object!(doc, self.sanitized_object)
     end
 
     # Returns a string containing a human-readable representation of this schema.
