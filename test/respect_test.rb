@@ -45,7 +45,7 @@ class RespectTest < Test::Unit::TestCase
       # valid class but with no statement
       request: nil, # not a Schema sub-class
       composite: nil, # abstract
-      undefined_schema: nil # undefined
+      undefined_schema: nil, # undefined
     }.each do |statement, schema_class|
       klass = nil
       assert_nothing_raised("nothing raised for '#{statement}'") do
