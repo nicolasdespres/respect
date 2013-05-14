@@ -11,9 +11,9 @@ class StringSchemaTest < Test::Unit::TestCase
   def test_non_string_value_get_converted
     s = Respect::StringSchema.new
     assert_equal "42", s.validate_type(42)
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(42)
-    assert_equal "42", s.sanitized_doc
+    assert_equal "42", s.sanitized_object
   end
 
   def test_string_property_has_no_greater_than_constraint
@@ -157,13 +157,13 @@ class StringSchemaTest < Test::Unit::TestCase
 
   def assert_validate_string_format(format, result, doc)
     s = Respect::StringSchema.new(format: format)
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     assert_schema_validation_is result, s, doc, "validate '#{doc}'"
     if result
-      assert s.sanitized_doc.is_a?(String), "is a String for '#{doc}'"
-      assert_equal doc, s.sanitized_doc, "sanitize '#{doc}'"
+      assert s.sanitized_object.is_a?(String), "is a String for '#{doc}'"
+      assert_equal doc, s.sanitized_object, "sanitize '#{doc}'"
     else
-      assert_nil s.sanitized_doc
+      assert_nil s.sanitized_object
     end
   end
 end

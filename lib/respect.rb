@@ -176,12 +176,12 @@ module Respect
       !!validator_for(constraint_name)
     end
 
-    # Sanitize the given +doc+ *in-place* according to the given +sanitized_doc+.
+    # Sanitize the given +doc+ *in-place* according to the given +sanitized_object+.
     # A sanitized document contains value with more specific data type. Like a URI
     # object instead of a plain string.
     #
     # Non-sanitized value are not touch (i.e. values present in +doc+ but not in
-    # +sanitized_doc+). However, +doc["key"]+ and +doc[:key]+ are considered as
+    # +sanitized_object+). However, +doc["key"]+ and +doc[:key]+ are considered as
     # referring to the same value, but they original key would be preserved.
     #
     # Example:
@@ -192,13 +192,13 @@ module Respect
     #   Respect.sanitize_doc!(doc, { "int" => 42 }
     #   doc                                     #=> { :int => 42 }
     #
-    # The sanitized document is accessible via the {Schema#sanitized_doc} method after a
+    # The sanitized document is accessible via the {Schema#sanitized_object} method after a
     # successful validation.
-    def sanitize_doc!(doc, sanitized_doc)
+    def sanitize_doc!(doc, sanitized_object)
       case doc
       when Hash
-        if sanitized_doc.is_a? Hash
-          sanitized_doc.each do |name, value|
+        if sanitized_object.is_a? Hash
+          sanitized_object.each do |name, value|
             if doc.has_key?(name)
               doc[name] = sanitize_doc!(doc[name], value)
             else
@@ -207,19 +207,19 @@ module Respect
           end
           doc
         else
-          sanitized_doc
+          sanitized_object
         end
       when Array
-        if sanitized_doc.is_a? Array
-          sanitized_doc.each_with_index do |value, index|
+        if sanitized_object.is_a? Array
+          sanitized_object.each_with_index do |value, index|
             doc[index] = sanitize_doc!(doc[index], value)
           end
           doc
         else
-          sanitized_doc
+          sanitized_object
         end
       else
-        sanitized_doc
+        sanitized_object
       end
     end
 

@@ -129,7 +129,7 @@ module Respect
 
     # Create a new schema using the given _options_.
     def initialize(options = {})
-      @sanitized_doc = nil
+      @sanitized_object = nil
       @options = self.class.default_options.merge(options)
     end
 
@@ -140,7 +140,7 @@ module Respect
     # Returns the sanitized document. It is +nil+ as long as you have not
     # validated any document. It is overwritten every times you call
     # {#validate}.
-    attr_reader :sanitized_doc
+    attr_reader :sanitized_object
 
     # Returns the hash of options.
     attr_reader :options
@@ -211,7 +211,7 @@ module Respect
 
     # Raise a {ValidationError} if the given +doc+ is not validated by this schema.
     # Returns true otherwise. A sanitized version of the document is built during
-    # this process and you can access it via {#sanitized_doc}.
+    # this process and you can access it via {#sanitized_object}.
     # Rewrite it in sub-classes.
     def validate(doc)
       raise NoMethodError, "overwrite me in sub-classes"
@@ -238,7 +238,7 @@ module Respect
 
     # A shortcut for {Respect.sanitize_doc!}.
     def sanitize_doc!(doc)
-      Respect.sanitize_doc!(doc, self.sanitized_doc)
+      Respect.sanitize_doc!(doc, self.sanitized_object)
     end
 
     # Returns a string containing a human-readable representation of this schema.
@@ -292,7 +292,7 @@ module Respect
     private
 
     # Used by sub-classes to update the formatted document.
-    attr_writer :sanitized_doc
+    attr_writer :sanitized_object
 
   end
 end

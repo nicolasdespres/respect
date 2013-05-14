@@ -4,17 +4,17 @@ class IPAddrSchemaTest < Test::Unit::TestCase
 
   def test_ip_addr_schema_creates_ipaddr_object
     s = Respect::IPAddrSchema.new
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     # IPv4
     assert_schema_validate s, "192.168.0.2"
-    assert s.sanitized_doc.is_a?(IPAddr)
-    assert s.sanitized_doc.ipv4?
-    assert_equal("192.168.0.2", s.sanitized_doc.to_s)
+    assert s.sanitized_object.is_a?(IPAddr)
+    assert s.sanitized_object.ipv4?
+    assert_equal("192.168.0.2", s.sanitized_object.to_s)
     # IPv6
     assert_schema_validate s, "3ffe:505:2::1"
-    assert s.sanitized_doc.is_a?(IPAddr)
-    assert s.sanitized_doc.ipv6?
-    assert_equal("3ffe:505:2::1", s.sanitized_doc.to_s)
+    assert s.sanitized_object.is_a?(IPAddr)
+    assert s.sanitized_object.ipv6?
+    assert_equal("3ffe:505:2::1", s.sanitized_object.to_s)
   end
 
   def test_ip_addr_schema_relies_on_format_validator

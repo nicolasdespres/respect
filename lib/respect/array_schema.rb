@@ -112,7 +112,7 @@ module Respect
       end
       # At this point we are sure @item and (@items or @extra_items) cannot be
       # defined both. (see the setters).
-      sanitized_doc = []
+      sanitized_object = []
       # Validate expected item.
       if @item
         if options[:min_size] && doc.size < options[:min_size]
@@ -124,7 +124,7 @@ module Respect
                 "expected at most #{options[:min_size]} item(s) but got #{doc.size}"
         end
         doc.each_with_index do |item, i|
-          validate_item(i, @item, doc, sanitized_doc)
+          validate_item(i, @item, doc, sanitized_object)
         end
       end
       # Validate doc items count.
@@ -145,14 +145,14 @@ module Respect
       # Validate expected multiple items.
       if @items
         @items.each_with_index do |schema, i|
-          validate_item(i, schema, doc, sanitized_doc)
+          validate_item(i, schema, doc, sanitized_object)
         end
       end
       # Validate extra items.
       if @extra_items
         @extra_items.each_with_index do |schema, i|
           if @items.size + i < doc.size
-            validate_item(@items.size + i, schema, doc, sanitized_doc)
+            validate_item(@items.size + i, schema, doc, sanitized_object)
           end
         end
       end
@@ -166,7 +166,7 @@ module Respect
           end
         end
       end
-      self.sanitized_doc = sanitized_doc
+      self.sanitized_object = sanitized_object
       true
     end
 
@@ -176,10 +176,10 @@ module Respect
 
     private
 
-    def validate_item(index, schema, doc, sanitized_doc)
+    def validate_item(index, schema, doc, sanitized_object)
       begin
         schema.validate(doc[index])
-        sanitized_doc << schema.sanitized_doc
+        sanitized_object << schema.sanitized_object
       rescue ValidationError => e
         e.context << "in array #{index.ordinalize} item"
         raise e

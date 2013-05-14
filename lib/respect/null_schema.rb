@@ -7,14 +7,14 @@ module Respect
       case doc
       when String
         if doc == "null"
-          self.sanitized_doc = nil
+          self.sanitized_object = nil
           true
         else
           raise ValidationError,
                 "expected 'null' value but got '#{doc}:#{doc.class}'"
         end
       when NilClass
-        self.sanitized_doc = nil
+        self.sanitized_object = nil
         true
       else
         raise ValidationError,

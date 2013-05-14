@@ -206,10 +206,10 @@ class HashSchemaTest < Test::Unit::TestCase
     end
     # Empty hash.
     s.validate({})
-    assert_equal({ "test" => 42 }, s.sanitized_doc)
+    assert_equal({ "test" => 42 }, s.sanitized_object)
     # Hash with extra property.
     s.validate({ "foo" => 51 })
-    assert_equal({ "test" => 42 }, s.sanitized_doc)
+    assert_equal({ "test" => 42 }, s.sanitized_object)
   end
 
   def test_default_value_do_not_overwrite_defined_one
@@ -217,7 +217,7 @@ class HashSchemaTest < Test::Unit::TestCase
       s.integer "test", default: 42
     end
     s.validate({ "test" => 54 })
-    assert_equal({ "test" => 54 }, s.sanitized_doc)
+    assert_equal({ "test" => 54 }, s.sanitized_object)
   end
 
   def test_validate_matched_properties
@@ -329,10 +329,10 @@ class HashSchemaTest < Test::Unit::TestCase
       s.integer "id", equal_to: 42
     end
     doc = { "id" => "42" }
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal({ "id" => "42" }, doc)
-    assert_equal({ "id" => 42 }, s.sanitized_doc)
+    assert_equal({ "id" => 42 }, s.sanitized_object)
   end
 
   def test_sanitize_recursive_document
@@ -343,10 +343,10 @@ class HashSchemaTest < Test::Unit::TestCase
       end
     end
     doc = { "id" => "42", "obj" => { "id" => "51" } }
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal({ "id" => "42", "obj" => { "id" => "51" } }, doc)
-    assert_equal({ "id" => 42, "obj" => { "id" => 51 } }, s.sanitized_doc)
+    assert_equal({ "id" => 42, "obj" => { "id" => 51 } }, s.sanitized_object)
   end
 
   def test_do_not_sanitize_unvalidated_optional_property
@@ -355,10 +355,10 @@ class HashSchemaTest < Test::Unit::TestCase
       s.integer "id2", equal_to: 51, required: false
     end
     doc = { "id1" => "42" }
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal({ "id1" => "42" }, doc)
-    assert_equal({ "id1" => 42 }, s.sanitized_doc)
+    assert_equal({ "id1" => 42 }, s.sanitized_object)
   end
 
   def test_hash_schema_merge_default_options
@@ -523,13 +523,13 @@ class HashSchemaTest < Test::Unit::TestCase
     doc = { i_string: "42", "i_symbol" => "51" }
     assert_schema_validate(s, doc)
     assert !doc.is_a?(HashWithIndifferentAccess)
-    assert_equal(42, s.sanitized_doc[:i_string])
-    assert_equal(42, s.sanitized_doc["i_string"])
-    assert_equal(51, s.sanitized_doc[:i_symbol])
-    assert_equal(51, s.sanitized_doc["i_symbol"])
+    assert_equal(42, s.sanitized_object[:i_string])
+    assert_equal(42, s.sanitized_object["i_string"])
+    assert_equal(51, s.sanitized_object[:i_symbol])
+    assert_equal(51, s.sanitized_object["i_symbol"])
 
-    assert s.sanitized_doc.is_a?(HashWithIndifferentAccess)
-    assert_equal({ "i_string" => 42, "i_symbol" => 51 }, s.sanitized_doc)
+    assert s.sanitized_object.is_a?(HashWithIndifferentAccess)
+    assert_equal({ "i_string" => 42, "i_symbol" => 51 }, s.sanitized_object)
 
     s.sanitize_doc!(doc)
     assert_equal({ i_string: 42, "i_symbol" => 51 }, doc)
@@ -553,22 +553,22 @@ class HashSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, { })
   end
 
-  def test_sanitized_doc_only_include_validated_keys
+  def test_sanitized_object_only_include_validated_keys
     s = Respect::HashSchema.define do |s|
       s.integer "i"
     end
     assert_schema_validate(s, { i: "42", foo: "bar" })
-    assert_equal({ "i" => 42 }, s.sanitized_doc)
+    assert_equal({ "i" => 42 }, s.sanitized_object)
   end
 
-  def test_sanitized_doc_include_optional_keys_when_present
+  def test_sanitized_object_include_optional_keys_when_present
     s = Respect::HashSchema.define do |s|
       s.integer "i", required: false
     end
     assert_schema_validate(s, { i: "42", foo: "bar" })
-    assert_equal({ "i" => 42 }, s.sanitized_doc)
+    assert_equal({ "i" => 42 }, s.sanitized_object)
     assert_schema_validate(s, { foo: "bar" })
-    assert_equal({ }, s.sanitized_doc)
+    assert_equal({ }, s.sanitized_object)
   end
 
 end

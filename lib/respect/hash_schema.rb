@@ -83,51 +83,51 @@ module Respect
       unless doc.is_a?(HashWithIndifferentAccess)
         doc = doc.with_indifferent_access
       end
-      sanitized_doc = {}.with_indifferent_access
+      sanitized_object = {}.with_indifferent_access
       # Validate expected properties.
       @properties.each do |name, schema|
         case name
         when Symbol
-          validate_property_with_options(name.to_s, schema, doc, sanitized_doc)
+          validate_property_with_options(name.to_s, schema, doc, sanitized_object)
         when String
-          validate_property_with_options(name, schema, doc, sanitized_doc)
+          validate_property_with_options(name, schema, doc, sanitized_object)
         when Regexp
           doc.select{|prop, schema| prop =~ name }.each do |prop, value|
-            validate_property(prop, schema, doc, sanitized_doc)
+            validate_property(prop, schema, doc, sanitized_object)
           end
         end
       end
       if options[:strict]
         # Check whether there are extra properties.
         doc.each do |name, schema|
-          unless sanitized_doc.has_key? name
+          unless sanitized_object.has_key? name
             raise ValidationError, "unexpected key `#{name}'"
           end
         end
       end
-      self.sanitized_doc = sanitized_doc
+      self.sanitized_object = sanitized_object
       true
     end
 
-    def validate_property_with_options(name, schema, doc, sanitized_doc)
+    def validate_property_with_options(name, schema, doc, sanitized_object)
       if doc.has_key? name
-        validate_property(name, schema, doc, sanitized_doc)
+        validate_property(name, schema, doc, sanitized_object)
       else
         if schema.required?
           raise ValidationError, "missing key `#{name}'"
         else
           if schema.has_default?
-            sanitized_doc[name] = schema.default
+            sanitized_object[name] = schema.default
           end
         end
       end
     end
     private :validate_property_with_options
 
-    def validate_property(name, schema, doc, sanitized_doc)
+    def validate_property(name, schema, doc, sanitized_object)
       begin
         schema.validate(doc[name])
-        sanitized_doc[name] = schema.sanitized_doc
+        sanitized_object[name] = schema.sanitized_object
       rescue ValidationError => e
         e.context << "in hash property `#{name}'"
         raise e

@@ -278,10 +278,10 @@ class ArraySchemaTest < Test::Unit::TestCase
       s.integer
     end
     doc = [ "42", "51" ]
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal([ "42", "51" ], doc)
-    assert_equal([ 42, 51 ], s.sanitized_doc)
+    assert_equal([ 42, 51 ], s.sanitized_object)
   end
 
   def test_sanitize_recursive_document
@@ -291,10 +291,10 @@ class ArraySchemaTest < Test::Unit::TestCase
       end
     end
     doc = [ [ "42", "51" ], [ "16" ] ]
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal([ [ "42", "51" ], [ "16" ] ], doc)
-    assert_equal([ [ 42, 51 ], [ 16 ] ], s.sanitized_doc)
+    assert_equal([ [ 42, 51 ], [ 16 ] ], s.sanitized_object)
   end
 
   def test_do_not_sanitize_unvalidated_optional_property
@@ -307,10 +307,10 @@ class ArraySchemaTest < Test::Unit::TestCase
       end
     end
     doc = [ "42" ]
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal([ "42" ], doc)
-    assert_equal([ 42 ], s.sanitized_doc)
+    assert_equal([ 42 ], s.sanitized_object)
   end
 
   def test_sanitize_validated_optional_property
@@ -323,10 +323,10 @@ class ArraySchemaTest < Test::Unit::TestCase
       end
     end
     doc = [ "42", "52", "16" ]
-    assert_nil s.sanitized_doc
+    assert_nil s.sanitized_object
     s.validate(doc)
     assert_equal([ "42", "52", "16" ], doc)
-    assert_equal([ 42, 52 ], s.sanitized_doc)
+    assert_equal([ 42, 52 ], s.sanitized_object)
   end
 
   def test_array_schema_merge_default_options

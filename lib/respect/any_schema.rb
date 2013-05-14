@@ -6,7 +6,7 @@ module Respect
     def validate(doc)
       case doc
       when Hash, Array, TrueClass, FalseClass, Numeric, NilClass, String
-        self.sanitized_doc = doc
+        self.sanitized_object = doc
         true
       else
         raise ValidationError,

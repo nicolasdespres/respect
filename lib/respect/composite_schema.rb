@@ -49,7 +49,7 @@ module Respect
     # Overloaded methods (see {Schema#validate}).
     def validate(doc)
       @schema.validate(doc)
-      self.sanitized_doc = sanitize(@schema.sanitized_doc)
+      self.sanitized_object = sanitize(@schema.sanitized_object)
       true
     end
 

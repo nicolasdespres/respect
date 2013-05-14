@@ -20,9 +20,9 @@ module Respect
     # Call +validate_type+ with the given +doc+, apply the constraints
     # and assign the sanitized document.
     def validate(doc)
-      sanitized_doc = validate_type(doc)
-      validate_constraints(sanitized_doc)
-      self.sanitized_doc = sanitized_doc
+      sanitized_object = validate_type(doc)
+      validate_constraints(sanitized_object)
+      self.sanitized_object = sanitized_object
       true
     end
 
