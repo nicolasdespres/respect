@@ -107,4 +107,20 @@ class HashDefTest < Test::Unit::TestCase
     assert_equal(0, s["opt2"].options[:less_than])
     assert_equal("doc opt2", s["opt2"].doc)
   end
+
+  def test_key_assignment_with_string_value_create_string_schema_with_equal_to_validator
+    h = Respect::HashSchema.define do |h|
+      h["key"] = "value"
+    end
+    assert_equal Respect::StringSchema.new(equal_to: "value"), h["key"]
+  end
+
+  def test_assign_an_object_create_any_with_equal_to_validating_its_string_representation
+    o = Object.new
+    h = Respect::HashSchema.define do |h|
+      h["any"] = o
+    end
+    s = Respect::AnySchema.new(equal_to: o.to_s)
+    assert_equal s, h["any"]
+  end
 end

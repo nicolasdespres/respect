@@ -10,6 +10,15 @@ module Respect
       with_options(required: false, &block)
     end
 
+    def []=(key, value)
+      case value
+      when String
+        string(key, equal_to: value.to_s)
+      else
+        any(key, equal_to: value.to_s)
+      end
+    end
+
     private
 
     def evaluation_result
