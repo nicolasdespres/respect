@@ -21,6 +21,12 @@ class RespectTest < Test::Unit::TestCase
     end
   end
 
+  def test_schema_name_for_invalid_statement_names_raise_error
+    assert_raises(ArgumentError) do
+      Respect.schema_name_for("[]=")
+    end
+  end
+
   def test_schema_for
     {
       # root schema

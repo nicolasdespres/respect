@@ -124,8 +124,13 @@ module Respect
       GlobalDef.core_contexts.each{|c| c.send(:include, CoreStatements) }
     end
 
+    STATEMENT_NAME_REGEXP = /^[a-z_][a-z_0-9]*$/
+
     # Build a schema class name from the given +statement_name+.
     def schema_name_for(statement_name)
+      unless statement_name =~ STATEMENT_NAME_REGEXP
+        raise ArgumentError, "statement '#{statement_name}' name must match #{STATEMENT_NAME_REGEXP.inspect}"
+      end
       const_name = statement_name.to_s
       if const_name == "schema"
         "#{self.name}::Schema"
