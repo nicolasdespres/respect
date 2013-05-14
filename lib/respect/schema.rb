@@ -192,11 +192,11 @@ module Respect
       @options[:default] != nil
     end
 
-    # Return whether the given +doc+ validates this schema.
+    # Return whether the given +object+ validates this schema.
     # You can get the validation error via {#last_error}.
-    def validate?(doc)
+    def validate?(object)
       begin
-        validate(doc)
+        validate(object)
         true
       rescue ValidationError => e
         @last_error = e
@@ -209,36 +209,36 @@ module Respect
     # Reset each time {#validate?} is called.
     attr_reader :last_error
 
-    # Raise a {ValidationError} if the given +doc+ is not validated by this schema.
+    # Raise a {ValidationError} if the given +object+ is not validated by this schema.
     # Returns true otherwise. A sanitized version of the document is built during
     # this process and you can access it via {#sanitized_object}.
     # Rewrite it in sub-classes.
-    def validate(doc)
+    def validate(object)
       raise NoMethodError, "overwrite me in sub-classes"
     end
 
-    # Return +true+ or +false+ whether this schema validates the given +doc+.
+    # Return +true+ or +false+ whether this schema validates the given +object+.
     # If it does the document is updated in-place with the sanitized value.
     # This method does not raise a {ValidationError}. You can access the error
     # using {#last_error}.
-    def validate!(doc)
-      valid = validate?(doc)
+    def validate!(object)
+      valid = validate?(object)
       if valid
-        sanitize_object!(doc)
+        sanitize_object!(object)
       end
       valid
     end
 
-    # Sanitize the given +doc+ *in-place* if it validates this schema. The sanitized document
+    # Sanitize the given +object+ *in-place* if it validates this schema. The sanitized document
     # is returned. {ValidationError} is raised on error.
-    def sanitize!(doc)
-      validate(doc)
-      sanitize_object!(doc)
+    def sanitize!(object)
+      validate(object)
+      sanitize_object!(object)
     end
 
     # A shortcut for {Respect.sanitize_object!}.
-    def sanitize_object!(doc)
-      Respect.sanitize_object!(doc, self.sanitized_object)
+    def sanitize_object!(object)
+      Respect.sanitize_object!(object, self.sanitized_object)
     end
 
     # Returns a string containing a human-readable representation of this schema.

@@ -4,22 +4,22 @@ module Respect
 
     public_class_method :new
 
-    def validate_type(doc)
-      case doc
+    def validate_type(object)
+      case object
       when String
-        if match_data = /^[-+]?\d+(\.\d+)?$/.match(doc)
+        if match_data = /^[-+]?\d+(\.\d+)?$/.match(object)
           if match_data[1]
-            doc.to_f
+            object.to_f
           else
-            doc.to_i
+            object.to_i
           end
         else
-          raise ValidationError, "malformed numeric value: `#{doc}'"
+          raise ValidationError, "malformed numeric value: `#{object}'"
         end
       when Integer, Float
-        doc
+        object
       else
-        raise ValidationError, "document is not a numeric but a '#{doc.class}'"
+        raise ValidationError, "object is not a numeric but a '#{object.class}'"
       end
     end
 

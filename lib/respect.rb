@@ -176,45 +176,45 @@ module Respect
       !!validator_for(constraint_name)
     end
 
-    # Sanitize the given +doc+ *in-place* according to the given +sanitized_object+.
-    # A sanitized document contains value with more specific data type. Like a URI
+    # Sanitize the given +object+ *in-place* according to the given +sanitized_object+.
+    # A sanitized object contains value with more specific data type. Like a URI
     # object instead of a plain string.
     #
-    # Non-sanitized value are not touch (i.e. values present in +doc+ but not in
-    # +sanitized_object+). However, +doc["key"]+ and +doc[:key]+ are considered as
+    # Non-sanitized value are not touch (i.e. values present in +object+ but not in
+    # +sanitized_object+). However, +object["key"]+ and +object[:key]+ are considered as
     # referring to the same value, but they original key would be preserved.
     #
     # Example:
-    #   doc = { "int" => "42" }
-    #   Respect.sanitize_object!(doc, { "int" => 42 }
-    #   doc                                     #=> { "int" => 42 }
-    #   doc = { :int => "42" }
-    #   Respect.sanitize_object!(doc, { "int" => 42 }
-    #   doc                                     #=> { :int => 42 }
+    #   object = { "int" => "42" }
+    #   Respect.sanitize_object!(object, { "int" => 42 }
+    #   object                                     #=> { "int" => 42 }
+    #   object = { :int => "42" }
+    #   Respect.sanitize_object!(object, { "int" => 42 }
+    #   object                                     #=> { :int => 42 }
     #
-    # The sanitized document is accessible via the {Schema#sanitized_object} method after a
+    # The sanitized object is accessible via the {Schema#sanitized_object} method after a
     # successful validation.
-    def sanitize_object!(doc, sanitized_object)
-      case doc
+    def sanitize_object!(object, sanitized_object)
+      case object
       when Hash
         if sanitized_object.is_a? Hash
           sanitized_object.each do |name, value|
-            if doc.has_key?(name)
-              doc[name] = sanitize_object!(doc[name], value)
+            if object.has_key?(name)
+              object[name] = sanitize_object!(object[name], value)
             else
-              doc[name.to_sym] = sanitize_object!(doc[name.to_sym], value)
+              object[name.to_sym] = sanitize_object!(object[name.to_sym], value)
             end
           end
-          doc
+          object
         else
           sanitized_object
         end
       when Array
         if sanitized_object.is_a? Array
           sanitized_object.each_with_index do |value, index|
-            doc[index] = sanitize_object!(doc[index], value)
+            object[index] = sanitize_object!(object[index], value)
           end
-          doc
+          object
         else
           sanitized_object
         end

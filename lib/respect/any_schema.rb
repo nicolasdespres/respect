@@ -3,14 +3,14 @@ module Respect
 
     public_class_method :new
 
-    def validate(doc)
-      case doc
+    def validate(object)
+      case object
       when Hash, Array, TrueClass, FalseClass, Numeric, NilClass, String
-        self.sanitized_object = doc
+        self.sanitized_object = object
         true
       else
         raise ValidationError,
-              "document is not of a valid type but a #{doc.class}"
+              "object is not of a valid type but a #{object.class}"
       end
     end
 

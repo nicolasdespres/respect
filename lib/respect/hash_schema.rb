@@ -75,31 +75,31 @@ module Respect
     attr_reader :properties
 
     # Overwritten method. See {Schema#validate}.
-    def validate(doc)
-      # Validate document format.
-      unless doc.is_a?(Hash)
-        raise ValidationError, "document is not a hash but a #{doc.class}"
+    def validate(object)
+      # Validate object format.
+      unless object.is_a?(Hash)
+        raise ValidationError, "object is not a hash but a #{object.class}"
       end
-      unless doc.is_a?(HashWithIndifferentAccess)
-        doc = doc.with_indifferent_access
+      unless object.is_a?(HashWithIndifferentAccess)
+        object = object.with_indifferent_access
       end
       sanitized_object = {}.with_indifferent_access
       # Validate expected properties.
       @properties.each do |name, schema|
         case name
         when Symbol
-          validate_property_with_options(name.to_s, schema, doc, sanitized_object)
+          validate_property_with_options(name.to_s, schema, object, sanitized_object)
         when String
-          validate_property_with_options(name, schema, doc, sanitized_object)
+          validate_property_with_options(name, schema, object, sanitized_object)
         when Regexp
-          doc.select{|prop, schema| prop =~ name }.each do |prop, value|
-            validate_property(prop, schema, doc, sanitized_object)
+          object.select{|prop, schema| prop =~ name }.each do |prop, value|
+            validate_property(prop, schema, object, sanitized_object)
           end
         end
       end
       if options[:strict]
         # Check whether there are extra properties.
-        doc.each do |name, schema|
+        object.each do |name, schema|
           unless sanitized_object.has_key? name
             raise ValidationError, "unexpected key `#{name}'"
           end
@@ -109,9 +109,9 @@ module Respect
       true
     end
 
-    def validate_property_with_options(name, schema, doc, sanitized_object)
-      if doc.has_key? name
-        validate_property(name, schema, doc, sanitized_object)
+    def validate_property_with_options(name, schema, object, sanitized_object)
+      if object.has_key? name
+        validate_property(name, schema, object, sanitized_object)
       else
         if schema.required?
           raise ValidationError, "missing key `#{name}'"
@@ -124,9 +124,9 @@ module Respect
     end
     private :validate_property_with_options
 
-    def validate_property(name, schema, doc, sanitized_object)
+    def validate_property(name, schema, object, sanitized_object)
       begin
-        schema.validate(doc[name])
+        schema.validate(object[name])
         sanitized_object[name] = schema.sanitized_object
       rescue ValidationError => e
         e.context << "in hash property `#{name}'"

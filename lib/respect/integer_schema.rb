@@ -1,19 +1,19 @@
 module Respect
   class IntegerSchema < NumericSchema
 
-    def validate_type(doc)
-      case doc
+    def validate_type(object)
+      case object
       when String
-        if doc =~ /^[-+]?\d+$/
-          doc.to_i
+        if object =~ /^[-+]?\d+$/
+          object.to_i
         else
           raise ValidationError,
-                "malformed integer value: `#{doc}'"
+                "malformed integer value: `#{object}'"
         end
       when Integer
-        doc
+        object
       else
-        raise ValidationError, "document is not an integer but a '#{doc.class}'"
+        raise ValidationError, "object is not an integer but a '#{object.class}'"
       end
     end
 

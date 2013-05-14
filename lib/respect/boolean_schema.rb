@@ -4,21 +4,21 @@ module Respect
 
     public_class_method :new
 
-    def validate_type(doc)
-      case doc
+    def validate_type(object)
+      case object
       when String
-        if doc == "true"
+        if object == "true"
           true
-        elsif doc == "false"
+        elsif object == "false"
           false
         else
           raise ValidationError,
-                "malformed boolean value: `#{doc}'"
+                "malformed boolean value: `#{object}'"
         end
       when TrueClass, FalseClass
-        doc
+        object
       else
-        raise ValidationError, "document is not a boolean but a '#{doc.class}'"
+        raise ValidationError, "object is not a boolean but a '#{object.class}'"
       end
     end
 

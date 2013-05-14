@@ -4,8 +4,8 @@ module Respect
 
     public_class_method :new
 
-    def validate_type(doc)
-      doc.to_s
+    def validate_type(object)
+      object.to_s
     end
 
   end
