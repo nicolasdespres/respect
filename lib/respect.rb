@@ -186,10 +186,10 @@ module Respect
     #
     # Example:
     #   doc = { "int" => "42" }
-    #   Respect.sanitized_doc!(doc, { "int" => 42 }
+    #   Respect.sanitize_doc!(doc, { "int" => 42 }
     #   doc                                     #=> { "int" => 42 }
     #   doc = { :int => "42" }
-    #   Respect.sanitized_doc!(doc, { "int" => 42 }
+    #   Respect.sanitize_doc!(doc, { "int" => 42 }
     #   doc                                     #=> { :int => 42 }
     #
     # The sanitized document is accessible via the {Schema#sanitized_doc} method after a
