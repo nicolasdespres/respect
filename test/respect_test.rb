@@ -55,6 +55,13 @@ class RespectTest < Test::Unit::TestCase
     end
   end
 
+  def test_schema_for_calls_schema_name_for
+    statement_name = "string"
+    schema_name = "Respect::StringSchema"
+    Respect.expects(:schema_name_for).with(statement_name).returns(schema_name).once
+    assert_equal Respect::StringSchema, Respect.schema_for(statement_name)
+  end
+
   def test_schema_defined_for
     assert_equal true,  Respect.schema_defined_for?("string")
     assert_equal false, Respect.schema_defined_for?("request"), "not a schema"
