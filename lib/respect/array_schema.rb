@@ -69,6 +69,9 @@ module Respect
       @item = item
     end
 
+    # Get the schema that all items in the array must validate.
+    attr_reader :item
+
     # Set the array of schema that the corresponding items must validate.
     def items=(items)
       if @item
@@ -77,6 +80,9 @@ module Respect
       end
       @items = items
     end
+
+    # Get the array of schema that the corresponding items must validate.
+    attr_reader :items
 
     # Set extra schema items. These are optional. If they are not in the
     # document the validation pass anyway.
@@ -89,6 +95,9 @@ module Respect
       @items = [] if @items.nil?
       @extra_items = extra_items
     end
+
+    # Get the extra schema items.
+    attr_reader :extra_items
 
     # Overwritten method. See {Schema#validate}
     def validate(doc)

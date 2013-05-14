@@ -1,6 +1,6 @@
 require "test_helper"
 
-class JsonSchemaV3HashDumper < Test::Unit::TestCase
+class Org3Dumper < Test::Unit::TestCase
   def test_dump_basic_types_commands_with_no_options
     [
       :integer,
@@ -12,7 +12,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s = Respect::Schema.define do |s|
         s.__send__(command)
       end
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = {
         "type" => command.to_s,
       }
@@ -26,7 +26,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       :FloatSchema => "number",
     }.each do |schema_class, type|
       s = Respect.const_get(schema_class).new
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = { "type" => type }
       assert_equal e, a, "dump schema #{schema_class}"
     end
@@ -41,7 +41,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       :Ipv6AddrSchema => "ipv6",
     }.each do |schema_class, format|
       s = Respect.const_get(schema_class).new
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = { "type" => "string", "format" => format}
       assert_equal e, a, "dump schema #{schema_class}"
     end
@@ -59,7 +59,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s = Respect::Schema.define do |s|
         s.__send__(command)
       end
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = {
         "type" => "string",
         "format" => format,
@@ -74,7 +74,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.string "s"
       s.float "f"
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -104,7 +104,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float "o_f"
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -130,7 +130,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.integer "i"
       s.string /s.*t/
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -159,7 +159,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         end
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -200,7 +200,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         end
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "patternProperties" => {
@@ -247,7 +247,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         end
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "additionalProperties" => {
@@ -278,7 +278,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
   def test_do_not_dump_empty_object_properties
     s = Respect::ObjectSchema.define do |s|
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
     }
@@ -290,7 +290,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.optionals do |s|
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
     }
@@ -302,7 +302,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.integer "i"
       s.string /s/
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => { "i" => { "type" => "integer", "required" => true } },
@@ -317,7 +317,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.integer "enabled"
       s.integer "nodoc", doc: false
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => { "enabled" => { "type" => "integer", "required" => true } },
@@ -332,7 +332,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.integer "nodoc", doc: false
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "additionalProperties" => { "enabled" => { "type" => "integer" } },
@@ -345,7 +345,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.integer /enabled/
       s.integer /nodoc/, doc: false
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "patternProperties" => { "enabled" => { "type" => "integer", "required" => true } },
@@ -357,7 +357,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
     s = Respect::ArraySchema.define do |s|
       s.integer
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "items" => {
@@ -375,7 +375,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "items" => [
@@ -397,7 +397,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "items" => [
@@ -418,7 +418,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "additionalItems" => [
@@ -437,7 +437,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         end
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "items" => {
@@ -473,7 +473,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "items" => [
@@ -519,7 +519,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.float
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
       "additionalItems" => [
@@ -548,7 +548,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
   def test_do_not_dump_empty_array_item
     s = Respect::ArraySchema.define do |s|
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
     }
@@ -560,7 +560,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.items do |s|
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
     }
@@ -572,7 +572,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s.extra_items do |s|
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "array",
     }
@@ -588,7 +588,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.integer "optional_i"
       end
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -630,7 +630,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s = Respect::Schema.define do |s|
           s.__send__(command, { opt => params[:value] })
         end
-        a = Respect::JsonSchemaV3HashDumper.new(s).dump
+        a = Respect::Org3Dumper.new(s).dump
         e = { "type" => command.to_s }.merge(params[:trans])
         assert_equal e, a, "dump option #{opt} for command #{command}"
         # Test option value are not shared between the hash and the schema.
@@ -658,7 +658,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s = Respect::Schema.define do |s|
         s.string format: format
       end
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = {
         "type" => "string",
         "format" => type,
@@ -688,7 +688,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.doc data[:doc]
         s.integer
       end
-      a = Respect::JsonSchemaV3HashDumper.new(s).dump
+      a = Respect::Org3Dumper.new(s).dump
       e = { "type" => "integer" }.merge(data[:expected])
       assert_equal e, a, data[:message]
     end
@@ -699,7 +699,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
       s = Respect::Schema.define do |s|
         s.__send__(command, doc: false)
       end
-      assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+      assert_nil Respect::Org3Dumper.new(s).dump
     end
   end
 
@@ -710,7 +710,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.string "s"
       end
     end
-    assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+    assert_nil Respect::Org3Dumper.new(s).dump
   end
 
   def test_no_dump_for_non_empty_array
@@ -719,14 +719,14 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
         s.integer
       end
     end
-    assert_nil Respect::JsonSchemaV3HashDumper.new(s).dump
+    assert_nil Respect::Org3Dumper.new(s).dump
   end
 
   def test_dump_composite_schema
     s = Respect::ObjectSchema.define do |s|
       s.point "origin"
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {
@@ -747,7 +747,7 @@ class JsonSchemaV3HashDumper < Test::Unit::TestCase
     s = Respect::ObjectSchema.define do |s|
       s.circle "area"
     end
-    a = Respect::JsonSchemaV3HashDumper.new(s).dump
+    a = Respect::Org3Dumper.new(s).dump
     e = {
       "type" => "object",
       "properties" => {

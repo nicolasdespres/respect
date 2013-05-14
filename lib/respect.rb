@@ -65,7 +65,7 @@ module Respect
   autoload :DefEvaluator
   # Dumper classes
   autoload :DslDumper
-  autoload :JsonSchemaV3HashDumper
+  autoload :Org3Dumper
   # Miscellaneous classes
   autoload :DocParser
 

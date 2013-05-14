@@ -217,19 +217,13 @@ module Respect
     end
 
     # Serialize this schema to a JSON string following the given +format+.
-    def to_json(format = :json_schema_v3)
+    def to_json(format = :org3)
       case format
-      when :json_schema_v3
-        require 'json'
-        self.to_h(:json_schema_v3).to_json
+      when :org3
+        self.to_h(:org3).to_json
       else
         raise ArgumentError, "unknown format '#{format}'"
       end
-    end
-
-    # Serialize this schema to an *indented* JSON string following the given +format+
-    def to_pretty_json(format = :json_schema_v3)
-      JSON.pretty_generate(self.to_h(format))
     end
 
     # Return the options with no default value.
@@ -240,10 +234,10 @@ module Respect
 
     # Convert this schema to a hash representation following the given
     # +format+.
-    def to_h(format = :json_schema_v3)
+    def to_h(format = :org3)
       case format
-      when :json_schema_v3
-        JsonSchemaV3HashDumper.new(self).dump
+      when :org3
+        Org3Dumper.new(self).dump
       else
         raise ArgumentError, "unknown format '#{format}'"
       end

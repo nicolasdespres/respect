@@ -15,7 +15,7 @@ module Respect
       @output ||= String.new
       self << "Respect::Schema.define do |s|"
       self.indent do
-        @schema.dump_as_dsl(self)
+        self.dump_schema(@schema)
       end
       self << "\nend\n"
       @output
@@ -50,117 +50,114 @@ module Respect
       self << "\nend"
     end
 
-  end
-
-  class Schema
-    def dump_as_dsl(dumper)
-      dump_command_documentation_as_dsl(dumper)
-      dumper << "\ns."
-      dump_command_name_as_dsl(dumper)
-      dump_command_arguments_as_dsl(dumper)
-      dump_command_block_as_dsl(dumper)
-      dumper
+    def dump_schema(schema)
+      self.dump_doc(schema)
+      self << "\ns."
+      self.dump_name(schema)
+      self.dump_arguments(schema)
+      self.dump_body(schema)
+      self
     end
 
-    def dump_command_name_as_dsl(dumper)
-      dumper << self.class.command_name
+    def dump_doc(schema, prefix = false)
+      if schema.doc
+        if schema.description
+          self << "\n"
+          self << %q{s.doc <<-EOS.strip_heredoc}
+          self.indent do
+            self << "\n"
+            self << schema.doc
+            self << "EOS"
+          end
+        else
+          self << "\ns.doc \"#{schema.title}\""
+        end
+      end
     end
 
-    def dump_command_arguments_as_dsl(dumper)
+    def dump_name(schema)
+      self << schema.class.command_name
+    end
+
+    def dump_arguments(schema)
       # Fetch name if there is one?
-      if dumper.context_data.has_key?(:name)
-        name = dumper.context_data[:name]
+      if self.context_data.has_key?(:name)
+        name = self.context_data[:name]
       else
         name = nil
       end
       # Compute options to dump.
-      options = self.non_default_options.reject do |opt|
+      options = schema.non_default_options.reject do |opt|
         opt == :doc
       end
       # Dump name and options
       if name || !options.empty?
         if name
-          dumper << " "
-          dumper << name.inspect
+          self << " "
+          self << name.inspect
         end
         if !options.empty?
           if name
-            dumper << ","
+            self << ","
           end
-          dumper << " "
-          dump_command_options_as_dsl(dumper)
+          self << " "
+          self.dump_options(schema)
         end
       end
-      dumper
+      self
     end
 
-    def dump_command_options_as_dsl(dumper)
-      options = self.non_default_options
+    def dump_options(schema)
+      options = schema.non_default_options
       option_keys = options.keys
       option_keys.each do |opt|
-        dumper << opt.inspect
-        dumper << " => "
-        dumper << options[opt].inspect
-        dumper << ", " unless opt == option_keys.last
+        self << opt.inspect
+        self << " => "
+        self << options[opt].inspect
+        self << ", " unless opt == option_keys.last
       end
-      dumper
+      self
     end
 
-    def dump_command_block_as_dsl(dumper)
+    def dump_body(schema)
+      symbol = "dump_body_for_#{schema.class.command_name}"
+      if respond_to? symbol
+        send(symbol, schema)
+      end
     end
 
-    def dump_command_documentation_as_dsl(dumper, prefix = false)
-      if self.doc
-        if self.description
-          dumper << "\n"
-          dumper << %q{s.doc <<-EOS.strip_heredoc}
-          dumper.indent do
-            dumper << "\n"
-            dumper << self.doc
-            dumper << "EOS"
-          end
-        else
-          dumper << "\ns.doc \"#{self.title}\""
+    def dump_body_for_object(schema)
+      dump_block do
+        schema.properties.each do |name, schema|
+          context_data[:name] = name
+          dump_schema(schema)
         end
       end
     end
-  end
 
-  class ObjectSchema < Schema
-    def dump_command_block_as_dsl(dumper)
-      dumper.dump_block do
-        @properties.each do |name, schema|
-          dumper.context_data[:name] = name
-          schema.dump_as_dsl(dumper)
+    def dump_body_for_array(schema)
+      dump_block do
+        context_data.delete(:name)
+        if schema.item
+          dump_schema(schema.item)
         end
-      end
-    end
-  end
-
-  class ArraySchema < Schema
-    def dump_command_block_as_dsl(dumper)
-      dumper.dump_block do
-        dumper.context_data.delete(:name)
-        if @item
-          @item.dump_as_dsl(dumper)
-        end
-        if @items && !@items.empty?
-          dumper << "\ns.items do |s|"
-          dumper.indent do
-            @items.each do |schema|
-              schema.dump_as_dsl(dumper)
+        if schema.items && !schema.items.empty?
+          self << "\ns.items do |s|"
+          indent do
+            schema.items.each do |schema|
+              dump_schema(schema)
             end
           end
-          dumper << "\nend"
+          self << "\nend"
         end
-        if @extra_items && !@extra_items.empty?
-          dumper << "\ns.extra_items do |s|"
-          dumper.indent do
-            @extra_items.each do |schema|
-              schema.dump_as_dsl(dumper)
+        if schema.extra_items && !schema.extra_items.empty?
+          self << "\ns.extra_items do |s|"
+          indent do
+            schema.extra_items.each do |schema|
+              dump_schema(schema)
             end
           end
-          dumper << "\nend"
+          self << "\nend"
         end
       end
     end
