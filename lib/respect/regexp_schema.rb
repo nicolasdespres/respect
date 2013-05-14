@@ -2,7 +2,7 @@ module Respect
   class RegexpSchema < StringSchema
 
     def validate_format(doc)
-      FormatValidator.new.validate_regexp(doc)
+      FormatValidator.new(:regexp).validate(doc)
     end
 
   end # class RegexpSchema

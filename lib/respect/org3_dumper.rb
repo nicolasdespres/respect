@@ -9,43 +9,11 @@ module Respect
     #   as the value for the output key if it is not nil.
     # - other value are inserted verbatim.
     OPTION_MAP = {
-      divisible_by: { 'divisibleBy' => :option_value },
-      multiple_of: { 'divisibleBy' => :option_value },
-      in: { 'enum' => :option_value },
-      equal_to: { 'enum' => Proc.new{|v| [v] } },
-      min_length: { 'minLength' => :option_value },
-      max_length: { 'maxLength' => :option_value },
       min_size: { 'minItems' => :option_value },
       max_size: { 'maxItems' => :option_value },
-      format: { 'format' => Proc.new do |v|
-          if Org3Dumper::FORMAT_TYPE_MAP.has_key?(v)
-            translation_value = Org3Dumper::FORMAT_TYPE_MAP[v]
-            translation_value unless translation_value.nil?
-          else
-            v.to_s
-          end
-        end
-      },
-      greater_than: { "minimum" => :option_value, "exclusiveMinimum" => true },
-      greater_than_or_equal_to: { "minimum" => :option_value },
-      less_than: { "maximum" => :option_value, "exclusiveMaximum" => true },
-      less_than_or_equal_to: { "maximum" => :option_value },
-      match: { "pattern" => Proc.new{|v| v.source } },
       uniq: { "uniqueItems" => Proc.new{|v| v if v } },
       default: { "default" => Proc.new{|v| v unless v.nil? } },
       required: { "required" => Proc.new{|v| true if required? } },
-    }.freeze
-
-    # Only non direct translation are listed here. If one of our validator
-    # does not translate it gets the nil value.
-    FORMAT_TYPE_MAP = {
-      regexp: 'regex',
-      datetime: 'date-time',
-      ipv4_addr: 'ip-address',
-      phone_number: 'phone',
-      ipv6_addr: 'ipv6',
-      ip_addr: nil,
-      hostname: 'host-name',
     }.freeze
 
     def initialize(schema)
@@ -72,7 +40,9 @@ module Respect
       # Dump generic options.
       schema.options.each do |opt, opt_value|
         next if params[:ignore] && params[:ignore].include?(opt)
-        if Org3Dumper::OPTION_MAP.has_key?(opt)
+        if validator_class = Respect.validator_for(opt)
+          h.merge!(validator_class.new(opt_value).to_h(:org3))
+        elsif Org3Dumper::OPTION_MAP.has_key?(opt)
           Org3Dumper::OPTION_MAP[opt].each do |k, v|
             if v == :option_value
               h[k] = (opt_value.is_a?(Numeric) ? opt_value : opt_value.dup)

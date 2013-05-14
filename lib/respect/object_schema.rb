@@ -145,7 +145,7 @@ module Respect
     end
 
     # Merge the given +object_schema+ with this object schema. It works like
-    # {Hash#merge}.
+    # +Hash.merge+.
     def merge(object_schema)
       self.dup.merge!(object_schema)
     end

@@ -4,7 +4,7 @@ module Respect
     def validate_constraints(value)
       options.each do |option, arg|
         if validator_class = Respect.validator_for(option)
-          validator_class.new.validate(value, arg)
+          validator_class.new(arg).validate(value)
         end
       end
     end

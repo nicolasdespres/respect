@@ -8,7 +8,7 @@ module Respect
   # 1. Provide two facades to DSL methods: one with a name as first argument
   #    and one without. See the example below.
   # 1. Evaluate user block in the context of a BasicObject without
-  #    restricting all the DSL classes to be a sub-class of {BasicObject}
+  #    restricting all the DSL classes to be a sub-class of BasicObject
   #    this way users can still use Ruby's reflection features via the
   #    {#target} method.
   #

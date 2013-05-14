@@ -1,6 +1,6 @@
 module Respect
   class MultipleOfValidator < DivisibleByValidator
-    def validate(value, divider)
+    def validate(value)
       super
     rescue ValidationError => e
       raise ValidationError,

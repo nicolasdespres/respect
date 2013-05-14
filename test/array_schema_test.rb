@@ -212,7 +212,7 @@ class ArraySchemaTest < Test::Unit::TestCase
       s.rgba "color"
     end
     doc = { "color" => [ "0.0", "0.5", "1.0", "0.2" ] }
-    assert_validate! s, doc
+    assert s.validate!(doc)
     assert_equal Rgba.new(0.0, 0.5, 1.0, 0.2), doc["color"]
   end
 

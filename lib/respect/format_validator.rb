@@ -1,7 +1,7 @@
 require "ipaddr"
 
 module Respect
-  class FormatValidator
+  class FormatValidator < Validator
 
     PHONE_NUMBER_REGEXP = /^((\+|00)\d{1,2})?\d+$/
 
@@ -10,8 +10,12 @@ module Respect
     # since I don't understand when it is useful.
     HOSTNAME_REGEXP = /^[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)*$/i
 
-    def validate(value, format)
-      send("validate_#{format}", value)
+    def initialize(format)
+      @format = format
+    end
+
+    def validate(value)
+      send("validate_#@format", value)
     end
 
     # Validate the given string _value_ describes a well-formed email
@@ -102,5 +106,30 @@ module Respect
         raise ValidationError, "invalid hostname '#{value}'"
       end
     end
+
+    private
+
+    def to_h_org3
+      { 'format' => convert_to_org3_format(@format) }
+    end
+
+    def convert_to_org3_format(format)
+      format_type_map = {
+        regexp: 'regex',
+        datetime: 'date-time',
+        ipv4_addr: 'ip-address',
+        phone_number: 'phone',
+        ipv6_addr: 'ipv6',
+        ip_addr: nil,
+        hostname: 'host-name',
+      }.freeze
+      if format_type_map.has_key?(format)
+        translation_value = format_type_map[format]
+        translation_value unless translation_value.nil?
+      else
+        format.to_s
+      end
+    end
+
   end # class FormatValidator
 end # module Respect
