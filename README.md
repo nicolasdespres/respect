@@ -287,17 +287,10 @@ I would love to hear what you think about this library. Feel free to post any co
 
 # Contributing patches
 
-I spent quite a lot of time writing this gem but there is still a lot of work to do. Whether it is a bug-fix,
-a new feature, some code re-factoring, or documentation clarification, I will be glade to merge your pull request
-on GitHub. Before you start a few reminders:
-
-1. To create a bug-fix patch for release +x.y.z+ fork the +hotfix-x.y.z+ branch.
-1. To create a patch for next release fork the +develop+ branch.
-1. Every commits must have a comprehensive commit message.
-1. Whenever you are fixing a bug or adding a new features, tests are required.
-1. A bit of documentation so that others can understand your code.
-
-Don't worry these rules are not strict. If you can't make it I will be glade to help.
+I spent quite a lot of time writing this gem but there is still a lot of work to do. Whether it
+is a bug-fix, a new feature, some code re-factoring, or documentation clarification, I will be
+glade to merge your pull request on GitHub. You just have to create a branch from `master` and
+send me a pull request.
 
 # License
 
