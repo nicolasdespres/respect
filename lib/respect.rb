@@ -11,7 +11,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym "IP"
 end
 
-# Provide methods and classes to define, validate, sanitize and dump JSON schema.
+# Provide methods and classes to define, validate, sanitize and dump object schema.
 #
 # Classes in this module are split in 5 groups:
 # * The _schema_ classes are the core of this module since they support the validation
@@ -101,7 +101,7 @@ module Respect
 
     # An array of error messages to help you track where
     # the error happened. Use it as a back-trace but in
-    # your JSON document instead of your code.
+    # your validated object instead of your code.
     attr_reader :context
   end
 

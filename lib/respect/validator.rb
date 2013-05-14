@@ -43,7 +43,7 @@ module Respect
 
     # Called when {#to_h} is called with +:org3+ format.
     # Sub-classes are supposed to overwrite this methods and to return
-    # their conversion to the json schema standard draft v3.
+    # their conversion to the JSON schema standard draft v3.
     def to_h_org3
       raise NoMethodError, "overwrite me in sub-classes"
     end

@@ -1,7 +1,7 @@
 module Respect
-  # Base class for all JSON schemas.
+  # Base class for all object schema.
   #
-  # A schema defines the expected structure and format for a given JSON document.
+  # A schema defines the expected structure and format for a given object.
   # It is similar in spirit to {json-schema.org}(http://json-schema.org/)
   # specification but uses Ruby DSL as definition. Using the DSL is not
   # mandatory since you can also defines a schema using its own methods.
@@ -12,11 +12,11 @@ module Respect
   # associated (see {Respect.schema_for}).
   #
   # You can define such a schema using the
-  # {define} method. The {#validate} method allow you do check whether
-  # the given JSON document is valid according to this schema.
+  # {define} method. The {#validate} method allow you to check whether
+  # the given object is valid according to this schema.
   # Various options can be passed to the schema when initializing it.
   #
-  # While validating a JSON document the schema build a sanitized
+  # While validating an object the schema build a sanitized
   # version of this document including all the validated part.
   # The value presents in this sanitized document have generally a
   # type specific to the contents they represents. For instance,

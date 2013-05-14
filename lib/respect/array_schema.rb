@@ -1,7 +1,7 @@
 module Respect
   # A schema to specify the structure of an array.
   #
-  # They are two approaches to specify the structure of a JSON array.
+  # They are two approaches to specify the structure of an array.
   #
   # If the items of your array have all the same structure then you
   # should use the {#item=} method to set their schema.

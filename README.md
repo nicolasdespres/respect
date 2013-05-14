@@ -40,8 +40,9 @@ Later:
 
 # Take a Tour
 
-_Respect_ comes with a compact Ruby DSL to specify your JSON schema.  I find it a way more concise than
-[json-schema.org](http://json-schema.org/).  And it is plain Ruby so you can rely on all great Ruby features
+_Respect_ comes with a compact Ruby DSL to specify the structure of a hash and/or an array.
+Thus, it is ideal to specify JSON schema. I find it a way more concise than
+[json-schema.org](http://json-schema.org/). And it is plain Ruby so you can rely on all great Ruby features
 to factor your specification code.
 
 For instance, this ruby code specify how one could structure a very simple user profile:
