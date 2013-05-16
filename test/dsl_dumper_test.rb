@@ -389,7 +389,7 @@ class DslDumperTest < Test::Unit::TestCase
     source = block.call
     schema = eval(source, block.binding,
       block.source_location.first, block.source_location[1] + 2)
-    assert schema.is_a?(Respect::Schema), "is a schema"
+    assert schema.is_a?(Respect::Schema), "#{schema.class} should Respect::Schema"
     assert_equal(source, Respect::DslDumper.new(schema).dump, message)
   end
 end
