@@ -60,7 +60,8 @@ But you can still convert this specification to
 easily so that all your customers can read and understand it:
 
 ```ruby
-puts JSON.pretty_generate(schema.to_json)
+require 'json'
+puts JSON.pretty_generate(schema.to_h)
 ```
 
 prints
@@ -121,7 +122,7 @@ schema = Respect::HashSchema.define do |s|
 end
 object = { "homepage" => "http://example.com" }
 schema.validate!(object)                            #=> true
-doc["homepage"].class                            #=> URI::HTTP
+object["homepage"].class                            #=> URI::HTTP
 ```
 
 You can easily extend the sanitizer with your own object type. Let's assume you have an object type define like this:
@@ -180,7 +181,7 @@ object = {
 }
 
 schema.validate!(object)                              #=> true
-doc["home"].class                                  #=> Place
+object["home"].class                                  #=> Place
 ```
 
 Sometimes you just want to extend the DSL with a new statement providing higher level feature than
