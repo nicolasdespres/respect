@@ -101,6 +101,31 @@ module Respect
     # The options are merged with the default options which may include the +:doc+
     # option if {#doc} has been called before. The current documentation is reset
     # after this call.
+    #
+    # Note that if you define a new schema named after a method already defined in
+    # a context class such as {GlobalDef} or its sub-classes or in +Object+, the
+    # dynamic dispatch won't work. For instance even if you have defined the
+    # +ClassSchema+ class the following code won't work as expected:
+    #
+    #   Schema.define do |s|
+    #     s.class  # Call Object#class !!!!!
+    #   end
+    #
+    # To prevent this problem you must undefine the method in the DSL by doing
+    # something like that:
+    #   module Respect
+    #     class GlobalDef
+    #       undef_method :class
+    #     end
+    #   end
+    # or you can overwrite the +class+ method in the context of your choice:
+    #   module Respect
+    #     class GlobalDef
+    #       def class(name, options = {}, &block)
+    #         update_context name, ClassSchema.define(options, &block)
+    #       end
+    #     end
+    #   end
     def method_missing(method_name, *args, &block)
       if respond_to_missing?(method_name, false)
         size_range = 1..2

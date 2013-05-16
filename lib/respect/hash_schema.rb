@@ -29,8 +29,6 @@ module Respect
   #          properties to be validated. (+false+ by default)
   class HashSchema < Schema
 
-    undef_default_statement
-
     class << self
       # Overwritten method. See Schema::default_options
       def default_options

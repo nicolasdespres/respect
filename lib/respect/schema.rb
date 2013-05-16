@@ -116,15 +116,6 @@ module Respect
         }.freeze
       end
 
-      # Un-define default statement for this class in the DSL. Useful when a
-      # method is already defined in the DSL but to not serve your purpose.
-      # For instance the +hash+ method exists in the DSL because it is inherited
-      # from Object. We want to use this method to create {HashSchema} object
-      # so we call this method when defining this class.
-      def undef_default_statement
-        GlobalDef.send :undef_method, statement_name
-      end
-
     end
 
     # Create a new schema using the given _options_.

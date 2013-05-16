@@ -13,6 +13,12 @@ module Respect
   # *experimental*.
   class GlobalDef
 
+    # Remove methods inherited from Object and conflicting with the
+    # dynamic methods in CoreStatement.
+    %w{hash}.each do |name|
+      undef_method name
+    end
+
     class << self
 
       # Instantiate this evaluation context using the given +args+
