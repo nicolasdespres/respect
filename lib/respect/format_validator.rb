@@ -1,4 +1,5 @@
 require "ipaddr"
+require 'uri'
 
 module Respect
   class FormatValidator < Validator

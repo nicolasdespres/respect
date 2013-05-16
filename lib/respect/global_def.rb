@@ -1,3 +1,5 @@
+require 'set'
+
 module Respect
   # Global context of the schema definition DSL.
   #
