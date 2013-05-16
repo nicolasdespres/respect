@@ -20,7 +20,7 @@ Already available:
 * Standard [json-schema.org](http://json-schema.org/) specification generator.
 * Validator for JSON document or the like.
 * Contextual validation error.
-* Document sanitizer: turn plain string and integer values into real objects.
+* Object sanitizer: turn plain string and integer values into real objects.
 * Extensible API to add your custom validator and sanitizer.
 * Extensible macro definition system to factor you schema definition code.
 
@@ -119,8 +119,8 @@ _Respect_ does that automatically for you for standard objects:
 schema = Respect::HashSchema.define do |s|
   s.uri "homepage"
 end
-doc = { "homepage" => "http://example.com" }
-schema.validate!(doc)                            #=> true
+object = { "homepage" => "http://example.com" }
+schema.validate!(object)                            #=> true
 doc["homepage"].class                            #=> URI::HTTP
 ```
 
@@ -157,8 +157,8 @@ module Respect
 
     # The 'sanitize' method is called with the JSON document if the validation succeed.
     # The returned value will be inserted into the JSON document.
-    def sanitize(doc)
-      Place.new(doc[:latitude], doc[:longitude])
+    def sanitize(object)
+      Place.new(object[:latitude], object[:longitude])
     end
   end
 end
@@ -172,14 +172,14 @@ schema = Respect::HashSchema.define do |s|
   s.place "home"
 end
 
-doc = {
+object = {
   "home" => {
     "latitude" => "48.846559",
     "longitude" => "2.344519",
   }
 }
 
-schema.validate!(doc)                              #=> true
+schema.validate!(object)                              #=> true
 doc["home"].class                                  #=> Place
 ```
 

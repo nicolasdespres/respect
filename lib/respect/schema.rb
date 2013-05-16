@@ -17,14 +17,14 @@ module Respect
   # Various options can be passed to the schema when initializing it.
   #
   # While validating an object the schema build a sanitized
-  # version of this document including all the validated part.
-  # The value presents in this sanitized document have generally a
+  # version of this object including all the validated part.
+  # The value presents in this sanitized object have generally a
   # type specific to the contents they represents. For instance,
   # a URI would be represented as a string in the original
-  # document but as a URI object in the sanitized document.
+  # object but as a URI object in the sanitized object.
   # There is a she-bang version of the validation method which
-  # update the given document in-place with the sanitized document
-  # if the validation succeeded.
+  # update the value of the given object in-place with the value from
+  # the sanitized object if the validation succeeded.
   #
   # You can pass several options when creating a Schema:
   # required::  whether this property associated to this schema is
@@ -137,8 +137,8 @@ module Respect
       @options = other.options.dup
     end
 
-    # Returns the sanitized document. It is +nil+ as long as you have not
-    # validated any document. It is overwritten every times you call
+    # Returns the sanitized object. It is +nil+ as long as you have not
+    # validated any object. It is overwritten every times you call
     # {#validate}.
     attr_reader :sanitized_object
 
@@ -210,7 +210,7 @@ module Respect
     attr_reader :last_error
 
     # Raise a {ValidationError} if the given +object+ is not validated by this schema.
-    # Returns true otherwise. A sanitized version of the document is built during
+    # Returns true otherwise. A sanitized version of the object is built during
     # this process and you can access it via {#sanitized_object}.
     # Rewrite it in sub-classes.
     def validate(object)
@@ -218,7 +218,7 @@ module Respect
     end
 
     # Return +true+ or +false+ whether this schema validates the given +object+.
-    # If it does the document is updated in-place with the sanitized value.
+    # If it does +object+ is updated in-place with the sanitized value.
     # This method does not raise a {ValidationError}. You can access the error
     # using {#last_error}.
     def validate!(object)
@@ -229,7 +229,7 @@ module Respect
       valid
     end
 
-    # Sanitize the given +object+ *in-place* if it validates this schema. The sanitized document
+    # Sanitize the given +object+ *in-place* if it validates this schema. The sanitized object
     # is returned. {ValidationError} is raised on error.
     def sanitize!(object)
       validate(object)
@@ -291,7 +291,7 @@ module Respect
 
     private
 
-    # Used by sub-classes to update the formatted document.
+    # Used by sub-classes to set the formatted object.
     attr_writer :sanitized_object
 
   end

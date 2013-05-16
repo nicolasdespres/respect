@@ -15,14 +15,14 @@ module Respect
   # You can get the list of all optional properties using the
   # {#optional_properties} method.
   #
-  # Access to the document's value being validated is done using either
+  # Access to the object's value being validated is done using either
   # string key or symbol key. In other word +{ i: "42" }+ and
-  # +{ "i" => "42" }+ are the same document for the {#validate} method.
-  # The document object passed is left untouched. The sanitized document
-  # is a hash with indifferent access. Note that when a document
+  # +{ "i" => "42" }+ are the same object for the {#validate} method.
+  # The object passed is left untouched. The sanitized object
+  # is a hash with indifferent access. Note that when an object
   # is sanitized in-place, its original keys are kept
   # (see {Respect.sanitize_object!}). Only validated keys are included
-  # in the sanitized document.
+  # in the sanitized object.
   #
   # You can pass several options when creating an {HashSchema}:
   # strict:: if set to +true+ the hash must not have any extra
