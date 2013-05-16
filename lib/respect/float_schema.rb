@@ -1,19 +1,19 @@
 module Respect
   class FloatSchema < NumericSchema
 
-    def validate_type(doc)
-      case doc
+    def validate_type(object)
+      case object
       when String
-        if doc =~ /^[-+]?\d+(\.\d+)?$/
-          doc.to_f
+        if object =~ /^[-+]?\d+(\.\d+)?$/
+          object.to_f
         else
           raise ValidationError,
-                "malformed float value: `#{doc}'"
+                "malformed float value: `#{object}'"
         end
       when Float
-        doc
+        object
       else
-        raise ValidationError, "document is not a float but a '#{doc.class}'"
+        raise ValidationError, "object is not a float but a '#{object.class}'"
       end
     end
 

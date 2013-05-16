@@ -35,9 +35,9 @@ class IntegerSchemaTest < Test::Unit::TestCase
     ].each do |test_data|
       s = Respect::IntegerSchema.new
       assert_equal test_data[1], s.validate_type(test_data[0])
-      assert_nil s.sanitized_doc
+      assert_nil s.sanitized_object
       s.validate(test_data[0])
-      assert_equal test_data[1], s.sanitized_doc
+      assert_equal test_data[1], s.sanitized_object
     end
   end
 

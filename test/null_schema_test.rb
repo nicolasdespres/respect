@@ -14,11 +14,11 @@ class NullSchemaTest < Test::Unit::TestCase
       [ "null", true, "null in string" ],
     ].each do |data|
       s = Respect::NullSchema.new
-      assert_nil s.sanitized_doc
+      assert_nil s.sanitized_object
       validated = s.validate?(data[0])
       assert_equal data[1], validated, data[2]
       if validated
-        assert_nil s.sanitized_doc, data[2]
+        assert_nil s.sanitized_object, data[2]
       end
     end
   end

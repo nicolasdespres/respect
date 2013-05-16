@@ -21,7 +21,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::IntegerSchema.new(equal_to: 42)
     doc = "42"
     assert s.validate(doc)
-    assert_equal 42, s.sanitized_doc
+    assert_equal 42, s.sanitized_object
   end
 
   def test_validate_query_does_not_raise_exception_when_invalid
@@ -207,11 +207,11 @@ class SchemaTest < Test::Unit::TestCase
     assert(s1 != s2)
   end
 
-  def test_schema_dont_differs_from_sanitized_doc
+  def test_schema_dont_differs_from_sanitized_object
     s1 = Respect::IntegerSchema.new
-    s1.send(:sanitized_doc=, 42)
+    s1.send(:sanitized_object=, 42)
     s2 = Respect::IntegerSchema.new
-    s2.send(:sanitized_doc=, 51)
+    s2.send(:sanitized_object=, 51)
     assert(s1 == s2)
   end
 
@@ -242,7 +242,7 @@ class SchemaTest < Test::Unit::TestCase
     s = Respect::Schema.send(:new)
     doc = {}
     s.stubs(:validate?).with(doc).returns(true).once
-    s.stubs(:sanitize_doc!).with(doc).once
+    s.stubs(:sanitize_object!).with(doc).once
     assert_equal true, s.validate!(doc)
   end
 
@@ -271,18 +271,18 @@ class SchemaTest < Test::Unit::TestCase
     doc = {}
     s.stubs(:validate).with(doc).once
     result = Object.new
-    s.stubs(:sanitize_doc!).with(doc).returns(result).once
+    s.stubs(:sanitize_object!).with(doc).returns(result).once
     assert_equal result.object_id, s.sanitize!(doc).object_id
   end
 
   def test_sanitize_doc_shebang
     s = Respect::Schema.send(:new)
     doc = {}
-    sanitized_doc = {}
-    s.stubs(:sanitized_doc).with().returns(sanitized_doc).once
+    sanitized_object = {}
+    s.stubs(:sanitized_object).with().returns(sanitized_object).once
     result = Object.new
-    Respect.stubs(:sanitize_doc!).with(doc, sanitized_doc).returns(result).once
-    assert_equal result.object_id, s.sanitize_doc!(doc).object_id
+    Respect.stubs(:sanitize_object!).with(doc, sanitized_object).returns(result).once
+    assert_equal result.object_id, s.sanitize_object!(doc).object_id
   end
 
   private

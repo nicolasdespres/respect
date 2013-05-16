@@ -16,9 +16,9 @@ module Respect
   #         end
   #       end
   #
-  #       def sanitize(doc)
+  #       def sanitize(object)
   #         # Assuming you have defined a Point class.
-  #         Point.new(doc[:x], doc[:y])
+  #         Point.new(object[:x], object[:y])
   #       end
   #     end
   #   end
@@ -47,9 +47,9 @@ module Respect
     attr_reader :schema
 
     # Overloaded methods (see {Schema#validate}).
-    def validate(doc)
-      @schema.validate(doc)
-      self.sanitized_doc = sanitize(@schema.sanitized_doc)
+    def validate(object)
+      @schema.validate(object)
+      self.sanitized_object = sanitize(@schema.sanitized_object)
       true
     end
 
@@ -59,14 +59,14 @@ module Respect
       raise NoMethodError, "implement me in sub-class"
     end
 
-    # Sanitize the given validated +doc+. Overwrite this method
+    # Sanitize the given validated +object+. Overwrite this method
     # in sub-class and returns the object that would be inserted
-    # in the sanitized document. The document passed as argument
-    # is an already sanitized sub-part of the overall document
+    # in the sanitized object. The object passed as argument
+    # is an already sanitized sub-part of the overall object
     # being validated. By default this method is a no-op. It
-    # returns the given +doc+.
-    def sanitize(doc)
-      doc
+    # returns the given +object+.
+    def sanitize(object)
+      object
     end
 
   end # class CompositeSchema

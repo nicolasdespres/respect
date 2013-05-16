@@ -17,14 +17,14 @@ module Respect
   # Various options can be passed to the schema when initializing it.
   #
   # While validating an object the schema build a sanitized
-  # version of this document including all the validated part.
-  # The value presents in this sanitized document have generally a
+  # version of this object including all the validated part.
+  # The value presents in this sanitized object have generally a
   # type specific to the contents they represents. For instance,
   # a URI would be represented as a string in the original
-  # document but as a URI object in the sanitized document.
+  # object but as a URI object in the sanitized object.
   # There is a she-bang version of the validation method which
-  # update the given document in-place with the sanitized document
-  # if the validation succeeded.
+  # update the value of the given object in-place with the value from
+  # the sanitized object if the validation succeeded.
   #
   # You can pass several options when creating a Schema:
   # required::  whether this property associated to this schema is
@@ -129,7 +129,7 @@ module Respect
 
     # Create a new schema using the given _options_.
     def initialize(options = {})
-      @sanitized_doc = nil
+      @sanitized_object = nil
       @options = self.class.default_options.merge(options)
     end
 
@@ -137,10 +137,10 @@ module Respect
       @options = other.options.dup
     end
 
-    # Returns the sanitized document. It is +nil+ as long as you have not
-    # validated any document. It is overwritten every times you call
+    # Returns the sanitized object. It is +nil+ as long as you have not
+    # validated any object. It is overwritten every times you call
     # {#validate}.
-    attr_reader :sanitized_doc
+    attr_reader :sanitized_object
 
     # Returns the hash of options.
     attr_reader :options
@@ -192,11 +192,11 @@ module Respect
       @options[:default] != nil
     end
 
-    # Return whether the given +doc+ validates this schema.
+    # Return whether the given +object+ validates this schema.
     # You can get the validation error via {#last_error}.
-    def validate?(doc)
+    def validate?(object)
       begin
-        validate(doc)
+        validate(object)
         true
       rescue ValidationError => e
         @last_error = e
@@ -209,36 +209,36 @@ module Respect
     # Reset each time {#validate?} is called.
     attr_reader :last_error
 
-    # Raise a {ValidationError} if the given +doc+ is not validated by this schema.
-    # Returns true otherwise. A sanitized version of the document is built during
-    # this process and you can access it via {#sanitized_doc}.
+    # Raise a {ValidationError} if the given +object+ is not validated by this schema.
+    # Returns true otherwise. A sanitized version of the object is built during
+    # this process and you can access it via {#sanitized_object}.
     # Rewrite it in sub-classes.
-    def validate(doc)
+    def validate(object)
       raise NoMethodError, "overwrite me in sub-classes"
     end
 
-    # Return +true+ or +false+ whether this schema validates the given +doc+.
-    # If it does the document is updated in-place with the sanitized value.
+    # Return +true+ or +false+ whether this schema validates the given +object+.
+    # If it does +object+ is updated in-place with the sanitized value.
     # This method does not raise a {ValidationError}. You can access the error
     # using {#last_error}.
-    def validate!(doc)
-      valid = validate?(doc)
+    def validate!(object)
+      valid = validate?(object)
       if valid
-        sanitize_doc!(doc)
+        sanitize_object!(object)
       end
       valid
     end
 
-    # Sanitize the given +doc+ *in-place* if it validates this schema. The sanitized document
+    # Sanitize the given +object+ *in-place* if it validates this schema. The sanitized object
     # is returned. {ValidationError} is raised on error.
-    def sanitize!(doc)
-      validate(doc)
-      sanitize_doc!(doc)
+    def sanitize!(object)
+      validate(object)
+      sanitize_object!(object)
     end
 
-    # A shortcut for {Respect.sanitize_doc!}.
-    def sanitize_doc!(doc)
-      Respect.sanitize_doc!(doc, self.sanitized_doc)
+    # A shortcut for {Respect.sanitize_object!}.
+    def sanitize_object!(object)
+      Respect.sanitize_object!(object, self.sanitized_object)
     end
 
     # Returns a string containing a human-readable representation of this schema.
@@ -291,8 +291,8 @@ module Respect
 
     private
 
-    # Used by sub-classes to update the formatted document.
-    attr_writer :sanitized_doc
+    # Used by sub-classes to set the formatted object.
+    attr_writer :sanitized_object
 
   end
 end

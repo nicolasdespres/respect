@@ -20,11 +20,11 @@ class BooleanSchemaTest < Test::Unit::TestCase
       else
         assert_equal data[1], s.validate_type(data[0]), data[2]
       end
-      # Check sanitized_doc
-      assert_nil s.sanitized_doc
+      # Check sanitized_object
+      assert_nil s.sanitized_object
       assert_schema_validation_is (data[1].nil? ? false : true), s, data[0], data[2]
       unless data[1].nil?
-        assert_equal data[1], s.sanitized_doc, data[2]
+        assert_equal data[1], s.sanitized_object, data[2]
       end
     end
   end

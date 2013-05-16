@@ -15,14 +15,14 @@ module Respect
   # You can get the list of all optional properties using the
   # {#optional_properties} method.
   #
-  # Access to the document's value being validated is done using either
+  # Access to the object's value being validated is done using either
   # string key or symbol key. In other word +{ i: "42" }+ and
-  # +{ "i" => "42" }+ are the same document for the {#validate} method.
-  # The document object passed is left untouched. The sanitized document
-  # is a hash with indifferent access. Note that when a document
+  # +{ "i" => "42" }+ are the same object for the {#validate} method.
+  # The object passed is left untouched. The sanitized object
+  # is a hash with indifferent access. Note that when an object
   # is sanitized in-place, its original keys are kept
-  # (see {Respect.sanitize_doc!}). Only validated keys are included
-  # in the sanitized document.
+  # (see {Respect.sanitize_object!}). Only validated keys are included
+  # in the sanitized object.
   #
   # You can pass several options when creating an {HashSchema}:
   # strict:: if set to +true+ the hash must not have any extra
@@ -75,59 +75,59 @@ module Respect
     attr_reader :properties
 
     # Overwritten method. See {Schema#validate}.
-    def validate(doc)
-      # Validate document format.
-      unless doc.is_a?(Hash)
-        raise ValidationError, "document is not a hash but a #{doc.class}"
+    def validate(object)
+      # Validate object format.
+      unless object.is_a?(Hash)
+        raise ValidationError, "object is not a hash but a #{object.class}"
       end
-      unless doc.is_a?(HashWithIndifferentAccess)
-        doc = doc.with_indifferent_access
+      unless object.is_a?(HashWithIndifferentAccess)
+        object = object.with_indifferent_access
       end
-      sanitized_doc = {}.with_indifferent_access
+      sanitized_object = {}.with_indifferent_access
       # Validate expected properties.
       @properties.each do |name, schema|
         case name
         when Symbol
-          validate_property_with_options(name.to_s, schema, doc, sanitized_doc)
+          validate_property_with_options(name.to_s, schema, object, sanitized_object)
         when String
-          validate_property_with_options(name, schema, doc, sanitized_doc)
+          validate_property_with_options(name, schema, object, sanitized_object)
         when Regexp
-          doc.select{|prop, schema| prop =~ name }.each do |prop, value|
-            validate_property(prop, schema, doc, sanitized_doc)
+          object.select{|prop, schema| prop =~ name }.each do |prop, value|
+            validate_property(prop, schema, object, sanitized_object)
           end
         end
       end
       if options[:strict]
         # Check whether there are extra properties.
-        doc.each do |name, schema|
-          unless sanitized_doc.has_key? name
+        object.each do |name, schema|
+          unless sanitized_object.has_key? name
             raise ValidationError, "unexpected key `#{name}'"
           end
         end
       end
-      self.sanitized_doc = sanitized_doc
+      self.sanitized_object = sanitized_object
       true
     end
 
-    def validate_property_with_options(name, schema, doc, sanitized_doc)
-      if doc.has_key? name
-        validate_property(name, schema, doc, sanitized_doc)
+    def validate_property_with_options(name, schema, object, sanitized_object)
+      if object.has_key? name
+        validate_property(name, schema, object, sanitized_object)
       else
         if schema.required?
           raise ValidationError, "missing key `#{name}'"
         else
           if schema.has_default?
-            sanitized_doc[name] = schema.default
+            sanitized_object[name] = schema.default
           end
         end
       end
     end
     private :validate_property_with_options
 
-    def validate_property(name, schema, doc, sanitized_doc)
+    def validate_property(name, schema, object, sanitized_object)
       begin
-        schema.validate(doc[name])
-        sanitized_doc[name] = schema.sanitized_doc
+        schema.validate(object[name])
+        sanitized_object[name] = schema.sanitized_object
       rescue ValidationError => e
         e.context << "in hash property `#{name}'"
         raise e

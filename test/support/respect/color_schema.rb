@@ -25,7 +25,7 @@ module Respect
           end
         end
       end
-      self.sanitized_doc = color
+      self.sanitized_object = color
     end
 
   end # class ColorSchema

@@ -4,7 +4,7 @@ module Respect
   # Classes including this module must fulfill the following requirements:
   # * Respond to +options+ and returned a hash of options where keys
   #   refers to validator name (i.e. +greater_than+ for {GreaterThanValidator}).
-  # * Respond to +validate_type(doc)+ which must returns the sanitized doc.
+  # * Respond to +validate_type(object)+ which must returns the sanitized object.
   module HasConstraints
 
     # Validate all the constraints listed in +options+ to the
@@ -17,12 +17,12 @@ module Respect
       end
     end
 
-    # Call +validate_type+ with the given +doc+, apply the constraints
-    # and assign the sanitized document.
-    def validate(doc)
-      sanitized_doc = validate_type(doc)
-      validate_constraints(sanitized_doc)
-      self.sanitized_doc = sanitized_doc
+    # Call +validate_type+ with the given +object+, apply the constraints
+    # and assign the sanitized object.
+    def validate(object)
+      sanitized_object = validate_type(object)
+      validate_constraints(sanitized_object)
+      self.sanitized_object = sanitized_object
       true
     end
 

@@ -91,7 +91,7 @@ module Respect
     attr_reader :items
 
     # Set extra schema items. These are optional. If they are not in the
-    # document the validation pass anyway.
+    # object the validation pass anyway.
     def extra_items=(extra_items)
       return @extra_items unless extra_items
       if @item
@@ -106,67 +106,67 @@ module Respect
     attr_reader :extra_items
 
     # Overwritten method. See {Schema#validate}
-    def validate(doc)
-      unless doc.is_a?(Array)
-        raise ValidationError, "document is not an array but a #{doc.class}"
+    def validate(object)
+      unless object.is_a?(Array)
+        raise ValidationError, "object is not an array but a #{object.class}"
       end
       # At this point we are sure @item and (@items or @extra_items) cannot be
       # defined both. (see the setters).
-      sanitized_doc = []
+      sanitized_object = []
       # Validate expected item.
       if @item
-        if options[:min_size] && doc.size < options[:min_size]
+        if options[:min_size] && object.size < options[:min_size]
           raise ValidationError,
-                "expected at least #{options[:min_size]} item(s) but got #{doc.size}"
+                "expected at least #{options[:min_size]} item(s) but got #{object.size}"
         end
-        if options[:max_size] && doc.size > options[:max_size]
+        if options[:max_size] && object.size > options[:max_size]
           raise ValidationError,
-                "expected at most #{options[:min_size]} item(s) but got #{doc.size}"
+                "expected at most #{options[:min_size]} item(s) but got #{object.size}"
         end
-        doc.each_with_index do |item, i|
-          validate_item(i, @item, doc, sanitized_doc)
+        object.each_with_index do |item, i|
+          validate_item(i, @item, object, sanitized_object)
         end
       end
-      # Validate doc items count.
+      # Validate object items count.
       if @items || @extra_items
         if @extra_items
           min_size = @items ? @items.size : 0
-          unless min_size <= doc.size
+          unless min_size <= object.size
             raise ValidationError,
-                  "array size should be at least #{min_size} but is #{doc.size}"
+                  "array size should be at least #{min_size} but is #{object.size}"
           end
         else
-          if @items.size != doc.size
+          if @items.size != object.size
             raise ValidationError,
-                  "array size should be #{@items.size} but is #{doc.size}"
+                  "array size should be #{@items.size} but is #{object.size}"
           end
         end
       end
       # Validate expected multiple items.
       if @items
         @items.each_with_index do |schema, i|
-          validate_item(i, schema, doc, sanitized_doc)
+          validate_item(i, schema, object, sanitized_object)
         end
       end
       # Validate extra items.
       if @extra_items
         @extra_items.each_with_index do |schema, i|
-          if @items.size + i < doc.size
-            validate_item(@items.size + i, schema, doc, sanitized_doc)
+          if @items.size + i < object.size
+            validate_item(@items.size + i, schema, object, sanitized_object)
           end
         end
       end
       # Validate all items are unique.
       if options[:uniq]
         s = Set.new
-        doc.each_with_index do |e, i|
+        object.each_with_index do |e, i|
           if s.add?(e).nil?
             raise ValidationError,
                   "duplicated item number #{i}"
           end
         end
       end
-      self.sanitized_doc = sanitized_doc
+      self.sanitized_object = sanitized_object
       true
     end
 
@@ -176,10 +176,10 @@ module Respect
 
     private
 
-    def validate_item(index, schema, doc, sanitized_doc)
+    def validate_item(index, schema, object, sanitized_object)
       begin
-        schema.validate(doc[index])
-        sanitized_doc << schema.sanitized_doc
+        schema.validate(object[index])
+        sanitized_object << schema.sanitized_object
       rescue ValidationError => e
         e.context << "in array #{index.ordinalize} item"
         raise e

@@ -3,22 +3,22 @@ module Respect
 
     public_class_method :new
 
-    def validate(doc)
-      case doc
+    def validate(object)
+      case object
       when String
-        if doc == "null"
-          self.sanitized_doc = nil
+        if object == "null"
+          self.sanitized_object = nil
           true
         else
           raise ValidationError,
-                "expected 'null' value but got '#{doc}:#{doc.class}'"
+                "expected 'null' value but got '#{object}:#{object.class}'"
         end
       when NilClass
-        self.sanitized_doc = nil
+        self.sanitized_object = nil
         true
       else
         raise ValidationError,
-              "document is not of null type but a #{doc.class}"
+              "object is not of null type but a #{object.class}"
       end
     end
 

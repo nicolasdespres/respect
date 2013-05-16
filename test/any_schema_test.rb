@@ -43,11 +43,11 @@ class AnySchemaTest < Test::Unit::TestCase
       [ Object.new, "unknown type" ],
     ].each do |data|
       s = Respect::AnySchema.new
-      assert_nil s.sanitized_doc
+      assert_nil s.sanitized_object
       if s.validate?(data[0])
-        assert_equal data[0], s.sanitized_doc, data[1]
+        assert_equal data[0], s.sanitized_object, data[1]
       else
-        assert_nil s.sanitized_doc, data[1]
+        assert_nil s.sanitized_object, data[1]
       end
     end
   end

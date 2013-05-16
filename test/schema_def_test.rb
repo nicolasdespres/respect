@@ -211,7 +211,7 @@ class SchemaDefTest < Test::Unit::TestCase
     doc = { "origin" => { "x" => 1.0, "y" => 0.0 }, "polygon" => [ { "x" => 2.0, "y" => 3.0 } ] }
     assert_schema_validate s, doc
     assert_equal({ "origin" => Point.new(1.0, 0.0), "polygon" => [ Point.new(2.0, 3.0) ]},
-      s.sanitized_doc)
+      s.sanitized_object)
   end
 
   def test_format_helper_statement_create_string_schema
