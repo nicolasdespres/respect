@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "README.md",
     "STATUS_MATRIX.html",
+    "RELEASE_NOTES.md",
     "RELATED_WORK.md",
-    "NEWS.md",
   ]
   s.test_files = Dir["test/**/*"]
 

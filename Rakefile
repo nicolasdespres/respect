@@ -12,8 +12,8 @@ YARD::Rake::YardocTask.new do |t|
     '-',
     'README.md',
     'STATUS_MATRIX.html',
+    'RELEASE_NOTES.md',
     'RELATED_WORK.md',
-    'NEWS.md',
   ]
 end
 

@@ -2,5 +2,5 @@ lib/**/*.rb
 -
 README.md
 STATUS_MATRIX.html
+RELEASE_NOTES.md
 RELATED_WORK.md
-NEWS.md
