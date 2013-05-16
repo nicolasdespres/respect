@@ -11,7 +11,7 @@ module Respect
   # "foo" (see {Schema.statement_name}) expecting a name, some options and a block.
   # This statement defines a new "FooSchema" with the given options and block. This
   # schema is stored in the current context using the given name. The name may be used
-  # used differently depending on the context. In a hash definition context it will be
+  # differently depending on the context. In a hash definition context it will be
   # used as a property name whereas it will be simply ignored in the
   # context of an array. Context classes including the {DefWithoutName} module ignore
   # the name argument whereas others do not. The {FakeNameProxy} is in charge of

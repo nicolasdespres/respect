@@ -8,7 +8,7 @@ module Respect
   #
   # Almost all {Schema} sub-classes has an associated statement available in
   # the DSL for defining it. This statement is named after the class name
-  # (see {Schema.statement_name}). However some classes do not have a statement
+  # (see {Schema.statement_name}). However all sub-classes do not have a statement
   # associated (see {Respect.schema_for}).
   #
   # You can define such a schema using the
