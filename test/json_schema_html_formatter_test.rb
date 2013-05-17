@@ -163,4 +163,52 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     assert_equal expected, output
   end
 
+  def test_custom_css_class
+    json_schema = {
+      "type" => "object",
+      "properties" => {
+        "param1" => {
+          "type" => "integer",
+          "title" => "A parameter",
+          "description" => "An important parameter that should be equal to 42.\nYes really!.",
+          "required" => true,
+          "enum" => [
+            42
+          ]
+        }
+      }
+    }
+    output = ""
+    f = Respect::JSONSchemaHTMLFormatter.new(json_schema)
+    f.css_class = {
+      highlight: "h_class",
+      plain: "p_class",
+      key: "k_class",
+      keyword: "kw_class",
+      string: "s_class",
+      numeric: "n_class",
+      comment: "c_class",
+    }
+    f.dump(output)
+    expected = <<-EOS.strip_heredoc
+      <div class=\"h_class\"><pre><span class=\"p_class\">{</span>
+        <span class=\"k_class\">\"type\"</span><span class=\"p_class\">:</span> <span class=\"s_class\">\"object\"</span><span class=\"p_class\">,</span>
+        <span class=\"k_class\">\"properties\"</span><span class=\"p_class\">:</span> <span class=\"p_class\">{</span>
+          <span class=\"c_class\">// A parameter
+          //
+          // An important parameter that should be equal to 42.
+          // Yes really!.</span>
+          <span class=\"k_class\">\"param1\"</span><span class=\"p_class\">:</span> <span class=\"p_class\">{</span>
+            <span class=\"k_class\">\"type\"</span><span class=\"p_class\">:</span> <span class=\"s_class\">\"integer\"</span><span class=\"p_class\">,</span>
+            <span class=\"k_class\">\"required\"</span><span class=\"p_class\">:</span> <span class=\"kw_class\">true</span><span class=\"p_class\">,</span>
+            <span class=\"k_class\">\"enum\"</span><span class=\"p_class\">:</span> <span class=\"p_class\">[</span>
+              <span class=\"n_class\">42</span>
+            <span class=\"p_class\">]</span>
+          <span class=\"p_class\">}</span>
+        <span class=\"p_class\">}</span>
+      <span class=\"p_class\">}</span></pre></div>
+    EOS
+    assert_equal expected, output
+  end
+
 end

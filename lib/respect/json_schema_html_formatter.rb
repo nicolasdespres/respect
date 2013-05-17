@@ -4,12 +4,23 @@ module Respect
       @indent_level = 0
       @indent_size = 2
       @json_schema = json_schema
+      @css_class ||= {
+        highlight: "highlight",
+        plain: "plain",
+        key: "key",
+        keyword: "keyword",
+        string: "string",
+        numeric: "numeric",
+        comment: "comment",
+      }
     end
+
+    attr_accessor :css_class
 
     def dump(output = "")
       @output = output
       @output ||= String.new
-      @output << %q{<div class="highlight"><pre>}
+      @output << "<div class=\"#{css_class[:highlight]}\"><pre>"
       @output << dump_json(@json_schema)
       @output << "</pre></div>\n"
       @output
@@ -64,7 +75,7 @@ module Respect
               result << newline
             end
           end
-          result << span("key", key.to_s.inspect) << plain_text(":") << " "
+          result << span(css_class[:key], key.to_s.inspect) << plain_text(":") << " "
           result << dump_json(json[key])
           if i < keys.size - 1
             result << plain_text(",")
@@ -97,19 +108,19 @@ module Respect
     def dump_terminal(json)
       css = (case json
              when TrueClass, FalseClass
-               "keyword"
+               css_class[:keyword]
              when String
-               "string"
+               css_class[:string]
              when Numeric
-               "numeric"
+               css_class[:numeric]
              else
-               "plain"
+               css_class[:plain]
              end)
       span(css, json.inspect)
     end
 
     def plain_text(text)
-      span("plain", text)
+      span(css_class[:plain], text)
     end
 
     def tag(tag, klass, value)
@@ -125,7 +136,7 @@ module Respect
       s.sub!(/\n*\Z/m, '')
       s.gsub!(/\n/m, "\n#{indentation}// ")
       s.gsub!(/\s*\n/m, "\n")
-      span("comment", "// #{s}")
+      span(css_class[:comment], "// #{s}")
     end
   end
 end # module Respect
