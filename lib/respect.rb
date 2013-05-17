@@ -87,6 +87,7 @@ module Respect
   autoload :Org3Dumper
   # Miscellaneous classes
   autoload :DocParser
+  autoload :JsonSchemaHTMLFormatter
 
   # Base error of all errors raised by this module.
   class RespectError < StandardError
