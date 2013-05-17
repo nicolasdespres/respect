@@ -165,11 +165,23 @@ class SchemaTest < Test::Unit::TestCase
     assert_equal "title", Respect::IntegerSchema.new(doc: doc).title
   end
 
+  def test_nil_title_if_nil_doc
+    s = Respect::IntegerSchema.new
+    assert_nil s.doc
+    assert_nil s.title
+  end
+
   def test_schema_description_use_doc_parser
     doc = "Hey!"
     Respect::DocParser.any_instance.stubs(:parse).with(doc).returns(Respect::DocParser.new).at_least_once
     Respect::DocParser.any_instance.stubs(:description).returns("desc").at_least_once
     assert_equal "desc", Respect::IntegerSchema.new(doc: doc).description
+  end
+
+  def test_nil_description_if_nil_doc
+    s = Respect::IntegerSchema.new
+    assert_nil s.doc
+    assert_nil s.description
   end
 
   def test_duplicata_are_equal
