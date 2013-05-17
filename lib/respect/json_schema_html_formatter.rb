@@ -5,7 +5,7 @@ module Respect
       @indent_size = 2
       @json_schema = json_schema
       @css_class ||= {
-        highlight: "highlight",
+        json_highlight: "json_highlight",
         plain: "plain",
         key: "key",
         keyword: "keyword",
@@ -20,7 +20,7 @@ module Respect
     def dump(output = "")
       @output = output
       @output ||= String.new
-      @output << "<div class=\"#{css_class[:highlight]}\"><pre>"
+      @output << "<div class=\"#{css_class[:json_highlight]}\"><pre>"
       @output << dump_json(@json_schema)
       @output << "</pre></div>\n"
       @output

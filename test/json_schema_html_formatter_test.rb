@@ -9,7 +9,7 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     output = ""
     Respect::JSONSchemaHTMLFormatter.new(json_schema).dump(output)
     expected = <<-EOS.strip_heredoc
-      <div class=\"highlight\"><pre><span class=\"plain\">{</span>
+      <div class=\"json_highlight\"><pre><span class=\"plain\">{</span>
         <span class=\"key\">\"type\"</span><span class=\"plain\">:</span> <span class=\"string\">\"integer\"</span><span class=\"plain\">,</span>
         <span class=\"key\">\"required\"</span><span class=\"plain\">:</span> <span class=\"keyword\">false</span>
       <span class=\"plain\">}</span></pre></div>
@@ -52,7 +52,7 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     output = ""
     Respect::JSONSchemaHTMLFormatter.new(json_schema).dump(output)
     expected = <<-EOS.strip_heredoc
-      <div class=\"highlight\"><pre><span class=\"plain\">{</span>
+      <div class=\"json_highlight\"><pre><span class=\"plain\">{</span>
         <span class=\"key\">\"type\"</span><span class=\"plain\">:</span> <span class=\"string\">\"object\"</span><span class=\"plain\">,</span>
         <span class=\"key\">\"properties\"</span><span class=\"plain\">:</span> <span class=\"plain\">{</span>
           <span class=\"key\">\"circle\"</span><span class=\"plain\">:</span> <span class=\"plain\">{</span>
@@ -104,7 +104,7 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     output = ""
     Respect::JSONSchemaHTMLFormatter.new(json_schema).dump(output)
     expected = <<-EOS.strip_heredoc
-      <div class=\"highlight\"><pre><span class=\"plain\">{</span>
+      <div class=\"json_highlight\"><pre><span class=\"plain\">{</span>
         <span class=\"key\">\"type\"</span><span class=\"plain\">:</span> <span class=\"string\">\"array\"</span><span class=\"plain\">,</span>
         <span class=\"key\">\"required\"</span><span class=\"plain\">:</span> <span class=\"keyword\">true</span><span class=\"plain\">,</span>
         <span class=\"key\">\"items\"</span><span class=\"plain\">:</span> <span class=\"plain\">[</span>
@@ -143,7 +143,7 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     output = ""
     Respect::JSONSchemaHTMLFormatter.new(json_schema).dump(output)
     expected = <<-EOS.strip_heredoc
-      <div class=\"highlight\"><pre><span class=\"plain\">{</span>
+      <div class=\"json_highlight\"><pre><span class=\"plain\">{</span>
         <span class=\"key\">\"type\"</span><span class=\"plain\">:</span> <span class=\"string\">\"object\"</span><span class=\"plain\">,</span>
         <span class=\"key\">\"properties\"</span><span class=\"plain\">:</span> <span class=\"plain\">{</span>
           <span class=\"comment\">// A parameter
@@ -181,7 +181,7 @@ class JSONSchemaHTMLFormatterTest < Test::Unit::TestCase
     output = ""
     f = Respect::JSONSchemaHTMLFormatter.new(json_schema)
     f.css_class = {
-      highlight: "h_class",
+      json_highlight: "h_class",
       plain: "p_class",
       key: "k_class",
       keyword: "kw_class",
