@@ -113,12 +113,15 @@ module Respect
     #
     # To prevent this problem you must undefine the method in the DSL by doing
     # something like that:
+    #
     #   module Respect
     #     class GlobalDef
     #       undef_method :class
     #     end
     #   end
+    #
     # or you can overwrite the +class+ method in the context of your choice:
+    #
     #   module Respect
     #     class GlobalDef
     #       def class(name, options = {}, &block)
@@ -126,6 +129,9 @@ module Respect
     #       end
     #     end
     #   end
+    #
+    # Do not un-define or overwrite 'method' and 'methods' since {FakeNameProxy}
+    # use them.
     def method_missing(method_name, *args, &block)
       if respond_to_missing?(method_name, false)
         size_range = 1..2
