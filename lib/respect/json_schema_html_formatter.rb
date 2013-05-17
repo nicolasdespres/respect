@@ -1,6 +1,6 @@
 module Respect
   # FIXME(Nicolas Despres): Add unit test.
-  class JsonSchemaHTMLFormatter
+  class JSONSchemaHTMLFormatter
     def initialize(json_schema)
       @indent_level = 0
       @indent_size = 2

@@ -9,6 +9,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym "URI"
   inflect.acronym "UTC"
   inflect.acronym "IP"
+  inflect.acronym "JSON"
 end
 
 # Provide methods and classes to define, validate, sanitize and dump object schema.
@@ -87,7 +88,7 @@ module Respect
   autoload :Org3Dumper
   # Miscellaneous classes
   autoload :DocParser
-  autoload :JsonSchemaHTMLFormatter
+  autoload :JSONSchemaHTMLFormatter
 
   # Base error of all errors raised by this module.
   class RespectError < StandardError
