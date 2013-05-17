@@ -53,6 +53,7 @@ module Respect
   # This class is _abstract_. You cannot instantiate it directly.
   # Use one of its sub-classes instead.
   class Schema
+    include DocHelper
 
     class << self
       # Make this class abstract.
@@ -139,22 +140,6 @@ module Respect
     # Returns the documentation of this schema.
     def doc
       @options[:doc]
-    end
-
-    # Returns the title part of the documentation of this schema
-    # (+nil+ if it does not have any).
-    def title
-      if doc.is_a?(String)
-        DocParser.new.parse(doc).title
-      end
-    end
-
-    # Returns the description part of the documentation of this schema
-    # (+nil+ if it does not have any).
-    def description
-      if doc.is_a?(String)
-        DocParser.new.parse(doc).description
-      end
     end
 
     # Returns whether this schema must be documented (i.e. not ignored

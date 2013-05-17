@@ -88,6 +88,7 @@ module Respect
   autoload :Org3Dumper
   # Miscellaneous classes
   autoload :DocParser
+  autoload :DocHelper
   autoload :JSONSchemaHTMLFormatter
 
   # Base error of all errors raised by this module.
