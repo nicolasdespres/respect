@@ -124,6 +124,7 @@ module Respect
       s = text.dup
       s.sub!(/\n*\Z/m, '')
       s.gsub!(/\n/m, "\n#{indentation}// ")
+      s.gsub!(/\s*\n/m, "\n")
       span("comment", "// #{s}")
     end
   end
