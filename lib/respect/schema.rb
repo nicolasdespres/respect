@@ -138,9 +138,11 @@ module Respect
     attr_reader :options
 
     # Returns the documentation of this schema.
-    def doc
+    def documentation
       @options[:doc]
     end
+
+    alias_method :doc, :documentation
 
     # Returns whether this schema must be documented (i.e. not ignored
     # when dumped).
