@@ -1,5 +1,4 @@
 module Respect
-  # FIXME(Nicolas Despres): Add unit test.
   class JSONSchemaHTMLFormatter
     def initialize(json_schema)
       @indent_level = 0
@@ -10,9 +9,9 @@ module Respect
     def dump(output = "")
       @output = output
       @output ||= String.new
-      @output = %q{<div class="highlight"><pre>}
+      @output << %q{<div class="highlight"><pre>}
       @output << dump_json(@json_schema)
-      @output << "</pre></div>"
+      @output << "</pre></div>\n"
       @output
     end
 
