@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Respect::VERSION
   s.authors     = ["Nicolas Despres"]
   s.email       = ["nicolas.despres@gmail.com"]
+  s.homepage    = "http://nicolasdespres.github.io/respect"
   s.summary     = "Object schema definition using a Ruby DSL."
   s.description = "Respect let you specify object schema using a Ruby DSL. It also provides validators, sanitizers and dumpers to generate json-schema.org compliant spec. It is perfect to specify JSON document structure."
 
