@@ -17,3 +17,4 @@ Feature: Sanitizer to promote validated value to a more specific type.
 Feature: CompositeSchema class to easily create your own schema.
 Feature: Facilities to extends the DSL with user-defined module.
 Feature: Contextual validation error.
+Feature: A JSON schema HTML formatter.
