@@ -1,4 +1,5 @@
 module Respect
+  # Format a JSON schema in HTML with CSS class to allow highlighting.
   class JSONSchemaHTMLFormatter
     def initialize(json_schema)
       @indent_level = 0
