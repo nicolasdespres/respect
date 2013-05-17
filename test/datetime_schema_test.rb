@@ -16,4 +16,11 @@ class DatetimeSchemaTest < Test::Unit::TestCase
     Respect::DatetimeSchema.new.validate(doc)
   end
 
+  def test_datetime_schema_validate_iso8601
+    t = Time.now.to_datetime
+    s = Respect::DatetimeSchema.new
+    assert_schema_validate(s, t.iso8601)
+    assert_equal t.to_time.to_i, s.sanitized_object.to_time.to_i
+  end
+
 end
