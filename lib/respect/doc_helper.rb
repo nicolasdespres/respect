@@ -8,16 +8,16 @@ module Respect
     # Returns the title part of the documentation returned by +documentation+ method
     # (+nil+ if it does not have any).
     def title
-      if documentation.is_a?(String)
-        DocParser.new.parse(documentation).title
+      if documentation
+        DocParser.new.parse(documentation.to_s).title
       end
     end
 
     # Returns the description part of the documentation returned by +documentation+ method
     # (+nil+ if it does not have any).
     def description
-      if documentation.is_a?(String)
-        DocParser.new.parse(documentation).description
+      if documentation
+        DocParser.new.parse(documentation.to_s).description
       end
     end
   end

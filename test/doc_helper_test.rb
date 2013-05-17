@@ -5,6 +5,7 @@ class DocHelperTest < Test::Unit::TestCase
     object = mock()
     object.extend(Respect::DocHelper)
     doc = "Hey!"
+    doc.expects(:to_s).returns(doc).once
     object.stubs(:documentation).returns(doc)
     Respect::DocParser.any_instance.stubs(:parse).with(doc).returns(Respect::DocParser.new).at_least_once
     Respect::DocParser.any_instance.stubs(:title).returns("title").at_least_once
@@ -15,6 +16,7 @@ class DocHelperTest < Test::Unit::TestCase
     object = mock()
     object.extend(Respect::DocHelper)
     doc = "Hey!"
+    doc.expects(:to_s).returns(doc).once
     object.stubs(:documentation).returns(doc)
     Respect::DocParser.any_instance.stubs(:parse).with(doc).returns(Respect::DocParser.new).at_least_once
     Respect::DocParser.any_instance.stubs(:description).returns("desc").at_least_once
