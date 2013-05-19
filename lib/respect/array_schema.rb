@@ -168,6 +168,10 @@ module Respect
       end
       self.sanitized_object = sanitized_object
       true
+    rescue ValidationError => e
+      # Reset sanitized object.
+      self.sanitized_object = nil
+      raise e
     end
 
     def ==(other)
