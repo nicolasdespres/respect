@@ -14,6 +14,8 @@ module Respect
         end
       when DateTime
         object
+      when Time
+        object.to_datetime
       else
         FormatValidator.new(:datetime).validate(object)
       end
