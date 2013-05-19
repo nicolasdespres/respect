@@ -51,4 +51,12 @@ class AnySchemaTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::AnySchema.define equal_to: 42
+    assert_schema_validate(s, 42)
+    assert_equal(42, s.sanitized_object)
+    assert_schema_invalidate(s, Object.new)
+    assert_equal(nil, s.sanitized_object)
+  end
 end

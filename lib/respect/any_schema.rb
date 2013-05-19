@@ -12,6 +12,10 @@ module Respect
         raise ValidationError,
               "object is not of a valid type but a #{object.class}"
       end
+    rescue ValidationError => e
+      # Reset sanitized object.
+      self.sanitized_object = nil
+      raise e
     end
 
   end # class AnySchema
