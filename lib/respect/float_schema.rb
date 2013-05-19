@@ -12,6 +12,12 @@ module Respect
         end
       when Float
         object
+      when NilClass
+        if allow_nil?
+          nil
+        else
+          raise ValidationError, "object is nil but this float schema does not allow nil"
+        end
       else
         raise ValidationError, "object is not a float but a '#{object.class}'"
       end

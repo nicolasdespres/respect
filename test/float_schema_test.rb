@@ -121,4 +121,25 @@ class FloatSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "wrong")
     assert_equal(nil, s.sanitized_object)
   end
+
+  def test_allow_nil
+    s = Respect::FloatSchema.new(allow_nil: true)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, 42.5
+    assert_equal(42.5, s.sanitized_object)
+    assert_schema_validate s, "42.5"
+    assert_equal(42.5, s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::FloatSchema.new
+    assert !s.allow_nil?
+    assert_schema_invalidate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, 42.5
+    assert_equal(42.5, s.sanitized_object)
+    assert_schema_validate s, "42.5"
+    assert_equal(42.5, s.sanitized_object)
+  end
 end
