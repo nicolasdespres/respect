@@ -74,6 +74,15 @@ module Respect
 
     # Overwritten method. See {Schema#validate}.
     def validate(object)
+      # Handle nil case.
+      if object.nil?
+        if allow_nil?
+          self.sanitized_object = nil
+          return true
+        else
+          raise ValidationError, "object is nil but this hash schema does not allow nil"
+        end
+      end
       # Validate object format.
       unless object.is_a?(Hash)
         raise ValidationError, "object is not a hash but a #{object.class}"

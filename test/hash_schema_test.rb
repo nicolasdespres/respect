@@ -593,4 +593,20 @@ class HashSchemaTest < Test::Unit::TestCase
     assert_equal(nil, s.sanitized_object)
   end
 
+  def test_allow_nil
+    s = Respect::HashSchema.new(allow_nil: true)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, {}
+    assert_equal({}, s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::HashSchema.new
+    assert !s.allow_nil?
+    assert_schema_invalidate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, {}
+    assert_equal({}, s.sanitized_object)
+  end
 end
