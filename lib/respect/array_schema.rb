@@ -107,6 +107,16 @@ module Respect
 
     # Overwritten method. See {Schema#validate}
     def validate(object)
+      # Handle nil case.
+      if object.nil?
+        if allow_nil?
+          self.sanitized_object = nil
+          return true
+        else
+          raise ValidationError, "object is nil but this array schema does not allow nil"
+        end
+      end
+      # Validate type.
       unless object.is_a?(Array)
         raise ValidationError, "object is not an array but a #{object.class}"
       end
