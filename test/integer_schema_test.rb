@@ -110,4 +110,11 @@ class IntegerSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate s, 5
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::IntegerSchema.define equal_to: 42
+    assert_schema_validate(s, 42)
+    assert_equal(42, s.sanitized_object)
+    assert_schema_invalidate(s, 51)
+    assert_equal(nil, s.sanitized_object)
+  end
 end

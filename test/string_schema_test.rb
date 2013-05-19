@@ -153,6 +153,14 @@ class StringSchemaTest < Test::Unit::TestCase
     end
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::StringSchema.define equal_to: "42"
+    assert_schema_validate(s, "42")
+    assert_equal("42", s.sanitized_object)
+    assert_schema_invalidate(s, "51")
+    assert_equal(nil, s.sanitized_object)
+  end
+
   private
 
   def assert_validate_string_format(format, result, doc)

@@ -113,4 +113,12 @@ class FloatSchemaTest < Test::Unit::TestCase
     assert_schema_validate s, 41.5
     assert_schema_invalidate s, 41.55
   end
+
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::FloatSchema.new equal_to: 42.5
+    assert_schema_validate(s, 42.5)
+    assert_equal(42.5, s.sanitized_object)
+    assert_schema_invalidate(s, "wrong")
+    assert_equal(nil, s.sanitized_object)
+  end
 end

@@ -39,4 +39,11 @@ class BooleanSchemaTest < Test::Unit::TestCase
     assert_schema_validation_is true, s_false, "false"
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::BooleanSchema.define equal_to: true
+    assert_schema_validate(s, true)
+    assert_equal(true, s.sanitized_object)
+    assert_schema_invalidate(s, false)
+    assert_equal(nil, s.sanitized_object)
+  end
 end

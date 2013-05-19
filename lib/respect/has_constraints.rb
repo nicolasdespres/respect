@@ -24,6 +24,10 @@ module Respect
       validate_constraints(sanitized_object)
       self.sanitized_object = sanitized_object
       true
+    rescue ValidationError => e
+      # Reset sanitized object.
+      self.sanitized_object = nil
+      raise e
     end
 
   end
