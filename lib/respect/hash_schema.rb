@@ -28,6 +28,7 @@ module Respect
   # strict:: if set to +true+ the hash must not have any extra
   #          properties to be validated. (+false+ by default)
   class HashSchema < Schema
+    include Enumerable
 
     class << self
       # Overwritten method. See Schema::default_options
@@ -209,5 +210,9 @@ module Respect
       super && @properties == other.properties
     end
 
+    # FIXME(Nicolas Despres): Add a test for me.
+    def each(&block)
+      @properties.each(&block)
+    end
   end
 end
