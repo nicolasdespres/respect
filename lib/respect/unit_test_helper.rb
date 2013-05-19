@@ -7,7 +7,7 @@ module Respect
           if msg
             message = msg
           else
-            message = "Schema:\n#{schema}expected to validate object <#{object}> but failed with \"#{schema.last_error.context.join(" ")}\"."
+            message = "Schema:\n#{schema}expected to validate object <#{object.inspect}> but failed with \"#{schema.last_error.context.join(" ")}\"."
           end
           assert false, message
         end
@@ -16,7 +16,7 @@ module Respect
           if msg
             message = msg
           else
-            message = "Schema:\n#{schema}expected to invalidate object <#{object}> but succeed."
+            message = "Schema:\n#{schema}expected to invalidate object <#{object.inspect}> but succeed."
           end
           assert false, message
         end
