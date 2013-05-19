@@ -11,6 +11,12 @@ module Respect
         else
           raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
+      when IPAddr
+        if object.ipv6?
+          object
+        else
+          raise ValidationError, "IPAddr object '#{object}' is not IPv6"
+        end
       else
         FormatValidator.new(:ipv6_addr).validate(object)
       end
