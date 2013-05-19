@@ -40,7 +40,8 @@ module Respect
   #             publicly documented. Thus, it will not be dumped as
   #             {json-schema.org}[http://json-schema.org/].
   # allow_nil:: whether the schema accept +nil+ as validation value.
-  #             (+false+ by default).
+  #             (+false+ by default). This option is not supported
+  #             yet by the json-schema.org standard.
   # These options applies to all schema sub-classes.
   #
   # In addition to these options, you can configure any defined
