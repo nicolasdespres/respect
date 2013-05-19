@@ -53,4 +53,14 @@ class DatetimeSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "wrong")
     assert_nil(s.sanitized_object)
   end
+
+  def test_validate_datetime_object
+    s = Respect::DatetimeSchema.new
+    t = Time.now.to_datetime
+    assert_equal(DateTime, t.class)
+    assert_schema_validate s, t
+    assert_equal DateTime, s.sanitized_object.class
+    assert_equal t, s.sanitized_object
+  end
+
 end

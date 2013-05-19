@@ -12,6 +12,8 @@ module Respect
         else
           raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
+      when DateTime
+        object
       else
         FormatValidator.new(:datetime).validate(object)
       end
