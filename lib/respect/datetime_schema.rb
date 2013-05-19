@@ -1,6 +1,6 @@
 module Respect
   # Validate a date and time string following RFC 3399.
-  #
+  # +DateTime+, +Time+, and +Date+ object are accepted.
   # If validation succeed the sanitized object is a +DateTime+ object.
   class DatetimeSchema < StringSchema
 
