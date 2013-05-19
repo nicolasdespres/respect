@@ -17,6 +17,12 @@ module Respect
         end
       when TrueClass, FalseClass
         object
+      when NilClass
+        if allow_nil?
+          nil
+        else
+          raise ValidationError, "object is nil but this boolean schema does not allow nil"
+        end
       else
         raise ValidationError, "object is not a boolean but a '#{object.class}'"
       end

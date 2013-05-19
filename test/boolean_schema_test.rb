@@ -46,4 +46,33 @@ class BooleanSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, false)
     assert_equal(nil, s.sanitized_object)
   end
+
+  def test_allow_nil
+    s = Respect::BooleanSchema.new(allow_nil: true)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, true
+    assert_equal(true, s.sanitized_object)
+    assert_schema_validate s, false
+    assert_equal(false, s.sanitized_object)
+    assert_schema_validate s, "true"
+    assert_equal(true, s.sanitized_object)
+    assert_schema_validate s, "false"
+    assert_equal(false, s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::BooleanSchema.new
+    assert !s.allow_nil?
+    assert_schema_invalidate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, true
+    assert_equal(true, s.sanitized_object)
+    assert_schema_validate s, false
+    assert_equal(false, s.sanitized_object)
+    assert_schema_validate s, "true"
+    assert_equal(true, s.sanitized_object)
+    assert_schema_validate s, "false"
+    assert_equal(false, s.sanitized_object)
+  end
 end
