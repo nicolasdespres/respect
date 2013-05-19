@@ -87,9 +87,6 @@ module Respect
       unless object.is_a?(Hash)
         raise ValidationError, "object is not a hash but a #{object.class}"
       end
-      unless object.is_a?(HashWithIndifferentAccess)
-        object = object.with_indifferent_access
-      end
       sanitized_object = {}.with_indifferent_access
       # Validate expected properties.
       @properties.each do |name, schema|
@@ -121,7 +118,7 @@ module Respect
     end
 
     def validate_property_with_options(name, schema, object, sanitized_object)
-      if object.has_key? name
+      if object_has_key?(object, name)
         validate_property(name, schema, object, sanitized_object)
       else
         if schema.required?
@@ -135,9 +132,20 @@ module Respect
     end
     private :validate_property_with_options
 
+    def object_has_key?(object, key)
+      if object.has_key?(key)
+        true
+      elsif object.has_key?(key.to_sym)
+        true
+      else
+        false
+      end
+    end
+    private :object_has_key?
+
     def validate_property(name, schema, object, sanitized_object)
       begin
-        schema.validate(object[name])
+        schema.validate(object_get_key(object, name))
         sanitized_object[name] = schema.sanitized_object
       rescue ValidationError => e
         e.context << "in hash property `#{name}'"
@@ -145,6 +153,17 @@ module Respect
       end
     end
     private :validate_property
+
+    def object_get_key(object, key)
+      if object.has_key?(key)
+        object[key]
+      elsif object.has_key?(key.to_sym)
+        object[key.to_sym]
+      else
+        object.default(key)
+      end
+    end
+    private :object_get_key
 
     # Return the optional properties (e.g. those that are not required).
     def optional_properties
