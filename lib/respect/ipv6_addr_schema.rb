@@ -1,3 +1,5 @@
+require 'ipaddr'
+
 module Respect
   class Ipv6AddrSchema < StringSchema
 

@@ -1,4 +1,4 @@
-require "ipaddr"
+require 'ipaddr'
 require 'uri'
 
 module Respect
