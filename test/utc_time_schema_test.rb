@@ -30,4 +30,11 @@ class UTCTimeSchemaTest < Test::Unit::TestCase
     end
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::UTCTimeSchema.new
+    assert_schema_validate(s, 42)
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "*")
+    assert_nil(s.sanitized_object)
+  end
 end
