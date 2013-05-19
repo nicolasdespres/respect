@@ -48,6 +48,15 @@ module Respect
 
     # Overloaded methods (see {Schema#validate}).
     def validate(object)
+      # Handle nil case.
+      if object.nil?
+        if allow_nil?
+          self.sanitized_object = nil
+          return true
+        else
+          raise ValidationError, "object is nil but this #{self.class.name} does not allow nil"
+        end
+      end
       @schema.validate(object)
       self.sanitized_object = sanitize(@schema.sanitized_object)
       true
