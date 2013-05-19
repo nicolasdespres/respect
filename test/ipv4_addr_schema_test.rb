@@ -24,4 +24,27 @@ class Ipv4AddrSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "wrong")
     assert_nil(s.sanitized_object)
   end
+
+  def test_allow_nil
+    s = Respect::Ipv4AddrSchema.new(allow_nil: true)
+    assert s.allow_nil?
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "192.168.0.2"
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "wrong")
+    assert_nil(s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::Ipv4AddrSchema.new
+    assert !s.allow_nil?
+    exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
+    assert_match exception.message, /\bIpv4AddrSchema\b/
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "192.168.0.2"
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "wrong")
+    assert_nil(s.sanitized_object)
+  end
 end

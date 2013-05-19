@@ -23,4 +23,27 @@ class URISchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "<")
     assert_nil(s.sanitized_object)
   end
+
+  def test_allow_nil
+    s = Respect::URISchema.new(allow_nil: true)
+    assert s.allow_nil?
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "http://foo.com"
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "<")
+    assert_nil(s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::URISchema.new
+    assert !s.allow_nil?
+    exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
+    assert_match exception.message, /\bURISchema\b/
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "http://foo.com"
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "<")
+    assert_nil(s.sanitized_object)
+  end
 end
