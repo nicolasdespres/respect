@@ -21,7 +21,7 @@ module Respect
     # and assign the sanitized object.
     def validate(object)
       sanitized_object = validate_type(object)
-      validate_constraints(sanitized_object) unless allow_nil? && sanitized_object.nil?
+      validate_constraints(sanitized_object) unless sanitized_object.nil? && allow_nil?
       self.sanitized_object = sanitized_object
       true
     rescue ValidationError => e

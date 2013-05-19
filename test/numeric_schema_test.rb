@@ -282,5 +282,12 @@ class NumericSchemaTest < Test::Unit::TestCase
     assert_equal(42, s.sanitized_object)
     assert_schema_invalidate s, 51
     assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "42"
+    assert_equal(42, s.sanitized_object)
+  end
+
+  def test_allow_nil_with_wrong_constraint_still_invalidate
+    s = Respect::NumericSchema.new(allow_nil: true, equal_to: "42")
+    assert_schema_invalidate s, "42"
   end
 end
