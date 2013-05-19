@@ -46,4 +46,9 @@ class RegexpSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "*")
     assert_nil(s.sanitized_object)
   end
+
+  def test_validate_regexp_object
+    s = Respect::RegexpSchema.new
+    assert_schema_validate s, /a/
+  end
 end
