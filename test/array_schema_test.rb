@@ -452,4 +452,18 @@ class ArraySchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, [51])
     assert_equal(nil, s.sanitized_object)
   end
+
+  def test_integer_item_accept_nil
+    s = Respect::ArraySchema.define do |s|
+      s.integer allow_nil: true
+    end
+    assert_schema_validate(s, [nil])
+    assert_equal([nil], s.sanitized_object)
+    assert_schema_validate(s, [42])
+    assert_equal([42], s.sanitized_object)
+    assert_schema_validate(s, [42, nil, 51])
+    assert_equal([42, nil, 51], s.sanitized_object)
+    assert_schema_invalidate(s, ["wrong"])
+    assert_nil(s.sanitized_object)
+  end
 end

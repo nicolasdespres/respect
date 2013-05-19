@@ -580,4 +580,17 @@ class HashSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, {i: 51})
     assert_equal(nil, s.sanitized_object)
   end
+
+  def test_integer_property_accept_nil
+    s = Respect::HashSchema.define do |s|
+      s.integer "i", allow_nil: true
+    end
+    assert_schema_validate(s, { i: nil })
+    assert_equal({ "i" => nil }, s.sanitized_object)
+    assert_schema_validate(s, { i: 42 })
+    assert_equal({ "i" => 42 }, s.sanitized_object)
+    assert_schema_invalidate(s, { i: "wrong" })
+    assert_equal(nil, s.sanitized_object)
+  end
+
 end

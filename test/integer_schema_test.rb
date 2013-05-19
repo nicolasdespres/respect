@@ -117,4 +117,25 @@ class IntegerSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, 51)
     assert_equal(nil, s.sanitized_object)
   end
+
+  def test_allow_nil
+    s = Respect::IntegerSchema.new(allow_nil: true)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, 42
+    assert_equal(42, s.sanitized_object)
+    assert_schema_validate s, "42"
+    assert_equal(42, s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::IntegerSchema.new
+    assert !s.allow_nil?
+    assert_schema_invalidate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, 42
+    assert_equal(42, s.sanitized_object)
+    assert_schema_validate s, "42"
+    assert_equal(42, s.sanitized_object)
+  end
 end

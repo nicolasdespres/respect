@@ -12,6 +12,12 @@ module Respect
         end
       when Integer
         object
+      when NilClass
+        if allow_nil?
+          nil
+        else
+          raise ValidationError, "object is nil but this integer schema does not allow nil"
+        end
       else
         raise ValidationError, "object is not an integer but a '#{object.class}'"
       end

@@ -39,6 +39,8 @@ module Respect
   #             as an implementation details that should not be
   #             publicly documented. Thus, it will not be dumped as
   #             {json-schema.org}[http://json-schema.org/].
+  # allow_nil:: whether the schema accept +nil+ as validation value.
+  #             (+false+ by default).
   # These options applies to all schema sub-classes.
   #
   # In addition to these options, you can configure any defined
@@ -114,6 +116,7 @@ module Respect
           required: true,
           default: nil,
           doc: nil,
+          allow_nil: false,
         }.freeze
       end
 
@@ -168,6 +171,11 @@ module Respect
     # Returns whether this schema has a default value defined.
     def has_default?
       @options[:default] != nil
+    end
+
+    # Returns whether this schema accept +nil+ as validation value.
+    def allow_nil?
+      !!@options[:allow_nil]
     end
 
     # Return whether the given +object+ validates this schema.
