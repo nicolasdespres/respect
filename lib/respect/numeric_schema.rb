@@ -18,6 +18,12 @@ module Respect
         end
       when Integer, Float
         object
+      when NilClass
+        if allow_nil?
+          nil
+        else
+          raise ValidationError, "object is nil but this numeric schema does not allow nil"
+        end
       else
         raise ValidationError, "object is not a numeric but a '#{object.class}'"
       end
