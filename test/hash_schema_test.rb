@@ -571,4 +571,13 @@ class HashSchemaTest < Test::Unit::TestCase
     assert_equal({ }, s.sanitized_object)
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::HashSchema.define do |s|
+      s.integer "i", equal_to: 42
+    end
+    assert_schema_validate(s, {i: 42})
+    assert_equal({"i" => 42}, s.sanitized_object)
+    assert_schema_invalidate(s, {i: 51})
+    assert_equal(nil, s.sanitized_object)
+  end
 end
