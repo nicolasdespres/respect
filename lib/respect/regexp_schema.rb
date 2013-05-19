@@ -1,4 +1,5 @@
 module Respect
+  # Validate a string containing a regexp but also accept Regexp object.
   class RegexpSchema < StringSchema
 
     def validate_type(object)

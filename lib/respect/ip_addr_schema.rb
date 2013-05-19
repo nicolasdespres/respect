@@ -1,6 +1,7 @@
 require 'ipaddr'
 
 module Respect
+  # Validate a string containing an IPv4 or IPv6 address but also accept IPAddr object.
   class IPAddrSchema < StringSchema
 
     def validate_type(object)

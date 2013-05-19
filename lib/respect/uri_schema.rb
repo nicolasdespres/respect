@@ -1,6 +1,7 @@
 require 'uri'
 
 module Respect
+  # Validate a string containing an URI but also accepts URI object.
   class URISchema < StringSchema
 
     def validate_type(object)
