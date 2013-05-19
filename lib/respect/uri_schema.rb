@@ -1,3 +1,5 @@
+require 'uri'
+
 module Respect
   class URISchema < StringSchema
 
@@ -9,6 +11,8 @@ module Respect
         else
           raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
+      when URI
+        object
       else
         FormatValidator.new(:uri).validate(object)
       end

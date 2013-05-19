@@ -46,4 +46,9 @@ class URISchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "<")
     assert_nil(s.sanitized_object)
   end
+
+  def test_validate_uri_object
+    s = Respect::URISchema.new
+    assert_schema_validate(s, URI.parse("http://foo.com"))
+  end
 end
