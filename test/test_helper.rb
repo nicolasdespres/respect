@@ -11,6 +11,18 @@ end
 
 require 'respect/unit_test_helper'
 
+class Test::Unit::TestCase
+  # Similar to assert_raises but return the exception object caught.
+  def assert_exception(exception_class, message = nil, &block)
+    begin
+      block.call
+      assert false, message
+    rescue exception_class => e
+      e
+    end
+  end
+end
+
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
