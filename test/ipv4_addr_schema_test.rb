@@ -17,4 +17,11 @@ class Ipv4AddrSchemaTest < Test::Unit::TestCase
     Respect::Ipv4AddrSchema.new.validate(doc)
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::Ipv4AddrSchema.new
+    assert_schema_validate(s, "192.168.0.2")
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "wrong")
+    assert_nil(s.sanitized_object)
+  end
 end

@@ -23,4 +23,12 @@ class DatetimeSchemaTest < Test::Unit::TestCase
     assert_equal t.to_time.to_i, s.sanitized_object.to_time.to_i
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::DatetimeSchema.new
+    assert_schema_validate(s, "2013-12-01T00:00:00+00:00")
+    assert_not_nil(s.sanitized_object)
+    assert_schema_invalidate(s, "wrong")
+    assert_nil(s.sanitized_object)
+  end
+
 end
