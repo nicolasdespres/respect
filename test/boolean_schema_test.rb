@@ -75,4 +75,14 @@ class BooleanSchemaTest < Test::Unit::TestCase
     assert_schema_validate s, "false"
     assert_equal(false, s.sanitized_object)
   end
+
+  def test_allow_nil_with_constraint
+    s = Respect::BooleanSchema.new(allow_nil: true, equal_to: false)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, false
+    assert_equal(false, s.sanitized_object)
+    assert_schema_invalidate s, true
+    assert_equal(nil, s.sanitized_object)
+  end
 end
