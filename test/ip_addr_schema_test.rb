@@ -53,4 +53,26 @@ class IPAddrSchemaTest < Test::Unit::TestCase
     assert_schema_invalidate(s, "wrong")
     assert_nil(s.sanitized_object)
   end
+
+  def test_validate_ip_addr_object_with_ipv4_value
+    s = Respect::IPAddrSchema.new
+    ip = IPAddr.new("192.168.0.2")
+    assert_equal(IPAddr, ip.class)
+    assert ip.ipv4?
+    assert_schema_validate s, ip
+    assert_equal IPAddr, s.sanitized_object.class
+    assert_equal ip, s.sanitized_object
+    assert s.sanitized_object.ipv4?
+  end
+
+  def test_validate_ip_addr_object_with_ipv6_value
+    s = Respect::IPAddrSchema.new
+    ip = IPAddr.new("3ffe:505:2::1")
+    assert_equal(IPAddr, ip.class)
+    assert ip.ipv6?
+    assert_schema_validate s, ip
+    assert_equal IPAddr, s.sanitized_object.class
+    assert_equal ip, s.sanitized_object
+    assert s.sanitized_object.ipv6?
+  end
 end

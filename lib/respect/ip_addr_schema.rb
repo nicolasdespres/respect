@@ -9,6 +9,8 @@ module Respect
         else
           raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
+      when IPAddr
+        object
       else
         FormatValidator.new(:ip_addr).validate(object)
       end
