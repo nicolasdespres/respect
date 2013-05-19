@@ -131,7 +131,7 @@ module Respect
 
     # Returns the sanitized object. It is +nil+ as long as you have not
     # validated any object. It is overwritten every times you call
-    # {#validate}.
+    # {#validate}. If the validation failed it will be reset to +nil+.
     attr_reader :sanitized_object
 
     # Returns the hash of options.
