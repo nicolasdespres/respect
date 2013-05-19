@@ -21,7 +21,7 @@ module Respect
         if allow_nil?
           nil
         else
-          raise ValidationError, "object is nil but this boolean schema does not allow nil"
+          raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
       else
         raise ValidationError, "object is not a boolean but a '#{object.class}'"

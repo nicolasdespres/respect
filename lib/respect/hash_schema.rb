@@ -80,7 +80,7 @@ module Respect
           self.sanitized_object = nil
           return true
         else
-          raise ValidationError, "object is nil but this hash schema does not allow nil"
+          raise ValidationError, "object is nil but this #{self.class} does not allow nil"
         end
       end
       # Validate object format.
