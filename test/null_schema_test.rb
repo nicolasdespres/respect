@@ -23,4 +23,11 @@ class NullSchemaTest < Test::Unit::TestCase
     end
   end
 
+  def test_failed_validation_reset_sanitized_object
+    s = Respect::NullSchema.new
+    assert_schema_validate(s, nil)
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_invalidate(s, 42)
+    assert_equal(nil, s.sanitized_object)
+  end
 end
