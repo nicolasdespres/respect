@@ -51,6 +51,10 @@ module Respect
       @schema.validate(object)
       self.sanitized_object = sanitize(@schema.sanitized_object)
       true
+    rescue ValidationError => e
+      # Reset sanitized object.
+      self.sanitized_object = nil
+      raise e
     end
 
     # Returns the schema composing this composite schema.
