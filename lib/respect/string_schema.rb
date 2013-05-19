@@ -5,7 +5,16 @@ module Respect
     public_class_method :new
 
     def validate_type(object)
-      object.to_s
+      case object
+      when NilClass
+        if allow_nil?
+          nil
+        else
+          raise ValidationError, "object is nil but this string schema does not allow nil"
+        end
+      else
+        object.to_s
+      end
     end
 
   end

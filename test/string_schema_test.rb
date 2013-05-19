@@ -161,6 +161,27 @@ class StringSchemaTest < Test::Unit::TestCase
     assert_equal(nil, s.sanitized_object)
   end
 
+  def test_allow_nil
+    s = Respect::StringSchema.new(allow_nil: true)
+    assert_schema_validate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "42"
+    assert_equal("42", s.sanitized_object)
+    assert_schema_validate s, 42
+    assert_equal("42", s.sanitized_object)
+  end
+
+  def test_disallow_nil
+    s = Respect::StringSchema.new
+    assert !s.allow_nil?
+    assert_schema_invalidate s, nil
+    assert_equal(nil, s.sanitized_object)
+    assert_schema_validate s, "42"
+    assert_equal("42", s.sanitized_object)
+    assert_schema_validate s, 42
+    assert_equal("42", s.sanitized_object)
+  end
+
   private
 
   def assert_validate_string_format(format, result, doc)
