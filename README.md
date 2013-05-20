@@ -24,19 +24,7 @@ Already available:
 * Extensible API to add your custom validator and sanitizer.
 * Extensible macro definition system to factor you schema definition code.
 
-Coming soon:
-
-* More way to specify hash key's value.
-* Extensible validator API.
-* More extensible DSL API: define your own definition class, create macros not based on core
-  statements.
-* More extensible Schema API: sub-class Schema not only CompositeSchema.
-* A way to set options for nested schema in custom types.
-* More extensible dumpers API.
-
-Later:
-
-* A JSON schema loader.
+See the RELEASE_NOTES file for detailed feature listing.
 
 # Take a Tour
 
