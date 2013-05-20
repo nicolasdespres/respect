@@ -6,7 +6,7 @@ Ruby code. It comes with a validator, a sanitizer and dumpers to generate valid
 specify JSON schema, it can be used for any data represented as Hash and Array. It does not require
 any JSON parser since it works only on data.
 
-Respect is named after the contraction of _REST_ and _SPEC_. Indeed, it is first intended to be
+Respect is named after the contraction of _REST_ and _SPEC_. Indeed, it was first intended to be
 used to specify REST API in the context of a Web application.
 
 There is a plugin called [Respect for Rails](https://github.com/nicolasdespres/respect-rails) which
