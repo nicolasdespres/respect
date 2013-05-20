@@ -252,7 +252,8 @@ library. In other word, you cannot instantiate a Schema class from a _JSON Schem
 # Getting help
 
 The easiest way to get help about how to use this library is to post your question on the
-[Respect discussion group](FIXME). I will be glade to answer. I may have already answered the
+[Respect discussion group](https://groups.google.com/forum/#!forum/ruby-respect-gem-talk).
+I will be glade to answer. I may have already answered the
 same question so before you post your question take a bit of time to search the group.
 
 You can also read these documents for further documentation:
@@ -273,7 +274,7 @@ any JSON parser returning normal basic types like `Hash`, `Array`, `String`, `Nu
 # Feedback
 
 I would love to hear what you think about this library. Feel free to post any comments/remarks on the
-[Respect discussion group](FIXME).
+[Respect discussion group](https://groups.google.com/forum/#!forum/ruby-respect-gem-talk).
 
 # Contributing patches
 
