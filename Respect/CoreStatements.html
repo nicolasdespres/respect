@@ -1,0 +1,2506 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Respect::CoreStatements
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (C)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Respect.html" title="Respect (module)">Respect</a></span></span>
+     &raquo; 
+    <span class="title">CoreStatements</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: Respect::CoreStatements
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/respect/core_statements.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Core DSL statements definition module.</p>
+
+<p>This module holds all the basic statements available in the DSL. It is
+included in all the DSL context using <span class='object_link'><a href="../Respect.html#extend_dsl_with-class_method" title="Respect.extend_dsl_with (method)">extend_dsl_with</a></span>. Thus all
+basic DSL contexts provides its feature.</p>
+
+<p>Most of the statements are available as dynamic methods. For each
+"FooSchema" class defined in the <span class='object_link'><a href="../Respect.html" title="Respect (module)">Respect</a></span> module (and following certain
+condition described at <span class='object_link'><a href="../Respect.html#schema_for-class_method" title="Respect.schema_for (method)">schema_for</a></span>), there is a statement "foo"
+(see <span class='object_link'><a href="Schema.html#statement_name-class_method" title="Respect::Schema.statement_name (method)">Schema.statement_name</a></span>) expecting a name, some options and a block.
+This statement defines a new "FooSchema" with the given options and block.
+This schema is stored in the current context using the given name. The name
+may be used differently depending on the context. In a hash definition
+context it will be used as a property name whereas it will be simply
+ignored in the context of an array. Context classes including the
+<span class='object_link'><a href="DefWithoutName.html" title="Respect::DefWithoutName (module)">DefWithoutName</a></span> module ignore the name argument whereas others do not. The
+<span class='object_link'><a href="FakeNameProxy.html" title="Respect::FakeNameProxy (class)">FakeNameProxy</a></span> is in charge of transparently passing <tt>nil</tt> for the
+name in contexts including the <span class='object_link'><a href="DefWithoutName.html" title="Respect::DefWithoutName (module)">DefWithoutName</a></span> module.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='comment'># method_missing calls:
+</span>  <span class='comment'>#   update_context(&quot;i&quot;, IntegerSchema.define({greater_than: 42}))
+</span>  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>i</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>42</span>
+<span class='kw'>end</span>
+<span class='const'>ArraySchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='comment'># method_missing calls:
+</span>  <span class='comment'>#   update_context(nil, IntegerSchema.define({greater_than: 42}))
+</span>  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='label'>greater_than:</span> <span class='int'>42</span>
+<span class='kw'>end</span></code></pre>
+
+<p>Classes including this module must implement the <tt>update_context</tt>
+method which is supposed to update the schema under definition with the
+given name and schema created by the method.</p>
+
+<p>Do not include your helper module in this module since definition classes
+including it won't be affected due to the <a
+href="http://eigenclass.org/hiki/The+double+inclusion+problem">dynamic
+module include problem</a>. To extend the DSL use <span class='object_link'><a href="../Respect.html#extend_dsl_with-class_method" title="Respect.extend_dsl_with (method)">extend_dsl_with</a></span>
+instead.</p>
+
+<p>It is recommended that your macros implementation be based on core
+statements because <tt>update_context</tt> API is <b>experimental</b>. If
+you do so anyway your macros may not work properly with the <span class='object_link'><a href="#doc-instance_method" title="Respect::CoreStatements#doc (method)">#doc</a></span> and
+<span class='object_link'><a href="#with_options-instance_method" title="Respect::CoreStatements#with_options (method)">#with_options</a></span> statements.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#any-instance_method" title="#any (instance method)">- (Object) <strong>any</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="AnySchema.html" title="Respect::AnySchema (class)">AnySchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#array-instance_method" title="#array (instance method)">- (Object) <strong>array</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="ArraySchema.html" title="Respect::ArraySchema (class)">ArraySchema</a></span> with the given <tt>options</tt> and <tt>block</tt>
+stores it in the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#boolean-instance_method" title="#boolean (instance method)">- (Object) <strong>boolean</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="BooleanSchema.html" title="Respect::BooleanSchema (class)">BooleanSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#datetime-instance_method" title="#datetime (instance method)">- (Object) <strong>datetime</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="DatetimeSchema.html" title="Respect::DatetimeSchema (class)">DatetimeSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#doc-instance_method" title="#doc (instance method)">- (Object) <strong>doc</strong>(text) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define the current documentation text.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#email-instance_method" title="#email (instance method)">- (Object) <strong>email</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a string formatted an email (see <span class='object_link'><a href="FormatValidator.html#validate_email-instance_method" title="Respect::FormatValidator#validate_email (method)">FormatValidator#validate_email</a></span>).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#float-instance_method" title="#float (instance method)">- (Object) <strong>float</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="FloatSchema.html" title="Respect::FloatSchema (class)">FloatSchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hash-instance_method" title="#hash (instance method)">- (Object) <strong>hash</strong>(name, options = {}, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="HashSchema.html" title="Respect::HashSchema (class)">HashSchema</a></span> with the given <tt>options</tt> and <tt>block</tt>
+stores it in the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hostname-instance_method" title="#hostname (instance method)">- (Object) <strong>hostname</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a string formatted as a machine host name (see
+<span class='object_link'><a href="FormatValidator.html#validate_hostname-instance_method" title="Respect::FormatValidator#validate_hostname (method)">FormatValidator#validate_hostname</a></span>).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#integer-instance_method" title="#integer (instance method)">- (Object) <strong>integer</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="IntegerSchema.html" title="Respect::IntegerSchema (class)">IntegerSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ip_addr-instance_method" title="#ip_addr (instance method)">- (Object) <strong>ip_addr</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="IPAddrSchema.html" title="Respect::IPAddrSchema (class)">IPAddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ipv4_addr-instance_method" title="#ipv4_addr (instance method)">- (Object) <strong>ipv4_addr</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="Ipv4AddrSchema.html" title="Respect::Ipv4AddrSchema (class)">Ipv4AddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ipv6_addr-instance_method" title="#ipv6_addr (instance method)">- (Object) <strong>ipv6_addr</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="Ipv6AddrSchema.html" title="Respect::Ipv6AddrSchema (class)">Ipv6AddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#method_missing-instance_method" title="#method_missing (instance method)">- (Object) <strong>method_missing</strong>(method_name, *args, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Call <tt>update_context</tt> using the first argument as index and passes
+the rest to the <span class='object_link'><a href="Schema.html#define-class_method" title="Respect::Schema.define (method)">Schema.define</a></span> class method of the schema class associated
+with the method name.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#null-instance_method" title="#null (instance method)">- (Object) <strong>null</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="NullSchema.html" title="Respect::NullSchema (class)">NullSchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#numeric-instance_method" title="#numeric (instance method)">- (Object) <strong>numeric</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="NumericSchema.html" title="Respect::NumericSchema (class)">NumericSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#phone_number-instance_method" title="#phone_number (instance method)">- (Object) <strong>phone_number</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a string formatted as a phone number (see
+<span class='object_link'><a href="FormatValidator.html#validate_phone_number-instance_method" title="Respect::FormatValidator#validate_phone_number (method)">FormatValidator#validate_phone_number</a></span>).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#regexp-instance_method" title="#regexp (instance method)">- (Object) <strong>regexp</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="RegexpSchema.html" title="Respect::RegexpSchema (class)">RegexpSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#respond_to_missing%3F-instance_method" title="#respond_to_missing? (instance method)">- (Boolean) <strong>respond_to_missing?</strong>(method_name, include_all) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#string-instance_method" title="#string (instance method)">- (Object) <strong>string</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="StringSchema.html" title="Respect::StringSchema (class)">StringSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#uri-instance_method" title="#uri (instance method)">- (Object) <strong>uri</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="URISchema.html" title="Respect::URISchema (class)">URISchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#utc_time-instance_method" title="#utc_time (instance method)">- (Object) <strong>utc_time</strong>(name, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Define a <span class='object_link'><a href="UTCTimeSchema.html" title="Respect::UTCTimeSchema (class)">UTCTimeSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#with_options-instance_method" title="#with_options (instance method)">- (Object) <strong>with_options</strong>(options, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Use <tt>options</tt> as the default for all schema created within
+<tt>block</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice this">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+  </p>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="method_missing-instance_method">
+  
+    - (<tt>Object</tt>) <strong>method_missing</strong>(method_name, *args, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Call <tt>update_context</tt> using the first argument as index and passes
+the rest to the <span class='object_link'><a href="Schema.html#define-class_method" title="Respect::Schema.define (method)">Schema.define</a></span> class method of the schema class associated
+with the method name. As a consequence any call to missing method
+<tt>foo</tt> will define a <tt>FooSchema</tt> schema using
+<tt>FooSchema.define</tt>.</p>
+
+<p>The options are merged with the default options which may include the
+<tt>:doc</tt> option if <span class='object_link'><a href="#doc-instance_method" title="Respect::CoreStatements#doc (method)">#doc</a></span> has been called before. The current
+documentation is reset after this call.</p>
+
+<p>Note that if you define a new schema named after a method already defined
+in a context class such as <span class='object_link'><a href="GlobalDef.html" title="Respect::GlobalDef (class)">GlobalDef</a></span> or its sub-classes or in
+<tt>Object</tt>, the dynamic dispatch won't work. For instance even if you
+have defined the <tt>ClassSchema</tt> class the following code won't work
+as expected:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Schema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>  <span class='comment'># Call Object#class !!!!!
+</span><span class='kw'>end</span></code></pre>
+
+<p>To prevent this problem you must undefine the method in the DSL by doing
+something like that:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>Respect</span>
+  <span class='kw'>class</span> <span class='const'>GlobalDef</span>
+    <span class='id identifier rubyid_undef_method'>undef_method</span> <span class='symbol'>:class</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></code></pre>
+
+<p>or you can overwrite the <tt>class</tt> method in the context of your
+choice:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>Respect</span>
+  <span class='kw'>class</span> <span class='const'>GlobalDef</span>
+    <span class='kw'>def</span> <span class='kw'>class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>ClassSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></code></pre>
+
+<p>Do not un-define or overwrite 'method' and 'methods' since <span class='object_link'><a href="FakeNameProxy.html" title="Respect::FakeNameProxy (class)">FakeNameProxy</a></span>
+use them.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="any-instance_method">
+  
+    - (<tt>Object</tt>) <strong>any</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="AnySchema.html" title="Respect::AnySchema (class)">AnySchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="array-instance_method">
+  
+    - (<tt>Object</tt>) <strong>array</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="ArraySchema.html" title="Respect::ArraySchema (class)">ArraySchema</a></span> with the given <tt>options</tt> and <tt>block</tt>
+stores it in the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="boolean-instance_method">
+  
+    - (<tt>Object</tt>) <strong>boolean</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="BooleanSchema.html" title="Respect::BooleanSchema (class)">BooleanSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="datetime-instance_method">
+  
+    - (<tt>Object</tt>) <strong>datetime</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="DatetimeSchema.html" title="Respect::DatetimeSchema (class)">DatetimeSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="doc-instance_method">
+  
+    - (<tt>Object</tt>) <strong>doc</strong>(text) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define the current documentation text. It will be used as documentation for
+the next defined schema. It can be used once, so it is reset once it has
+been affected to a schema.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_s'>s</span> <span class='op'>=</span> <span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_doc'>doc</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>A magic number</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>magic</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nodoc</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_doc'>doc</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>A parameter...</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>param</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+<span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>magic</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_doc'>doc</span>                  <span class='comment'>#=&gt; &quot;A magic number&quot;
+</span><span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nodoc</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_doc'>doc</span>                  <span class='comment'>#=&gt; nil
+</span><span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>param</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_doc'>doc</span>                  <span class='comment'>#=&gt; &quot;A parameter...&quot;</span></code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+194
+195
+196</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 194</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_doc'>doc</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
+  <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='id identifier rubyid_text'>text</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="email-instance_method">
+  
+    - (<tt>Object</tt>) <strong>email</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a string formatted an email (see <span class='object_link'><a href="FormatValidator.html#validate_email-instance_method" title="Respect::FormatValidator#validate_email (method)">FormatValidator#validate_email</a></span>).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 169</span>
+
+<span class='lbracket'>[</span>
+  <span class='symbol'>:email</span><span class='comma'>,</span>
+  <span class='symbol'>:phone_number</span><span class='comma'>,</span>
+  <span class='symbol'>:hostname</span><span class='comma'>,</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='op'>|</span>
+  <span class='id identifier rubyid_define_method'>define_method</span><span class='lparen'>(</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='op'>|</span>
+    <span class='id identifier rubyid_string'>string</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="float-instance_method">
+  
+    - (<tt>Object</tt>) <strong>float</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="FloatSchema.html" title="Respect::FloatSchema (class)">FloatSchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hash-instance_method">
+  
+    - (<tt>Object</tt>) <strong>hash</strong>(name, options = {}, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="HashSchema.html" title="Respect::HashSchema (class)">HashSchema</a></span> with the given <tt>options</tt> and <tt>block</tt>
+stores it in the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hostname-instance_method">
+  
+    - (<tt>Object</tt>) <strong>hostname</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a string formatted as a machine host name (see
+<span class='object_link'><a href="FormatValidator.html#validate_hostname-instance_method" title="Respect::FormatValidator#validate_hostname (method)">FormatValidator#validate_hostname</a></span>).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 169</span>
+
+<span class='lbracket'>[</span>
+  <span class='symbol'>:email</span><span class='comma'>,</span>
+  <span class='symbol'>:phone_number</span><span class='comma'>,</span>
+  <span class='symbol'>:hostname</span><span class='comma'>,</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='op'>|</span>
+  <span class='id identifier rubyid_define_method'>define_method</span><span class='lparen'>(</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='op'>|</span>
+    <span class='id identifier rubyid_string'>string</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="integer-instance_method">
+  
+    - (<tt>Object</tt>) <strong>integer</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="IntegerSchema.html" title="Respect::IntegerSchema (class)">IntegerSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ip_addr-instance_method">
+  
+    - (<tt>Object</tt>) <strong>ip_addr</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="IPAddrSchema.html" title="Respect::IPAddrSchema (class)">IPAddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ipv4_addr-instance_method">
+  
+    - (<tt>Object</tt>) <strong>ipv4_addr</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="Ipv4AddrSchema.html" title="Respect::Ipv4AddrSchema (class)">Ipv4AddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ipv6_addr-instance_method">
+  
+    - (<tt>Object</tt>) <strong>ipv6_addr</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="Ipv6AddrSchema.html" title="Respect::Ipv6AddrSchema (class)">Ipv6AddrSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="null-instance_method">
+  
+    - (<tt>Object</tt>) <strong>null</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="NullSchema.html" title="Respect::NullSchema (class)">NullSchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="numeric-instance_method">
+  
+    - (<tt>Object</tt>) <strong>numeric</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="NumericSchema.html" title="Respect::NumericSchema (class)">NumericSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="phone_number-instance_method">
+  
+    - (<tt>Object</tt>) <strong>phone_number</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a string formatted as a phone number (see
+<span class='object_link'><a href="FormatValidator.html#validate_phone_number-instance_method" title="Respect::FormatValidator#validate_phone_number (method)">FormatValidator#validate_phone_number</a></span>).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 169</span>
+
+<span class='lbracket'>[</span>
+  <span class='symbol'>:email</span><span class='comma'>,</span>
+  <span class='symbol'>:phone_number</span><span class='comma'>,</span>
+  <span class='symbol'>:hostname</span><span class='comma'>,</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='op'>|</span>
+  <span class='id identifier rubyid_define_method'>define_method</span><span class='lparen'>(</span><span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='op'>|</span>
+    <span class='id identifier rubyid_string'>string</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='id identifier rubyid_meth_name'>meth_name</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="regexp-instance_method">
+  
+    - (<tt>Object</tt>) <strong>regexp</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="RegexpSchema.html" title="Respect::RegexpSchema (class)">RegexpSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="respond_to_missing?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>respond_to_missing?</strong>(method_name, include_all) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='id identifier rubyid_include_all'>include_all</span><span class='rparen'>)</span>
+  <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_defined_for?'>schema_defined_for?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="string-instance_method">
+  
+    - (<tt>Object</tt>) <strong>string</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="StringSchema.html" title="Respect::StringSchema (class)">StringSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="uri-instance_method">
+  
+    - (<tt>Object</tt>) <strong>uri</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="URISchema.html" title="Respect::URISchema (class)">URISchema</a></span> with the given <tt>options</tt> and stores it in the
+current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="utc_time-instance_method">
+  
+    - (<tt>Object</tt>) <strong>utc_time</strong>(name, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Define a <span class='object_link'><a href="UTCTimeSchema.html" title="Respect::UTCTimeSchema (class)">UTCTimeSchema</a></span> with the given <tt>options</tt> and stores it in
+the current context using <tt>name</tt> as index.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_respond_to_missing?'>respond_to_missing?</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_size_range'>size_range</span> <span class='op'>=</span> <span class='int'>1</span><span class='op'>..</span><span class='int'>2</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+      <span class='id identifier rubyid_default_options'>default_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@doc</span> <span class='kw'>unless</span> <span class='ivar'>@doc</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_default_options'>default_options</span>
+      <span class='kw'>end</span>
+      <span class='ivar'>@doc</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_update_context'>update_context</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_method_name'>method_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_expected_size'>expected_size</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>?</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_end'>end</span> <span class='op'>:</span> <span class='id identifier rubyid_size_range'>size_range</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wrong number of argument (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_expected_size'>expected_size</span><span class='rbrace'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>super</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="with_options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>with_options</strong>(options, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Use <tt>options</tt> as the default for all schema created within
+<tt>block</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+199
+200
+201
+202
+203</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/core_statements.rb', line 199</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_with_options'>with_options</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span>
+  <span class='const'>FakeNameProxy</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_eval'>eval</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:36 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

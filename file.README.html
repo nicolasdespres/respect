@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Welcome to Respect</h1>
+
+<p><em>Respect</em> is a DSL to concisely describe the structure of common data such as Hash and Array using
+Ruby code. It comes with a validator, a sanitizer and dumpers to generate valid
+<a href="http://json-schema.org/">json-schema.org</a> compliant specifications. Although it was designed to
+specify JSON schema, it can be used for any data represented as Hash and Array. It does not require
+any JSON parser since it works only on data.</p>
+
+<p>Respect is named after the contraction of <em>REST</em> and <em>SPEC</em>. Indeed, it was first intended to be
+used to specify REST API in the context of a Web application.</p>
+
+<p>There is a plugin called <a href="https://github.com/nicolasdespres/respect-rails">Respect for Rails</a> which
+integrate this gem in Rails.</p>
+
+<h1>Features</h1>
+
+<p>Already available:</p>
+
+<ul>
+<li>Compact Ruby DSL to specify your schema.</li>
+<li>Standard <a href="http://json-schema.org/">json-schema.org</a> specification generator.</li>
+<li>Validator for JSON document or the like.</li>
+<li>Contextual validation error.</li>
+<li>Object sanitizer: turn plain string and integer values into real objects.</li>
+<li>Extensible API to add your custom validator and sanitizer.</li>
+<li>Extensible macro definition system to factor you schema definition code.</li>
+</ul>
+
+<p>See the RELEASE_NOTES file for detailed feature listing.</p>
+
+<h1>Take a Tour</h1>
+
+<p><em>Respect</em> comes with a compact Ruby DSL to specify the structure of a hash and/or an array.
+Thus, it is ideal to specify JSON schema. I find it a way more concise than
+<a href="http://json-schema.org/">json-schema.org</a>. And it is plain Ruby so you can rely on all great Ruby features
+to factor your specification code.</p>
+
+<p>For instance, this ruby code specify how one could structure a very simple user profile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>18</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>format:</span> <span class='symbol'>:email</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>But you can still convert this specification to
+<a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html">JSON Schema specification draft v3</a>
+easily so that all your customers can read and understand it:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>json</span><span class='tstring_end'>'</span></span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_pretty_generate'>pretty_generate</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>prints</p>
+
+<pre class="code json"><code class="json">{
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;required&quot;: true
+    },
+    &quot;age&quot;: {
+      &quot;type&quot;: &quot;integer&quot;,
+      &quot;required&quot;: true,
+      &quot;minimum&quot;: 18,
+      &quot;exclusiveMinimum&quot;: true
+    },
+    &quot;email&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;required&quot;: true,
+      &quot;format&quot;: &quot;email&quot;
+    }
+  }
+}
+</code></pre>
+
+<p>As you can see the Ruby specification is 4 times shorter than the JSON Schema specification...</p>
+
+<p>You can also use this specification to validate JSON documents:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My name</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>20</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>email</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>me@example.com</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>          <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My name</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>15</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>email</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>me@example.com</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>          <span class='comment'>#=&gt; false
+</span></code></pre>
+
+<p>When it fails to validate a document, you get descriptive error messages with contextual information:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span>                <span class='comment'>#=&gt; &quot;15 is not greater than 18&quot;
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>        <span class='comment'>#=&gt; &quot;15 is not greater than 18&quot;
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='period'>.</span><span class='id identifier rubyid_context'>context</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>     <span class='comment'>#=&gt; &quot;15 is not greater than 18&quot;
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='period'>.</span><span class='id identifier rubyid_context'>context</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>     <span class='comment'>#=&gt; &quot;in hash property `age'&quot;
+</span></code></pre>
+
+<p><em>Respect</em> does not parse JSON document by default but it is easy to do so using one of the JSON parser available in Ruby:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{ &quot;name&quot;: &quot;My name&quot;, &quot;age&quot;: 20, &quot;email&quot;: &quot;me@example.com&quot; }</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>   <span class='comment'>#=&gt; true
+</span></code></pre>
+
+<p>Once a JSON document has been validated, we often want to turn its basic strings and integers into real object like <code>URI</code>.
+<em>Respect</em> does that automatically for you for standard objects:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_uri'>uri</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+<span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://example.com</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate!'>validate!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>                            <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                            <span class='comment'>#=&gt; URI::HTTP
+</span></code></pre>
+
+<p>You can easily extend the sanitizer with your own object type. Let&#39;s assume you have an object type define like this:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Place</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='id identifier rubyid_longitude'>longitude</span><span class='rparen'>)</span>
+    <span class='ivar'>@latitude</span><span class='comma'>,</span> <span class='ivar'>@longitude</span> <span class='op'>=</span> <span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='id identifier rubyid_longitude'>longitude</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:latitude</span><span class='comma'>,</span> <span class='symbol'>:longitude</span>
+
+  <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
+    <span class='ivar'>@latitude</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@longitude</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>Then you must extend the Schema hierarchy with the new schema for your custom type.
+The <code>CompositeSchema</code> class assists you in this task so you just have to overwrite
+two methods.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>Respect</span>
+  <span class='kw'>class</span> <span class='const'>PlaceSchema</span> <span class='op'>&lt;</span> <span class='const'>CompositeSchema</span>
+    <span class='comment'># This method returns the schema specification for your custom type.
+</span>    <span class='kw'>def</span> <span class='id identifier rubyid_schema_definition'>schema_definition</span>
+      <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+        <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_float'>float</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>latitude</span><span class='tstring_end'>&quot;</span></span>
+        <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_float'>float</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>longitude</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='comment'># The 'sanitize' method is called with the JSON document if the validation succeed.
+</span>    <span class='comment'># The returned value will be inserted into the JSON document.
+</span>    <span class='kw'>def</span> <span class='id identifier rubyid_sanitize'>sanitize</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+      <span class='const'>Place</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>Finally, you define the structure of your JSON document as usual. Note that you have
+access to your custom schema via the <code>place</code> method.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_place'>place</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>home</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>home</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>latitude</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>48.846559</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>longitude</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>2.344519</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='rbrace'>}</span>
+<span class='rbrace'>}</span>
+
+<span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate!'>validate!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>                              <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>home</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                                  <span class='comment'>#=&gt; Place
+</span></code></pre>
+
+<p>Sometimes you just want to extend the DSL with a new statement providing higher level feature than
+the primitive <code>integer</code>, <code>string</code> or <code>float</code>, etc... For instance if you specify identifier
+in your schema like this:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>article_id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>title</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_hash'>hash</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>author</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>author_id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>In such case, you don&#39;t need a custom sanitizer. You just want to factor the definition of
+identifier property. You can easily to it like this:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>MyMacros</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>_id$</span><span class='regexp_end'>/</span></span>
+      <span class='id identifier rubyid_name'>name</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_integer'>integer</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>greater_than:</span> <span class='int'>0</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+<span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_extend_dsl_with'>extend_dsl_with</span><span class='lparen'>(</span><span class='const'>MyMacros</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>Now you can rewrite the original schema this way:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>article</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>title</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_hash'>hash</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>author</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>author</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h1>Getting started</h1>
+
+<p>The easiest way to install <em>Respect</em> is to add it to your <code>Gemfile</code>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>respect</span><span class='tstring_end'>&quot;</span></span>
+</code></pre>
+
+<p>Then, after running the <code>bundle install</code> command, you can start to validate JSON document in your program like this:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>respect</span><span class='tstring_end'>'</span></span>
+
+<span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>18</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>John</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>30</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+</code></pre>
+
+<h1>JSON Schema implementation status</h1>
+
+<p><em>Respect</em> currently implements most of the features included in the
+<a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html">JSON Schema specification draft v3</a>.</p>
+
+<p>See the <code>STATUS_MATRIX</code> file included in this package for detailed information.</p>
+
+<p>Although, the semantics of the schema definition DSL available in this library may change slightly from the
+<em>JSON schema standard</em>, we have tried to keep it as close as possible. For instance the <code>strict</code> option of
+hash schema is not presented in the standard. However, when a schema is dumped to its <em>JSON Schema</em> version
+the syntax and semantic have been followed. You should note that there is no &quot;loader&quot; available yet in this
+library. In other word, you cannot instantiate a Schema class from a <em>JSON Schema</em> string representation.</p>
+
+<h1>Getting help</h1>
+
+<p>The easiest way to get help about how to use this library is to post your question on the
+<a href="https://groups.google.com/forum/#!forum/ruby-respect-gem-talk">Respect discussion group</a>.
+I will be glade to answer. I may have already answered the
+same question so before you post your question take a bit of time to search the group.</p>
+
+<p>You can also read these documents for further documentation:</p>
+
+<ul>
+<li><a href="FIXME">Repect API reference documentation</a></li>
+</ul>
+
+<h1>Compatibility</h1>
+
+<p><em>Respect</em> has been tested with:</p>
+
+<ul>
+<li>Ruby 1.9.3-p392 (should be compatible with all 1.9.x family)</li>
+<li>ActiveSupport 3.2.13</li>
+</ul>
+
+<p>Note that <strong>it does not depend on any JSON parsing library</strong>. It works only on primitive Ruby data type. So,
+any JSON parser returning normal basic types like <code>Hash</code>, <code>Array</code>, <code>String</code>, <code>Numeric</code>, <code>TrueClass</code>,
+<code>FalseClass</code>, <code>NilClass</code>, should work.</p>
+
+<h1>Feedback</h1>
+
+<p>I would love to hear what you think about this library. Feel free to post any comments/remarks on the
+<a href="https://groups.google.com/forum/#!forum/ruby-respect-gem-talk">Respect discussion group</a>.</p>
+
+<h1>Contributing patches</h1>
+
+<p>I spent quite a lot of time writing this gem but there is still a lot of work to do. Whether it
+is a bug-fix, a new feature, some code re-factoring, or documentation clarification, I will be
+glade to merge your pull request on GitHub. You just have to create a branch from <code>master</code> and
+send me a pull request.</p>
+
+<h1>License</h1>
+
+<p><em>Respect</em> is released under the term of the <a href="http://opensource.org/licenses/MIT">MIT License</a>.
+Copyright (c) 2013 Nicolas Despres.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:36 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

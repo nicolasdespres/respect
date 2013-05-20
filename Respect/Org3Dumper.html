@@ -1,0 +1,1500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Respect::Org3Dumper
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (O)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Respect.html" title="Respect (module)">Respect</a></span></span>
+     &raquo; 
+    <span class="title">Org3Dumper</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Respect::Org3Dumper
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Respect::Org3Dumper</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/respect/org3_dumper.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Dump a schema to a hash representation following the format specified on <a
+href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html">json-schema.org
+standard draft v3</a>.</p>
+
+<p>The current implementation covers all the <em>Schema</em> and
+<em>Validator</em> classes defined in this package. User-defined <span class='object_link'><a href="Schema.html" title="Respect::Schema (class)">Schema</a></span>
+and <span class='object_link'><a href="Validator.html" title="Respect::Validator (class)">Validator</a></span> are not guarantee to work and may never work in the future.
+The <em>JSON-Schema</em> standard is a general purpose standard and include
+only primitive type so it is very unlikely that it will include your custom
+schema and validator out of the box. However, if you can translate your
+schema/validator as a composition of primitive type mentioned in the
+standard it will work. That's why it is recommended to sub-class
+<span class='object_link'><a href="CompositeSchema.html" title="Respect::CompositeSchema (class)">CompositeSchema</a></span> when creating your own schema. User-defined are not
+properly supported yet as the API of this dumper is <b>experimental</b>.
+However, an easy way to extend both the schema and validator class
+hierarchies will be added in future releases.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="OPTION_MAP-constant" class="">OPTION_MAP =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Translation table mapping DSL options with json-schema.org v3 options. The
+associated hash is injected in the output. Values are interpreted as
+follow:</p>
+<ul><li>
+<p>:option_value represent the option value passed to the DSL option
+parameter.</p>
+</li><li>
+<p>a proc is called with the option value as argument and the result is used
+as the value for the output key if it is not nil.</p>
+</li><li>
+<p>other value are inserted verbatim.</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>min_size:</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>minItems</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:option_value</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>max_size:</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>maxItems</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:option_value</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>uniq:</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>uniqueItems</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span> <span class='kw'>if</span> <span class='id identifier rubyid_v'>v</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>default:</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>default</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span> <span class='kw'>unless</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>required:</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>required</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='kw'>true</span> <span class='kw'>if</span> <span class='id identifier rubyid_required?'>required?</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+<span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#output-instance_method" title="#output (instance method)">- (Object) <strong>output</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute output.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump-instance_method" title="#dump (instance method)">- (Object) <strong>dump</strong>(output = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options-instance_method" title="#dump_options (instance method)">- (Object) <strong>dump_options</strong>(schema, *args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_datetime_schema-instance_method" title="#dump_options_for_datetime_schema (instance method)">- (Object) <strong>dump_options_for_datetime_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_ipv4_addr_schema-instance_method" title="#dump_options_for_ipv4_addr_schema (instance method)">- (Object) <strong>dump_options_for_ipv4_addr_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_ipv6_addr_schema-instance_method" title="#dump_options_for_ipv6_addr_schema (instance method)">- (Object) <strong>dump_options_for_ipv6_addr_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_regexp_schema-instance_method" title="#dump_options_for_regexp_schema (instance method)">- (Object) <strong>dump_options_for_regexp_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_schema-instance_method" title="#dump_options_for_schema (instance method)">- (Object) <strong>dump_options_for_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_options_for_uri_schema-instance_method" title="#dump_options_for_uri_schema (instance method)">- (Object) <strong>dump_options_for_uri_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_schema-instance_method" title="#dump_schema (instance method)">- (Object) <strong>dump_schema</strong>(schema, *args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_schema_for_array_schema-instance_method" title="#dump_schema_for_array_schema (instance method)">- (Object) <strong>dump_schema_for_array_schema</strong>(schema, params = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_schema_for_composite_schema-instance_method" title="#dump_schema_for_composite_schema (instance method)">- (Object) <strong>dump_schema_for_composite_schema</strong>(schema, params = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_schema_for_hash_schema-instance_method" title="#dump_schema_for_hash_schema (instance method)">- (Object) <strong>dump_schema_for_hash_schema</strong>(schema, params = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_schema_for_schema-instance_method" title="#dump_schema_for_schema (instance method)">- (Object) <strong>dump_schema_for_schema</strong>(schema, params = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name-instance_method" title="#dump_statement_name (instance method)">- (Object) <strong>dump_statement_name</strong>(schema, *args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name_for_hash_schema-instance_method" title="#dump_statement_name_for_hash_schema (instance method)">- (Object) <strong>dump_statement_name_for_hash_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name_for_integer_schema-instance_method" title="#dump_statement_name_for_integer_schema (instance method)">- (Object) <strong>dump_statement_name_for_integer_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name_for_numeric_schema-instance_method" title="#dump_statement_name_for_numeric_schema (instance method)">- (Object) <strong>dump_statement_name_for_numeric_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name_for_schema-instance_method" title="#dump_statement_name_for_schema (instance method)">- (Object) <strong>dump_statement_name_for_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_statement_name_for_string_schema-instance_method" title="#dump_statement_name_for_string_schema (instance method)">- (Object) <strong>dump_statement_name_for_string_schema</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Org3Dumper) <strong>initialize</strong>(schema) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Org3Dumper.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Respect::Org3Dumper (class)">Org3Dumper</a></span></tt>) <strong>initialize</strong>(schema) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A new instance of Org3Dumper</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='ivar'>@schema</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="output-instance_method">
+  
+    - (<tt>Object</tt>) <strong>output</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute output</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 45</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_output'>output</span>
+  <span class='ivar'>@output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="dump-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump</strong>(output = nil) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump'>dump</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@output</span> <span class='op'>=</span> <span class='id identifier rubyid_output'>output</span>
+  <span class='ivar'>@output</span> <span class='op'>||=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@output</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='ivar'>@schema</span><span class='comma'>,</span> <span class='label'>ignore:</span> <span class='lbracket'>[</span><span class='symbol'>:required</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options</strong>(schema, *args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+166
+167
+168</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 166</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options'>dump_options</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dump_options</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_datetime_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_datetime_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+182
+183
+184</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 182</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_datetime_schema'>dump_options_for_datetime_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>format</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>date-time</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_ipv4_addr_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_ipv4_addr_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+186
+187
+188</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 186</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_ipv4_addr_schema'>dump_options_for_ipv4_addr_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>format</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ip-address</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_ipv6_addr_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_ipv6_addr_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+190
+191
+192</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 190</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_ipv6_addr_schema'>dump_options_for_ipv6_addr_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>format</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ipv6</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_regexp_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_regexp_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+178
+179
+180</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 178</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_regexp_schema'>dump_options_for_regexp_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>format</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>regex</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+170
+171
+172</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 170</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_schema'>dump_options_for_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_options_for_uri_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_options_for_uri_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+174
+175
+176</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 174</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_options_for_uri_schema'>dump_options_for_uri_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>format</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>uri</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_schema</strong>(schema, *args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dump_schema</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_schema_for_array_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_schema_for_array_schema</strong>(schema, params = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 118</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_schema_for_array_schema'>dump_schema_for_array_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema_for_schema'>dump_schema_for_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span>
+    <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>items</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span><span class='comma'>,</span> <span class='label'>ignore:</span> <span class='lbracket'>[</span><span class='symbol'>:required</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+      <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>items</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span>
+        <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='comma'>,</span> <span class='label'>ignore:</span> <span class='lbracket'>[</span><span class='symbol'>:required</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+      <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>additionalItems</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span>
+        <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='comma'>,</span> <span class='label'>ignore:</span> <span class='lbracket'>[</span><span class='symbol'>:required</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_h'>h</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_schema_for_composite_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_schema_for_composite_schema</strong>(schema, params = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+138
+139
+140</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 138</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_schema_for_composite_schema'>dump_schema_for_composite_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_schema_for_hash_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_schema_for_hash_schema</strong>(schema, params = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 80</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_schema_for_hash_schema'>dump_schema_for_hash_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema_for_schema'>dump_schema_for_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_props'>props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_pattern_props'>pattern_props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_additional_props'>additional_props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_prop'>prop</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Regexp</span><span class='rparen'>)</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_optional?'>optional?</span>
+        <span class='comment'># FIXME(Nicolas Despres): Find a better warning reporting system.
+</span>        <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>pattern properties cannot be optional in json-schema.org draft v3</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>else</span>
+        <span class='comment'># FIXME(Nicolas Despres): What do we do with regexp options such as 'i'?
+</span>        <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_pattern_props'>pattern_props</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_source'>source</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='kw'>if</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span>
+      <span class='kw'>end</span>
+    <span class='kw'>else</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_optional?'>optional?</span>
+        <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_additional_props'>additional_props</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='kw'>if</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_schema'>dump_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_props'>props</span><span class='lbracket'>[</span><span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span> <span class='kw'>if</span> <span class='id identifier rubyid_schema_dump'>schema_dump</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>properties</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_props'>props</span> <span class='kw'>unless</span> <span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>patternProperties</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_pattern_props'>pattern_props</span> <span class='kw'>unless</span> <span class='id identifier rubyid_pattern_props'>pattern_props</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_additional_props'>additional_props</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:strict</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>additionalProperties</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>additionalProperties</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_additional_props'>additional_props</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_h'>h</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_schema_for_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_schema_for_schema</strong>(schema, params = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 51</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_schema_for_schema'>dump_schema_for_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_documented?'>documented?</span>
+  <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_dump_statement_name'>dump_statement_name</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='comment'># Dump generic options.
+</span>  <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_opt'>opt</span><span class='comma'>,</span> <span class='id identifier rubyid_opt_value'>opt_value</span><span class='op'>|</span>
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:ignore</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:ignore</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_opt'>opt</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_validator_class'>validator_class</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_validator_for'>validator_for</span><span class='lparen'>(</span><span class='id identifier rubyid_opt'>opt</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='id identifier rubyid_validator_class'>validator_class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_opt_value'>opt_value</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='lparen'>(</span><span class='symbol'>:org3</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>elsif</span> <span class='const'>Org3Dumper</span><span class='op'>::</span><span class='const'>OPTION_MAP</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='id identifier rubyid_opt'>opt</span><span class='rparen'>)</span>
+      <span class='const'>Org3Dumper</span><span class='op'>::</span><span class='const'>OPTION_MAP</span><span class='lbracket'>[</span><span class='id identifier rubyid_opt'>opt</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_v'>v</span> <span class='op'>==</span> <span class='symbol'>:option_value</span>
+          <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_opt_value'>opt_value</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Numeric</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_opt_value'>opt_value</span> <span class='op'>:</span> <span class='id identifier rubyid_opt_value'>opt_value</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='rparen'>)</span>
+        <span class='kw'>elsif</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Proc</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_instance_exec'>instance_exec</span><span class='lparen'>(</span><span class='id identifier rubyid_opt_value'>opt_value</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span> <span class='kw'>unless</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='id identifier rubyid_dump_options'>dump_options</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='comment'># Dump documentation
+</span>  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>title</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_title'>title</span> <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_title'>title</span>
+  <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>description</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span> <span class='kw'>if</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span>
+  <span class='id identifier rubyid_h'>h</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name</strong>(schema, *args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+142
+143
+144</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 142</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name'>dump_statement_name</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dump_statement_name</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name_for_hash_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name_for_hash_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+150
+151
+152</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 150</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name_for_hash_schema'>dump_statement_name_for_hash_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>object</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name_for_integer_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name_for_integer_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+158
+159
+160</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 158</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name_for_integer_schema'>dump_statement_name_for_integer_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>integer</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name_for_numeric_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name_for_numeric_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+154
+155
+156</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 154</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name_for_numeric_schema'>dump_statement_name_for_numeric_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>number</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name_for_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name_for_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 146</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name_for_schema'>dump_statement_name_for_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_statement_name'>statement_name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_statement_name_for_string_schema-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dump_statement_name_for_string_schema</strong>(schema) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+162
+163
+164</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/org3_dumper.rb', line 162</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_statement_name_for_string_schema'>dump_statement_name_for_string_schema</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:37 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

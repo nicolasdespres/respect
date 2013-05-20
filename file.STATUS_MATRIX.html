@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: STATUS_MATRIX
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: STATUS_MATRIX</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h3>Core Schema definition</h3>
+<p>
+This document is a work in progress and is updated constantly. It may not reflect the exact state
+of implementation.
+</p>
+<table border="1">
+  <tr>
+    <td>Core Schema definition feature</td>
+    <td>Abailable in Respect ?</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor9">5.1. type</a></td>
+    <td style="color:green" align="center">With the various core DSL statements: 'integer', 'string', etc...</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#properties">5.2. properties</a></td>
+    <td style="color:green" align="center">Yes</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor10">5.3. patternProperties</a></td>
+    <td style="color:orangered" align="center">
+      With a regular expression instead of a string as property name<br>
+      (Ruby regexp instead of ECMA 262)
+    </td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#additionalProperties">5.4. additionalProperties</a></td>
+    <td style="color:green" align="center">With 'extra' statement or 'required' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor11">5.5. items</a></td>
+    <td style="color:green" align="center">With 'item' or 'items' statement</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#additionalItems">5.6. additionalItems</a></td>
+    <td style="color:green" align="center">With 'extra_items' statement</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor12">5.7. required</a></td>
+    <td style="color:green" align="center">Yes</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor13">5.8. dependencies</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor14">5.9. minimum</a></td>
+    <td style="color:green" align="center">With 'greater_than_or_equal_to' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor15">5.10. maximum</a></td>
+    <td style="color:green" align="center">With 'less_than_or_equal_to' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor16">5.11. exclusiveMinimum</a></td>
+    <td style="color:green" align="center">With 'greater_than' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor17">5.12. exclusiveMaximum</a></td>
+    <td style="color:green" align="center">With 'less_than' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor18">5.13. minItems</a></td>
+    <td style="color:green" align="center">With 'min_size' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor19">5.14. maxItems</a></td>
+    <td style="color:green" align="center">With 'max_size' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#uniqueItems">5.15. uniqueItems</a></td>
+    <td style="color:green" align="center">With 'uniq' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor20">5.16. pattern</a></td>
+    <td style="color:orangered" align="center">With 'match' option<br>(Ruby regexp instead of ECMA 262)</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor21">5.17. minLength</a></td>
+    <td style="color:green" align="center">With 'min_length' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor22">5.18. maxLength</a></td>
+    <td style="color:green" align="center">With 'max_length' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor23">5.19. enum</a></td>
+    <td style="color:green" align="center">With 'in' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor24">5.20. default</a></td>
+    <td style="color:green" align="center">Yes</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor25">5.21. title</a></td>
+    <td style="color:green" align="center">Yes</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor26">5.22. description</a></td>
+    <td style="color:green" align="center">Yes</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: date-time</a></td>
+    <td style="color:orangered" align="center">With 'datetime' parameter<br>(RFC 3399 instead of ISO 8601)</td></tr>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: regex</a></td>
+    <td style="color:orangered" align="center">With 'regexp' parameter<br>(Ruby regexp instead of ECMA 262)</td></tr>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: format</a></td>
+    <td style="color:green"  align="center">With 'phone_number' paramter</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: uri</a></td>
+    <td style="color:green"  align="center">With 'uri' parameter (RFC 2396)</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: email</a></td>
+    <td style="color:green"  align="center">With 'email' parameter</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: ip-address</a></td>
+    <td style="color:green"  align="center">With 'ipv4_addr' parameter</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: ipv6</a></td>
+    <td style="color:green"  align="center">With 'ipv6_addr' parameter</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: host-name</a></td>
+    <td style="color:green"  align="center">With 'hostname' parameter</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: date</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: time</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: utc-millisec</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: color</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor27">5.23. format: style</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor28">5.24. divisibleBy</a></td>
+    <td style="color:green" align="center">With 'divisible_by' or 'multiple_of' option</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor29">5.25. disallow</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor30">5.26. extends</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor31">5.27. id</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor32">5.28. $ref</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr><tr>
+    <td><a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html#anchor33">5.29. $schema</a></td>
+    <td style="color:red" align="center">No</td>
+  </tr>
+</table></div></div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:36 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Respect::ArraySchema
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (A)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Respect.html" title="Respect (module)">Respect</a></span></span>
+     &raquo; 
+    <span class="title">ArraySchema</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Respect::ArraySchema
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="Schema.html" title="Respect::Schema (class)">Schema</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Schema.html" title="Respect::Schema (class)">Schema</a></span></li>
+          
+            <li class="next">Respect::ArraySchema</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/respect/array_schema.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>A schema to specify the structure of an array.</p>
+
+<p>They are two approaches to specify the structure of an array.</p>
+
+<p>If the items of your array have all the same structure then you should use
+the <span class='object_link'><a href="#item%3D-instance_method" title="Respect::ArraySchema#item= (method)">#item=</a></span> method to set their schema.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># An array where all items are integer greater than 42.
+</span><span class='id identifier rubyid_s'>s</span> <span class='op'>=</span> <span class='const'>ArraySchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='label'>greater_than:</span> <span class='int'>42</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+<span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>              <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span> <span class='rbracket'>]</span><span class='rparen'>)</span>          <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span><span class='comma'>,</span> <span class='int'>44</span> <span class='rbracket'>]</span><span class='rparen'>)</span>      <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span><span class='comma'>,</span> <span class='int'>44</span><span class='comma'>,</span> <span class='int'>30</span> <span class='rbracket'>]</span><span class='rparen'>)</span>  <span class='comment'>#=&gt; false</span></code></pre>
+
+<p>Otherwise, you should use the <span class='object_link'><a href="#items%3D-instance_method" title="Respect::ArraySchema#items= (method)">#items=</a></span> and <span class='object_link'><a href="#extra_items%3D-instance_method" title="Respect::ArraySchema#extra_items= (method)">#extra_items=</a></span>. This is called
+"tuple" typing.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># An array where first item is an integer and the second one
+</span><span class='comment'># is a string.
+</span><span class='const'>ArraySchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+<span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>              <span class='comment'>#=&gt; false
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span> <span class='rbracket'>]</span><span class='rparen'>)</span>          <span class='comment'>#=&gt; false
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>foo</span><span class='tstring_end'>&quot;</span></span> <span class='rbracket'>]</span><span class='rparen'>)</span>   <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='int'>43</span><span class='comma'>,</span> <span class='int'>44</span> <span class='rbracket'>]</span><span class='rparen'>)</span>      <span class='comment'>#=&gt; false</span></code></pre>
+
+<p>You cannot mix tuple typing and single item typing.</p>
+
+<p>You can pass several options when creating an <span class='object_link'><a href="" title="Respect::ArraySchema (class)">ArraySchema</a></span>:</p>
+<table class="rdoc-list"><tr><td class="rdoc-term"><p>uniq</p></td>
+<td>
+<p>if <tt>true</tt>, duplicated items are forbidden (<tt>false</tt> by
+default).</p>
+</td></tr><tr><td class="rdoc-term"><p>min_size</p></td>
+<td>
+<p>if set the array must have at least the given number of items (<tt>nil</tt>
+by default). This option apply only in non-tuple typing.</p>
+</td></tr><tr><td class="rdoc-term"><p>max_size</p></td>
+<td>
+<p>if set the array must have at most the given number of items (<tt>nil</tt>
+by default). This option apply only in non-tuple typing.</p>
+</td></tr></table>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extra_items-instance_method" title="#extra_items (instance method)">- (Object) <strong>extra_items</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get the extra schema items.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#item-instance_method" title="#item (instance method)">- (Object) <strong>item</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get the schema that all items in the array must validate.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#items-instance_method" title="#items (instance method)">- (Object) <strong>items</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get the array of schema that the corresponding items must validate.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Schema.html" title="Respect::Schema (class)">Schema</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Schema.html#last_error-instance_method" title="Respect::Schema#last_error (method)">#last_error</a></span>, <span class='object_link'><a href="Schema.html#options-instance_method" title="Respect::Schema#options (method)">#options</a></span>, <span class='object_link'><a href="Schema.html#sanitized_object-instance_method" title="Respect::Schema#sanitized_object (method)">#sanitized_object</a></span></p>
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_options-class_method" title="default_options (class method)">+ (Object) <strong>default_options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Overwritten method.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(other) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (ArraySchema) <strong>initialize</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of ArraySchema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize_copy-instance_method" title="#initialize_copy (instance method)">- (Object) <strong>initialize_copy</strong>(other) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate-instance_method" title="#validate (instance method)">- (Object) <strong>validate</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Overwritten method.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Schema.html" title="Respect::Schema (class)">Schema</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Schema.html#allow_nil%3F-instance_method" title="Respect::Schema#allow_nil? (method)">#allow_nil?</a></span>, <span class='object_link'><a href="Schema.html#def_class-class_method" title="Respect::Schema.def_class (method)">def_class</a></span>, <span class='object_link'><a href="Schema.html#def_class_name-class_method" title="Respect::Schema.def_class_name (method)">def_class_name</a></span>, <span class='object_link'><a href="Schema.html#default-instance_method" title="Respect::Schema#default (method)">#default</a></span>, <span class='object_link'><a href="Schema.html#define-class_method" title="Respect::Schema.define (method)">define</a></span>, <span class='object_link'><a href="Schema.html#documentation-instance_method" title="Respect::Schema#documentation (method)">#documentation</a></span>, <span class='object_link'><a href="Schema.html#documented%3F-instance_method" title="Respect::Schema#documented? (method)">#documented?</a></span>, <span class='object_link'><a href="Schema.html#has_default%3F-instance_method" title="Respect::Schema#has_default? (method)">#has_default?</a></span>, <span class='object_link'><a href="Schema.html#inspect-instance_method" title="Respect::Schema#inspect (method)">#inspect</a></span>, <span class='object_link'><a href="Schema.html#non_default_options-instance_method" title="Respect::Schema#non_default_options (method)">#non_default_options</a></span>, <span class='object_link'><a href="Schema.html#optional%3F-instance_method" title="Respect::Schema#optional? (method)">#optional?</a></span>, <span class='object_link'><a href="Schema.html#required%3F-instance_method" title="Respect::Schema#required? (method)">#required?</a></span>, <span class='object_link'><a href="Schema.html#sanitize%21-instance_method" title="Respect::Schema#sanitize! (method)">#sanitize!</a></span>, <span class='object_link'><a href="Schema.html#sanitize_object%21-instance_method" title="Respect::Schema#sanitize_object! (method)">#sanitize_object!</a></span>, <span class='object_link'><a href="Schema.html#statement_name-class_method" title="Respect::Schema.statement_name (method)">statement_name</a></span>, <span class='object_link'><a href="Schema.html#to_h-instance_method" title="Respect::Schema#to_h (method)">#to_h</a></span>, <span class='object_link'><a href="Schema.html#to_json-instance_method" title="Respect::Schema#to_json (method)">#to_json</a></span>, <span class='object_link'><a href="Schema.html#to_s-instance_method" title="Respect::Schema#to_s (method)">#to_s</a></span>, <span class='object_link'><a href="Schema.html#validate%21-instance_method" title="Respect::Schema#validate! (method)">#validate!</a></span>, <span class='object_link'><a href="Schema.html#validate%3F-instance_method" title="Respect::Schema#validate? (method)">#validate?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="DocHelper.html" title="Respect::DocHelper (module)">DocHelper</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="DocHelper.html#description-instance_method" title="Respect::DocHelper#description (method)">#description</a></span>, <span class='object_link'><a href="DocHelper.html#title-instance_method" title="Respect::DocHelper#title (method)">#title</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Respect::ArraySchema (class)">ArraySchema</a></span></tt>) <strong>initialize</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A new instance of ArraySchema</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 59</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="extra_items=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="extra_items-instance_method">
+  
+    - (<tt>Object</tt>) <strong>extra_items</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get the extra schema items.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_extra_items'>extra_items</span>
+  <span class='ivar'>@extra_items</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="item=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="item-instance_method">
+  
+    - (<tt>Object</tt>) <strong>item</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get the schema that all items in the array must validate.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+79
+80
+81</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 79</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_item'>item</span>
+  <span class='ivar'>@item</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="items=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="items-instance_method">
+  
+    - (<tt>Object</tt>) <strong>items</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get the array of schema that the corresponding items must validate.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 91</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_items'>items</span>
+  <span class='ivar'>@items</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="default_options-class_method">
+  
+    + (<tt>Object</tt>) <strong>default_options</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Overwritten method. See <span class='object_link'><a href="Schema.html#default_options-class_method" title="Respect::Schema.default_options (method)">Schema.default_options</a></span></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_default_options'>default_options</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+      <span class='label'>uniq:</span> <span class='kw'>false</span><span class='comma'>,</span>
+    <span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="==-instance_method">
+  
+    - (<tt>Object</tt>) <strong>==</strong>(other) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+187
+188
+189</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 187</span>
+
+<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
+  <span class='kw'>super</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@item</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_item'>item</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@items</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@extra_items</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="initialize_copy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>initialize_copy</strong>(other) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 63</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize_copy'>initialize_copy</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
+  <span class='kw'>super</span>
+  <span class='ivar'>@items</span> <span class='op'>=</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span> <span class='kw'>unless</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='ivar'>@extra_items</span> <span class='op'>=</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span> <span class='kw'>unless</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_extra_items'>extra_items</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate-instance_method">
+  
+    - (<tt>Object</tt>) <strong>validate</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Overwritten method. See <span class='object_link'><a href="Schema.html#validate-instance_method" title="Respect::Schema#validate (method)">Schema#validate</a></span></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/array_schema.rb', line 109</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='comment'># Handle nil case.
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_allow_nil?'>allow_nil?</span>
+      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sanitized_object'>sanitized_object</span> <span class='op'>=</span> <span class='kw'>nil</span>
+      <span class='kw'>return</span> <span class='kw'>true</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>object is nil but this </span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='rbrace'>}</span><span class='tstring_content'> does not allow nil</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Validate type.
+</span>  <span class='kw'>unless</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>object is not an array but a </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='comment'># At this point we are sure @item and (@items or @extra_items) cannot be
+</span>  <span class='comment'># defined both. (see the setters).
+</span>  <span class='id identifier rubyid_sanitized_object'>sanitized_object</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='comment'># Validate expected item.
+</span>  <span class='kw'>if</span> <span class='ivar'>@item</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:min_size</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:min_size</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span>
+            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>expected at least </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:min_size</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> item(s) but got </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:max_size</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:max_size</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span>
+            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>expected at most </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:min_size</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'> item(s) but got </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_item'>item</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+      <span class='id identifier rubyid_validate_item'>validate_item</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='ivar'>@item</span><span class='comma'>,</span> <span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Validate object items count.
+</span>  <span class='kw'>if</span> <span class='ivar'>@items</span> <span class='op'>||</span> <span class='ivar'>@extra_items</span>
+    <span class='kw'>if</span> <span class='ivar'>@extra_items</span>
+      <span class='id identifier rubyid_min_size'>min_size</span> <span class='op'>=</span> <span class='ivar'>@items</span> <span class='op'>?</span> <span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>:</span> <span class='int'>0</span>
+      <span class='kw'>unless</span> <span class='id identifier rubyid_min_size'>min_size</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>array size should be at least </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_min_size'>min_size</span><span class='rbrace'>}</span><span class='tstring_content'> but is </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>else</span>
+      <span class='kw'>if</span> <span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>!=</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>array size should be </span><span class='embexpr_beg'>#{</span><span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_content'> but is </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Validate expected multiple items.
+</span>  <span class='kw'>if</span> <span class='ivar'>@items</span>
+    <span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+      <span class='id identifier rubyid_validate_item'>validate_item</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Validate extra items.
+</span>  <span class='kw'>if</span> <span class='ivar'>@extra_items</span>
+    <span class='ivar'>@extra_items</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>+</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+        <span class='id identifier rubyid_validate_item'>validate_item</span><span class='lparen'>(</span><span class='ivar'>@items</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>+</span> <span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='id identifier rubyid_schema'>schema</span><span class='comma'>,</span> <span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Validate all items are unique.
+</span>  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:uniq</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_s'>s</span> <span class='op'>=</span> <span class='const'>Set</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_add?'>add?</span><span class='lparen'>(</span><span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ValidationError</span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>duplicated item number </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_i'>i</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sanitized_object'>sanitized_object</span> <span class='op'>=</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span>
+  <span class='kw'>true</span>
+<span class='kw'>rescue</span> <span class='const'>ValidationError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='comment'># Reset sanitized object.
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sanitized_object'>sanitized_object</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='id identifier rubyid_e'>e</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:37 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

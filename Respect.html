@@ -1,0 +1,889 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Respect
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (R)</a> &raquo;
+    
+    
+    <span class="title">Respect</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: Respect
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+      <dt class="r1">Extended by:</dt>
+      <dd class="r1">ActiveSupport::Autoload</dd>
+      
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/respect.rb<span class="defines">,<br />
+  lib/respect/schema.rb,<br /> lib/respect/version.rb,<br /> lib/respect/hash_def.rb,<br /> lib/respect/items_def.rb,<br /> lib/respect/validator.rb,<br /> lib/respect/array_def.rb,<br /> lib/respect/global_def.rb,<br /> lib/respect/schema_def.rb,<br /> lib/respect/doc_helper.rb,<br /> lib/respect/doc_parser.rb,<br /> lib/respect/dsl_dumper.rb,<br /> lib/respect/uri_schema.rb,<br /> lib/respect/any_schema.rb,<br /> lib/respect/null_schema.rb,<br /> lib/respect/hash_schema.rb,<br /> lib/respect/org3_dumper.rb,<br /> lib/respect/float_schema.rb,<br /> lib/respect/in_validator.rb,<br /> lib/respect/array_schema.rb,<br /> lib/respect/string_schema.rb,<br /> lib/respect/regexp_schema.rb,<br /> lib/respect/boolean_schema.rb,<br /> lib/respect/integer_schema.rb,<br /> lib/respect/numeric_schema.rb,<br /> lib/respect/ip_addr_schema.rb,<br /> lib/respect/match_validator.rb,<br /> lib/respect/fake_name_proxy.rb,<br /> lib/respect/utc_time_schema.rb,<br /> lib/respect/core_statements.rb,<br /> lib/respect/datetime_schema.rb,<br /> lib/respect/has_constraints.rb,<br /> lib/respect/ipv6_addr_schema.rb,<br /> lib/respect/composite_schema.rb,<br /> lib/respect/format_validator.rb,<br /> lib/respect/def_without_name.rb,<br /> lib/respect/ipv4_addr_schema.rb,<br /> lib/respect/unit_test_helper.rb,<br /> lib/respect/equal_to_validator.rb,<br /> lib/respect/less_than_validator.rb,<br /> lib/respect/min_length_validator.rb,<br /> lib/respect/max_length_validator.rb,<br /> lib/respect/multiple_of_validator.rb,<br /> lib/respect/greater_than_validator.rb,<br /> lib/respect/divisible_by_validator.rb,<br /> lib/respect/json_schema_html_formatter.rb,<br /> lib/respect/less_than_or_equal_to_validator.rb,<br /> lib/respect/greater_than_or_equal_to_validator.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Provide methods and classes to define, validate, sanitize and dump object
+schema.</p>
+
+<p>Classes in this module are split in 5 groups:</p>
+<ul><li>
+<p>The <em>schema</em> classes are the core of this module since they support
+the validation process and are the internal representation of schema
+specification (see <span class='object_link'><a href="Respect/Schema.html" title="Respect::Schema (class)">Schema</a></span>).</p>
+</li><li>
+<p>The <em>definition</em> classes (aka <em>def</em> classes) are the
+front-end of this module since they implement the schema definition DSL
+(see <span class='object_link'><a href="Respect/GlobalDef.html" title="Respect::GlobalDef (class)">GlobalDef</a></span>).</p>
+</li><li>
+<p>The <em>validator</em> classes implement validation routine you can attach
+to your schema. accessible via the schema's options (see <span class='object_link'><a href="Respect/Validator.html" title="Respect::Validator (class)">Validator</a></span>).</p>
+</li><li>
+<p>The <em>dumper</em> classes are the back-end of this module since they
+implement the convertion of the internal schema representation to different
+formats.</p>
+</li><li>
+<p>The <em>miscellaneous</em> classes provides various support for the other
+categories.</p>
+</li></ul>
+
+<p>You can extend this library in many ways:</p>
+<ol><li>
+<p>If you want to add your own schema class, you can sub-class the
+<span class='object_link'><a href="Respect/CompositeSchema.html" title="Respect::CompositeSchema (class)">CompositeSchema</a></span> class. Sub-classing of the <span class='object_link'><a href="Respect/Schema.html" title="Respect::Schema (class)">Schema</a></span> class is not well
+supported yet as it may have some issues with the current dumpers (see
+<span class='object_link'><a href="Respect/DslDumper.html" title="Respect::DslDumper (class)">DslDumper</a></span> and <span class='object_link'><a href="Respect/Org3Dumper.html" title="Respect::Org3Dumper (class)">Org3Dumper</a></span>). Fortunately, most of the cases can be
+handled by <span class='object_link'><a href="Respect/CompositeSchema.html" title="Respect::CompositeSchema (class)">CompositeSchema</a></span>.</p>
+</li><li>
+<p>If you want to simply add new statements to the schema definition DSL, you
+can just bundle them in a module and call <span class='object_link'><a href="#extend_dsl_with-class_method" title="Respect.extend_dsl_with (method)">Respect.extend_dsl_with</a></span> (see
+<span class='object_link'><a href="Respect/CoreStatements.html" title="Respect::CoreStatements (module)">CoreStatements</a></span> for further information).</p>
+</li></ol>
+
+<p>Extension of the <em>validator</em> and <em>dumper</em> classes is still
+experimental. Also, creating custom <em>definition</em> classes is not
+recommended yet.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Respect/CoreStatements.html" title="Respect::CoreStatements (module)">CoreStatements</a></span>, <span class='object_link'><a href="Respect/DefWithoutName.html" title="Respect::DefWithoutName (module)">DefWithoutName</a></span>, <span class='object_link'><a href="Respect/DocHelper.html" title="Respect::DocHelper (module)">DocHelper</a></span>, <span class='object_link'><a href="Respect/HasConstraints.html" title="Respect::HasConstraints (module)">HasConstraints</a></span>, <span class='object_link'><a href="Respect/UnitTestHelper.html" title="Respect::UnitTestHelper (module)">UnitTestHelper</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Respect/AnySchema.html" title="Respect::AnySchema (class)">AnySchema</a></span>, <span class='object_link'><a href="Respect/ArrayDef.html" title="Respect::ArrayDef (class)">ArrayDef</a></span>, <span class='object_link'><a href="Respect/ArraySchema.html" title="Respect::ArraySchema (class)">ArraySchema</a></span>, <span class='object_link'><a href="Respect/BooleanSchema.html" title="Respect::BooleanSchema (class)">BooleanSchema</a></span>, <span class='object_link'><a href="Respect/CompositeSchema.html" title="Respect::CompositeSchema (class)">CompositeSchema</a></span>, <span class='object_link'><a href="Respect/DatetimeSchema.html" title="Respect::DatetimeSchema (class)">DatetimeSchema</a></span>, <span class='object_link'><a href="Respect/DivisibleByValidator.html" title="Respect::DivisibleByValidator (class)">DivisibleByValidator</a></span>, <span class='object_link'><a href="Respect/DocParser.html" title="Respect::DocParser (class)">DocParser</a></span>, <span class='object_link'><a href="Respect/DslDumper.html" title="Respect::DslDumper (class)">DslDumper</a></span>, <span class='object_link'><a href="Respect/EqualToValidator.html" title="Respect::EqualToValidator (class)">EqualToValidator</a></span>, <span class='object_link'><a href="Respect/FakeNameProxy.html" title="Respect::FakeNameProxy (class)">FakeNameProxy</a></span>, <span class='object_link'><a href="Respect/FloatSchema.html" title="Respect::FloatSchema (class)">FloatSchema</a></span>, <span class='object_link'><a href="Respect/FormatValidator.html" title="Respect::FormatValidator (class)">FormatValidator</a></span>, <span class='object_link'><a href="Respect/GlobalDef.html" title="Respect::GlobalDef (class)">GlobalDef</a></span>, <span class='object_link'><a href="Respect/GreaterThanOrEqualToValidator.html" title="Respect::GreaterThanOrEqualToValidator (class)">GreaterThanOrEqualToValidator</a></span>, <span class='object_link'><a href="Respect/GreaterThanValidator.html" title="Respect::GreaterThanValidator (class)">GreaterThanValidator</a></span>, <span class='object_link'><a href="Respect/HashDef.html" title="Respect::HashDef (class)">HashDef</a></span>, <span class='object_link'><a href="Respect/HashSchema.html" title="Respect::HashSchema (class)">HashSchema</a></span>, <span class='object_link'><a href="Respect/IPAddrSchema.html" title="Respect::IPAddrSchema (class)">IPAddrSchema</a></span>, <span class='object_link'><a href="Respect/InValidator.html" title="Respect::InValidator (class)">InValidator</a></span>, <span class='object_link'><a href="Respect/IntegerSchema.html" title="Respect::IntegerSchema (class)">IntegerSchema</a></span>, <span class='object_link'><a href="Respect/InvalidSchemaError.html" title="Respect::InvalidSchemaError (class)">InvalidSchemaError</a></span>, <span class='object_link'><a href="Respect/Ipv4AddrSchema.html" title="Respect::Ipv4AddrSchema (class)">Ipv4AddrSchema</a></span>, <span class='object_link'><a href="Respect/Ipv6AddrSchema.html" title="Respect::Ipv6AddrSchema (class)">Ipv6AddrSchema</a></span>, <span class='object_link'><a href="Respect/ItemsDef.html" title="Respect::ItemsDef (class)">ItemsDef</a></span>, <span class='object_link'><a href="Respect/JSONSchemaHTMLFormatter.html" title="Respect::JSONSchemaHTMLFormatter (class)">JSONSchemaHTMLFormatter</a></span>, <span class='object_link'><a href="Respect/LessThanOrEqualToValidator.html" title="Respect::LessThanOrEqualToValidator (class)">LessThanOrEqualToValidator</a></span>, <span class='object_link'><a href="Respect/LessThanValidator.html" title="Respect::LessThanValidator (class)">LessThanValidator</a></span>, <span class='object_link'><a href="Respect/MatchValidator.html" title="Respect::MatchValidator (class)">MatchValidator</a></span>, <span class='object_link'><a href="Respect/MaxLengthValidator.html" title="Respect::MaxLengthValidator (class)">MaxLengthValidator</a></span>, <span class='object_link'><a href="Respect/MinLengthValidator.html" title="Respect::MinLengthValidator (class)">MinLengthValidator</a></span>, <span class='object_link'><a href="Respect/MultipleOfValidator.html" title="Respect::MultipleOfValidator (class)">MultipleOfValidator</a></span>, <span class='object_link'><a href="Respect/NullSchema.html" title="Respect::NullSchema (class)">NullSchema</a></span>, <span class='object_link'><a href="Respect/NumericSchema.html" title="Respect::NumericSchema (class)">NumericSchema</a></span>, <span class='object_link'><a href="Respect/Org3Dumper.html" title="Respect::Org3Dumper (class)">Org3Dumper</a></span>, <span class='object_link'><a href="Respect/RegexpSchema.html" title="Respect::RegexpSchema (class)">RegexpSchema</a></span>, <span class='object_link'><a href="Respect/RespectError.html" title="Respect::RespectError (class)">RespectError</a></span>, <span class='object_link'><a href="Respect/Schema.html" title="Respect::Schema (class)">Schema</a></span>, <span class='object_link'><a href="Respect/SchemaDef.html" title="Respect::SchemaDef (class)">SchemaDef</a></span>, <span class='object_link'><a href="Respect/StringSchema.html" title="Respect::StringSchema (class)">StringSchema</a></span>, <span class='object_link'><a href="Respect/URISchema.html" title="Respect::URISchema (class)">URISchema</a></span>, <span class='object_link'><a href="Respect/UTCTimeSchema.html" title="Respect::UTCTimeSchema (class)">UTCTimeSchema</a></span>, <span class='object_link'><a href="Respect/ValidationError.html" title="Respect::ValidationError (class)">ValidationError</a></span>, <span class='object_link'><a href="Respect/Validator.html" title="Respect::Validator (class)">Validator</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="STATEMENT_NAME_REGEXP-constant" class="">STATEMENT_NAME_REGEXP =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^[a-z_][a-z_0-9]*$</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0.1.0</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extend_dsl_with-class_method" title="extend_dsl_with (class method)">+ (Object) <strong>extend_dsl_with</strong>(mod) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Extend the schema definition DSL with the statements defined in the given
+module <tt>mod</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sanitize_object%21-class_method" title="sanitize_object! (class method)">+ (Object) <strong>sanitize_object!</strong>(object, sanitized_object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sanitize the given <tt>object</tt> <b>in-place</b> according to the given
+<tt>sanitized_object</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#schema_defined_for%3F-class_method" title="schema_defined_for? (class method)">+ (Boolean) <strong>schema_defined_for?</strong>(statement_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Test whether a schema is defined for the given <tt>statement_name</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#schema_for-class_method" title="schema_for (class method)">+ (Object) <strong>schema_for</strong>(statement_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the schema class associated to the given <tt>statement_name</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#schema_name_for-class_method" title="schema_name_for (class method)">+ (Object) <strong>schema_name_for</strong>(statement_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Build a schema class name from the given <tt>statement_name</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validator_defined_for%3F-class_method" title="validator_defined_for? (class method)">+ (Boolean) <strong>validator_defined_for?</strong>(constraint_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Test whether a validator is defined for the given <tt>constraint_name</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validator_for-class_method" title="validator_for (class method)">+ (Object) <strong>validator_for</strong>(constraint_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Turn the given <tt>constraint_name</tt> into a validator class symbol.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validator_name_for-class_method" title="validator_name_for (class method)">+ (Object) <strong>validator_name_for</strong>(constraint_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Turn the given string (assuming it is a constraint name) into a validator
+class name string.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="extend_dsl_with-class_method">
+  
+    + (<tt>Object</tt>) <strong>extend_dsl_with</strong>(mod) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Extend the schema definition DSL with the statements defined in the given
+module <tt>mod</tt>. Its methods would be available to each definition
+class calling <span class='object_link'><a href="Respect/GlobalDef.html#include_core_statements-class_method" title="Respect::GlobalDef.include_core_statements (method)">Respect::GlobalDef.include_core_statements</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArugmentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+121
+122
+123
+124
+125
+126
+127
+128</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 121</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_extend_dsl_with'>extend_dsl_with</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArugmentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cannot extend DSL with CoreStatements</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_mod'>mod</span> <span class='op'>==</span> <span class='const'>CoreStatements</span>
+  <span class='const'>CoreStatements</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:include</span><span class='comma'>,</span> <span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span>
+  <span class='comment'># We must &quot;refresh&quot; all the classes include &quot;CoreStatements&quot; by re-including it to
+</span>  <span class='comment'># work around the
+</span>  <span class='comment'># {dynamic module include problem}[http://eigenclass.org/hiki/The+double+inclusion+problem]
+</span>  <span class='const'>GlobalDef</span><span class='period'>.</span><span class='id identifier rubyid_core_contexts'>core_contexts</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:include</span><span class='comma'>,</span> <span class='const'>CoreStatements</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sanitize_object!-class_method">
+  
+    + (<tt>Object</tt>) <strong>sanitize_object!</strong>(object, sanitized_object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sanitize the given <tt>object</tt> <b>in-place</b> according to the given
+<tt>sanitized_object</tt>. A sanitized object contains value with more
+specific data type. Like a URI object instead of a plain string.</p>
+
+<p>Non-sanitized value are not touch (i.e. values present in <tt>object</tt>
+but not in <tt>sanitized_object</tt>). However, +<a
+href="http://"key"">object</a>+ and <tt>&lt;a href=&quot;http://:key&quot;&gt;object&lt;/a&gt;</tt> are
+considered as referring to the same value, but they original key would be
+preserved.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby">object = { &quot;int&quot; =&gt; &quot;42&quot; }
+Respect.sanitize_object!(object, { &quot;int&quot; =&gt; 42 }
+object                                     #=&gt; { &quot;int&quot; =&gt; 42 }
+object = { :int =&gt; &quot;42&quot; }
+Respect.sanitize_object!(object, { &quot;int&quot; =&gt; 42 }
+object                                     #=&gt; { :int =&gt; 42 }</code></pre>
+
+<p>The sanitized object is accessible via the <span class='object_link'><a href="Respect/Schema.html#sanitized_object-instance_method" title="Respect::Schema#sanitized_object (method)">Respect::Schema#sanitized_object</a></span> method
+after a successful validation.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 200</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_object'>object</span>
+  <span class='kw'>when</span> <span class='const'>Hash</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Hash</span>
+      <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='op'>|</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+      <span class='id identifier rubyid_object'>object</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_sanitized_object'>sanitized_object</span>
+    <span class='kw'>end</span>
+  <span class='kw'>when</span> <span class='const'>Array</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Array</span>
+      <span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_index'>index</span><span class='op'>|</span>
+        <span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_index'>index</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='id identifier rubyid_index'>index</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+      <span class='id identifier rubyid_object'>object</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_sanitized_object'>sanitized_object</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_sanitized_object'>sanitized_object</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="schema_defined_for?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>schema_defined_for?</strong>(statement_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Test whether a schema is defined for the given <tt>statement_name</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+161
+162
+163</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 161</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_schema_defined_for?'>schema_defined_for?</span><span class='lparen'>(</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rparen'>)</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="schema_for-class_method">
+  
+    + (<tt>Object</tt>) <strong>schema_for</strong>(statement_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the schema class associated to the given <tt>statement_name</tt>.</p>
+
+<p>A "valid" schema class must verify the following properties:</p>
+<ul><li>
+<p>Named like <tt>StatementNameSchema</tt> in <span class='object_link'><a href="" title="Respect (module)">Respect</a></span> module.</p>
+</li><li>
+<p>Be a sub-class of <span class='object_link'><a href="Respect/Schema.html" title="Respect::Schema (class)">Schema</a></span>.</p>
+</li><li>
+<p>Be concrete (i.e. have a public method <tt>new</tt>)</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+151
+152
+153
+154
+155
+156
+157
+158</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 151</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_schema_for'>schema_for</span><span class='lparen'>(</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_klass'>klass</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_schema_name_for'>schema_name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_safe_constantize'>safe_constantize</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_klass'>klass</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_klass'>klass</span> <span class='op'>&lt;</span> <span class='const'>Schema</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_public_methods'>public_methods</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='symbol'>:new</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_klass'>klass</span>
+  <span class='kw'>else</span>
+    <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="schema_name_for-class_method">
+  
+    + (<tt>Object</tt>) <strong>schema_name_for</strong>(statement_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Build a schema class name from the given <tt>statement_name</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 133</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_schema_name_for'>schema_name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_statement_name'>statement_name</span> <span class='op'>=~</span> <span class='const'>STATEMENT_NAME_REGEXP</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>statement '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_statement_name'>statement_name</span><span class='rbrace'>}</span><span class='tstring_content'>' name must match </span><span class='embexpr_beg'>#{</span><span class='const'>STATEMENT_NAME_REGEXP</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_const_name'>const_name</span> <span class='op'>=</span> <span class='id identifier rubyid_statement_name'>statement_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_const_name'>const_name</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>schema</span><span class='tstring_end'>&quot;</span></span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>::Schema</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>::</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_const_name'>const_name</span><span class='period'>.</span><span class='id identifier rubyid_camelize'>camelize</span><span class='rbrace'>}</span><span class='tstring_content'>Schema</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validator_defined_for?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>validator_defined_for?</strong>(constraint_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Test whether a validator is defined for the given <tt>constraint_name</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+178
+179
+180</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 178</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validator_defined_for?'>validator_defined_for?</span><span class='lparen'>(</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='rparen'>)</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_validator_for'>validator_for</span><span class='lparen'>(</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validator_for-class_method">
+  
+    + (<tt>Object</tt>) <strong>validator_for</strong>(constraint_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Turn the given <tt>constraint_name</tt> into a validator class symbol.
+Return nil if the validator class does not exist.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+173
+174
+175</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 173</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validator_for'>validator_for</span><span class='lparen'>(</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_validator_name_for'>validator_name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_safe_constantize'>safe_constantize</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validator_name_for-class_method">
+  
+    + (<tt>Object</tt>) <strong>validator_name_for</strong>(constraint_name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Turn the given string (assuming it is a constraint name) into a validator
+class name string.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+167
+168
+169</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect.rb', line 167</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validator_name_for'>validator_name_for</span><span class='lparen'>(</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='rparen'>)</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>::</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_constraint_name'>constraint_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_camelize'>camelize</span><span class='rbrace'>}</span><span class='tstring_content'>Validator</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:36 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

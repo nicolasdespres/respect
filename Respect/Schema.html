@@ -1,0 +1,2317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Respect::Schema
+  
+    &mdash; Documentation by YARD 0.8.5.2
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (S)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Respect.html" title="Respect (module)">Respect</a></span></span>
+     &raquo; 
+    <span class="title">Schema</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Respect::Schema
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Respect::Schema</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="DocHelper.html" title="Respect::DocHelper (module)">DocHelper</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/respect/schema.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Base class for all object schema.</p>
+
+<p>A schema defines the expected structure and format for a given object. It
+is similar in spirit to json-schemajson-schema.org(<a
+href="http://json-schema.org">json-schema.org</a>/) specification but uses
+Ruby DSL as definition. Using the DSL is not mandatory since you can also
+defines a schema using its own methods.</p>
+
+<p>Almost all <span class='object_link'><a href="" title="Respect::Schema (class)">Schema</a></span> sub-classes has an associated statement available in
+the DSL for defining it. This statement is named after the class name (see
+<span class='object_link'><a href="#statement_name-class_method" title="Respect::Schema.statement_name (method)">Schema.statement_name</a></span>). However all sub-classes do not have a statement
+associated (see <span class='object_link'><a href="../Respect.html#schema_for-class_method" title="Respect.schema_for (method)">schema_for</a></span>).</p>
+
+<p>You can define such a schema using the <span class='object_link'><a href="#define-class_method" title="Respect::Schema.define (method)">Schema.define</a></span> method. The <span class='object_link'><a href="#validate-instance_method" title="Respect::Schema#validate (method)">#validate</a></span>
+method allow you to check whether the given object is valid according to
+this schema. Various options can be passed to the schema when initializing
+it.</p>
+
+<p>While validating an object the schema build a sanitized version of this
+object including all the validated part. The value presents in this
+sanitized object have generally a type specific to the contents they
+represents. For instance, a URI would be represented as a string in the
+original object but as a URI object in the sanitized object. There is a
+she-bang version of the validation method which update the value of the
+given object in-place with the value from the sanitized object if the
+validation succeeded.</p>
+
+<p>You can pass several options when creating a Schema:</p>
+<table class="rdoc-list"><tr><td class="rdoc-term"><p>required</p></td>
+<td>
+<p>whether this property associated to this schema is required in the hash
+schema (<tt>true</tt> by default).</p>
+</td></tr><tr><td class="rdoc-term"><p>default</p></td>
+<td>
+<p>the default value to use for the associated property if it is not present.
+Setting a default value make the property private. (<tt>nil</tt> by
+default)</p>
+</td></tr><tr><td class="rdoc-term"><p>doc</p></td>
+<td>
+<p>the documentation of this schema (<tt>nil</tt> by default). A documentation
+is composed of a title followed by an empty line and an optional long
+description. If set to false, then this schema is considered as an
+implementation details that should not be publicly documented. Thus, it
+will not be dumped as <a
+href="http://json-schema.org/">json-schema.org</a>.</p>
+</td></tr><tr><td class="rdoc-term"><p>allow_nil</p></td>
+<td>
+<p>whether the schema accept <tt>nil</tt> as validation value. (<tt>false</tt>
+by default). This option is not supported yet by the json-schema.org
+standard.</p>
+</td></tr></table>
+
+<p>These options applies to all schema sub-classes.</p>
+
+<p>In addition to these options, you can configure any defined <span class='object_link'><a href="Validator.html" title="Respect::Validator (class)">Validator</a></span>.
+Validators are run during validation process by certain schema class like
+<span class='object_link'><a href="IntegerSchema.html" title="Respect::IntegerSchema (class)">IntegerSchema</a></span>, <span class='object_link'><a href="StringSchema.html" title="Respect::StringSchema (class)">StringSchema</a></span>, etc... They are mostly non-containers
+schema. In the following code the <span class='object_link'><a href="GreaterThanValidator.html" title="Respect::GreaterThanValidator (class)">GreaterThanValidator</a></span> will be run at
+validation time with the value <tt>o</tt>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>IntegerSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='label'>greater_than:</span> <span class='int'>0</span></code></pre>
+
+<p>This class is <em>abstract</em>. You cannot instantiate it directly. Use
+one of its sub-classes instead.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="AnySchema.html" title="Respect::AnySchema (class)">AnySchema</a></span>, <span class='object_link'><a href="ArraySchema.html" title="Respect::ArraySchema (class)">ArraySchema</a></span>, <span class='object_link'><a href="BooleanSchema.html" title="Respect::BooleanSchema (class)">BooleanSchema</a></span>, <span class='object_link'><a href="CompositeSchema.html" title="Respect::CompositeSchema (class)">CompositeSchema</a></span>, <span class='object_link'><a href="HashSchema.html" title="Respect::HashSchema (class)">HashSchema</a></span>, <span class='object_link'><a href="NullSchema.html" title="Respect::NullSchema (class)">NullSchema</a></span>, <span class='object_link'><a href="NumericSchema.html" title="Respect::NumericSchema (class)">NumericSchema</a></span>, <span class='object_link'><a href="StringSchema.html" title="Respect::StringSchema (class)">StringSchema</a></span></p>
+</div>
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#last_error-instance_method" title="#last_error (instance method)">- (Object) <strong>last_error</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the last validation error that happens during the validation
+process.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#options-instance_method" title="#options (instance method)">- (Object) <strong>options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the hash of options.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sanitized_object-instance_method" title="#sanitized_object (instance method)">- (Object) <strong>sanitized_object</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the sanitized object.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#def_class-class_method" title="def_class (class method)">+ (Object) <strong>def_class</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the definition class symbol for this schema class or nil if there is
+no class (see <span class='object_link'><a href="#def_class_name-class_method" title="Respect::Schema.def_class_name (method)">Schema.def_class_name</a></span>).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#def_class_name-class_method" title="def_class_name (class method)">+ (Object) <strong>def_class_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the associated <em>def</em> class name for this class.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_options-class_method" title="default_options (class method)">+ (Object) <strong>default_options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the default options for this schema class.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#define-class_method" title="define (class method)">+ (Object) <strong>define</strong>(*args, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>If a corresponding <em>def</em> class exists for this class (see
+<span class='object_link'><a href="#def_class-class_method" title="Respect::Schema.def_class (method)">Schema.def_class</a></span>) it defines a new schema by evaluating the given <tt>block</tt>
+in the context of this definition class.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#statement_name-class_method" title="statement_name (class method)">+ (Object) <strong>statement_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Build a statement name from this class name.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(other) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Two schema are equal if they have the same type and the set of options.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#allow_nil%3F-instance_method" title="#allow_nil? (instance method)">- (Boolean) <strong>allow_nil?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns whether this schema accept <tt>nil</tt> as validation value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default-instance_method" title="#default (instance method)">- (Object) <strong>default</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the default value used when this schema is missing.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#documentation-instance_method" title="#documentation (instance method)">- (Object) <strong>documentation</strong> </a>
+    
+
+    
+      (also: #doc)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the documentation of this schema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#documented%3F-instance_method" title="#documented? (instance method)">- (Boolean) <strong>documented?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns whether this schema must be documented (i.e. not ignored when
+dumped).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#has_default%3F-instance_method" title="#has_default? (instance method)">- (Boolean) <strong>has_default?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns whether this schema has a default value defined.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Schema) <strong>initialize</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create a new schema using the given <em>options</em>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize_copy-instance_method" title="#initialize_copy (instance method)">- (Object) <strong>initialize_copy</strong>(other) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#inspect-instance_method" title="#inspect (instance method)">- (Object) <strong>inspect</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a string containing a human-readable representation of this schema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#non_default_options-instance_method" title="#non_default_options (instance method)">- (Object) <strong>non_default_options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the options with no default value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#optional%3F-instance_method" title="#optional? (instance method)">- (Boolean) <strong>optional?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether this schema is optional.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#required%3F-instance_method" title="#required? (instance method)">- (Boolean) <strong>required?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether this schema is required.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sanitize%21-instance_method" title="#sanitize! (instance method)">- (Object) <strong>sanitize!</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sanitize the given <tt>object</tt> <b>in-place</b> if it validates this
+schema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sanitize_object%21-instance_method" title="#sanitize_object! (instance method)">- (Object) <strong>sanitize_object!</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A shortcut for <span class='object_link'><a href="../Respect.html#sanitize_object%21-class_method" title="Respect.sanitize_object! (method)">sanitize_object!</a></span>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_h-instance_method" title="#to_h (instance method)">- (Object) <strong>to_h</strong>(format = :org3) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert this schema to a hash representation following the given
+<tt>format</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_json-instance_method" title="#to_json (instance method)">- (Object) <strong>to_json</strong>(format = :org3) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Serialize this schema to a JSON string following the given <tt>format</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a string containing ruby code defining this schema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate-instance_method" title="#validate (instance method)">- (Object) <strong>validate</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Raise a <span class='object_link'><a href="ValidationError.html" title="Respect::ValidationError (class)">ValidationError</a></span> if the given <tt>object</tt> is not validated by
+this schema.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate%21-instance_method" title="#validate! (instance method)">- (Object) <strong>validate!</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return <tt>true</tt> or <tt>false</tt> whether this schema validates the
+given <tt>object</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate%3F-instance_method" title="#validate? (instance method)">- (Boolean) <strong>validate?</strong>(object) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return whether the given <tt>object</tt> validates this schema.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="DocHelper.html" title="Respect::DocHelper (module)">DocHelper</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="DocHelper.html#description-instance_method" title="Respect::DocHelper#description (method)">#description</a></span>, <span class='object_link'><a href="DocHelper.html#title-instance_method" title="Respect::DocHelper#title (method)">#title</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Respect::Schema (class)">Schema</a></span></tt>) <strong>initialize</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create a new schema using the given <em>options</em>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+127
+128
+129
+130</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 127</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='ivar'>@sanitized_object</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_default_options'>default_options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="last_error-instance_method">
+  
+    - (<tt>Object</tt>) <strong>last_error</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the last validation error that happens during the validation
+process. (set by <span class='object_link'><a href="#validate%3F-instance_method" title="Respect::Schema#validate? (method)">#validate?</a></span>). Reset each time <span class='object_link'><a href="#validate%3F-instance_method" title="Respect::Schema#validate? (method)">#validate?</a></span> is called.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+197
+198
+199</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 197</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_last_error'>last_error</span>
+  <span class='ivar'>@last_error</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>options</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the hash of options.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+142
+143
+144</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 142</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_options'>options</span>
+  <span class='ivar'>@options</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="sanitized_object=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="sanitized_object-instance_method">
+  
+    - (<tt>Object</tt>) <strong>sanitized_object</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the sanitized object. It is <tt>nil</tt> as long as you have not
+validated any object. It is overwritten every times you call <span class='object_link'><a href="#validate-instance_method" title="Respect::Schema#validate (method)">#validate</a></span>.
+If the validation failed it will be reset to <tt>nil</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+139
+140
+141</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 139</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sanitized_object'>sanitized_object</span>
+  <span class='ivar'>@sanitized_object</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="def_class-class_method">
+  
+    + (<tt>Object</tt>) <strong>def_class</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the definition class symbol for this schema class or nil if there is
+no class (see <span class='object_link'><a href="#def_class_name-class_method" title="Respect::Schema.def_class_name (method)">def_class_name</a></span>)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 99</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_def_class'>def_class</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_def_class_name'>def_class_name</span><span class='period'>.</span><span class='id identifier rubyid_safe_constantize'>safe_constantize</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="def_class_name-class_method">
+  
+    + (<tt>Object</tt>) <strong>def_class_name</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the associated <em>def</em> class name for this class. Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>ArraySchema</span><span class='period'>.</span><span class='id identifier rubyid_def_class_name'>def_class_name</span>  <span class='comment'>#=&gt; &quot;ArrayDef&quot;
+</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_def_class_name'>def_class_name</span> <span class='comment'>#=&gt; &quot;HashDef&quot;
+</span><span class='const'>Schema</span><span class='period'>.</span><span class='id identifier rubyid_def_class_name'>def_class_name</span>       <span class='comment'>#=&gt; &quot;SchemaDef&quot;</span></code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+89
+90
+91
+92
+93
+94
+95</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 89</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_def_class_name'>def_class_name</span>
+  <span class='kw'>if</span> <span class='kw'>self</span> <span class='op'>==</span> <span class='const'>Schema</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Respect::SchemaDef</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Schema$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Def</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="default_options-class_method">
+  
+    + (<tt>Object</tt>) <strong>default_options</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the default options for this schema class. If you overwrite this
+method in sub-classes, call super and merge the result with your default
+options.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+115
+116
+117
+118
+119
+120
+121
+122</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 115</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_default_options'>default_options</span>
+  <span class='lbrace'>{</span>
+    <span class='label'>required:</span> <span class='kw'>true</span><span class='comma'>,</span>
+    <span class='label'>default:</span> <span class='kw'>nil</span><span class='comma'>,</span>
+    <span class='label'>doc:</span> <span class='kw'>nil</span><span class='comma'>,</span>
+    <span class='label'>allow_nil:</span> <span class='kw'>false</span><span class='comma'>,</span>
+  <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="define-class_method">
+  
+    + (<tt>Object</tt>) <strong>define</strong>(*args, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>If a corresponding <em>def</em> class exists for this class (see
+<span class='object_link'><a href="#def_class-class_method" title="Respect::Schema.def_class (method)">def_class</a></span>) it defines a new schema by evaluating the given <tt>block</tt>
+in the context of this definition class.  It behaves as an alias for new if
+no block is given.</p>
+
+<p>If there is no associated <em>def</em> class the block is passed to the
+constructor.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 71</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_define'>define</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_def_class'>def_class</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_def_class'>def_class</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_def_class'>def_class</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
+      <span class='id identifier rubyid_def_class'>def_class</span><span class='period'>.</span><span class='id identifier rubyid_eval'>eval</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="statement_name-class_method">
+  
+    + (<tt>Object</tt>) <strong>statement_name</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Build a statement name from this class name.</p>
+
+<p>Example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Schema</span><span class='period'>.</span><span class='id identifier rubyid_statement_name'>statement_name</span>                 <span class='comment'>#=&gt; &quot;schema&quot;
+</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_statement_name'>statement_name</span>             <span class='comment'>#=&gt; &quot;hash&quot;</span></code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+108
+109
+110</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 108</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_statement_name'>statement_name</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_underscore'>underscore</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^.*\/</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>_schema$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="==-instance_method">
+  
+    - (<tt>Object</tt>) <strong>==</strong>(other) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Two schema are equal if they have the same type and the set of options.
+Sub-class definition may include more attributes.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+275
+276
+277</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 275</span>
+
+<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@options</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="allow_nil?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>allow_nil?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether this schema accept <tt>nil</tt> as validation value.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+178
+179
+180</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 178</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_allow_nil?'>allow_nil?</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:allow_nil</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="default-instance_method">
+  
+    - (<tt>Object</tt>) <strong>default</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the default value used when this schema is missing.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+168
+169
+170</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 168</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_default'>default</span>
+  <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="documentation-instance_method">
+  
+    - (<tt>Object</tt>) <strong>documentation</strong> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='doc-instance_method'>doc</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the documentation of this schema.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+145
+146
+147</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 145</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_documentation'>documentation</span>
+  <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="documented?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>documented?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether this schema must be documented (i.e. not ignored when
+dumped).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+153
+154
+155</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 153</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_documented?'>documented?</span>
+  <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:doc</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="has_default?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>has_default?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether this schema has a default value defined.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+173
+174
+175</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 173</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_has_default?'>has_default?</span>
+  <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="initialize_copy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>initialize_copy</strong>(other) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+132
+133
+134</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 132</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize_copy'>initialize_copy</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="inspect-instance_method">
+  
+    - (<tt>Object</tt>) <strong>inspect</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a string containing a human-readable representation of this schema.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+232
+233
+234
+235
+236
+237
+238</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 232</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;%s:0x%x %s&gt;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>%</span> <span class='lbracket'>[</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_object_id'>object_id</span><span class='comma'>,</span>
+    <span class='id identifier rubyid_instance_variables'>instance_variables</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_v'>v</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_instance_variable_get'>instance_variable_get</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="non_default_options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>non_default_options</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the options with no default value. (Useful when writing a dumper)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+258
+259
+260</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 258</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_non_default_options'>non_default_options</span>
+  <span class='ivar'>@options</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_opt'>opt</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>!=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_default_options'>default_options</span><span class='lbracket'>[</span><span class='id identifier rubyid_opt'>opt</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="optional?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>optional?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Whether this schema is optional.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+163
+164
+165</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 163</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_optional?'>optional?</span>
+  <span class='op'>!</span><span class='id identifier rubyid_required?'>required?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="required?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>required?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Whether this schema is required. (opposite of optional?)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+158
+159
+160</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 158</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_required?'>required?</span>
+  <span class='ivar'>@options</span><span class='lbracket'>[</span><span class='symbol'>:required</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_has_default?'>has_default?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sanitize!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>sanitize!</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sanitize the given <tt>object</tt> <b>in-place</b> if it validates this
+schema. The sanitized object is returned. <span class='object_link'><a href="ValidationError.html" title="Respect::ValidationError (class)">ValidationError</a></span> is raised on
+error.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+221
+222
+223
+224</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 221</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sanitize!'>sanitize!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sanitize_object!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>sanitize_object!</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A shortcut for <span class='object_link'><a href="../Respect.html#sanitize_object%21-class_method" title="Respect.sanitize_object! (method)">Respect.sanitize_object!</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+227
+228
+229</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 227</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sanitized_object'>sanitized_object</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_h-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_h</strong>(format = :org3) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert this schema to a hash representation following the given
+<tt>format</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+264
+265
+266
+267
+268
+269
+270
+271</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 264</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_h'>to_h</span><span class='lparen'>(</span><span class='id identifier rubyid_format'>format</span> <span class='op'>=</span> <span class='symbol'>:org3</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_format'>format</span>
+  <span class='kw'>when</span> <span class='symbol'>:org3</span>
+    <span class='const'>Org3Dumper</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>unknown format '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_format'>format</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_json-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_json</strong>(format = :org3) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Serialize this schema to a JSON string following the given <tt>format</tt>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+247
+248
+249
+250
+251
+252
+253
+254</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 247</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_json'>to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_format'>format</span> <span class='op'>=</span> <span class='symbol'>:org3</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_format'>format</span>
+  <span class='kw'>when</span> <span class='symbol'>:org3</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='lparen'>(</span><span class='symbol'>:org3</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>unknown format '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_format'>format</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_s-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_s</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a string containing ruby code defining this schema. Theoretically,
+you can evaluate it and get the same schema afterward.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+242
+243
+244</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 242</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='const'>DslDumper</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate-instance_method">
+  
+    - (<tt>Object</tt>) <strong>validate</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Raise a <span class='object_link'><a href="ValidationError.html" title="Respect::ValidationError (class)">ValidationError</a></span> if the given <tt>object</tt> is not validated by
+this schema. Returns true otherwise. A sanitized version of the object is
+built during this process and you can access it via <span class='object_link'><a href="#sanitized_object-instance_method" title="Respect::Schema#sanitized_object (method)">#sanitized_object</a></span>.
+Rewrite it in sub-classes.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NoMethodError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+203
+204
+205</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 203</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NoMethodError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>overwrite me in sub-classes</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>validate!</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return <tt>true</tt> or <tt>false</tt> whether this schema validates the
+given <tt>object</tt>. If it does <tt>object</tt> is updated in-place with
+the sanitized value. This method does not raise a <span class='object_link'><a href="ValidationError.html" title="Respect::ValidationError (class)">ValidationError</a></span>. You
+can access the error using <span class='object_link'><a href="#last_error-instance_method" title="Respect::Schema#last_error (method)">#last_error</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+211
+212
+213
+214
+215
+216
+217</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 211</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate!'>validate!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_valid'>valid</span> <span class='op'>=</span> <span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_valid'>valid</span>
+    <span class='id identifier rubyid_sanitize_object!'>sanitize_object!</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_valid'>valid</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>validate?</strong>(object) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return whether the given <tt>object</tt> validates this schema. You can get
+the validation error via <span class='object_link'><a href="#last_error-instance_method" title="Respect::Schema#last_error (method)">#last_error</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+184
+185
+186
+187
+188
+189
+190
+191
+192</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 184</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
+    <span class='kw'>true</span>
+  <span class='kw'>rescue</span> <span class='const'>ValidationError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='ivar'>@last_error</span> <span class='op'>=</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='kw'>false</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 20 11:35:37 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.5.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
