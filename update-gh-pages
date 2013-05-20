@@ -18,7 +18,7 @@ set -o nounset
 
 export LC_ALL=C
 
-if !test -d .git
+if ! test -d .git
 then
   echo >&2 "Not at the root of the git repository."
   exit 1
@@ -28,5 +28,5 @@ git checkout gh-pages
 cp -r doc/* .
 git add -A .
 git commit -m "Update GitHub Pages site."
-git push --dry-run origin gh-pages
+git push origin gh-pages
 git checkout master
