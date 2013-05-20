@@ -258,7 +258,7 @@ same question so before you post your question take a bit of time to search the 
 
 You can also read these documents for further documentation:
 
-* [Repect API reference documentation](FIXME)
+* [Repect API reference documentation](http://nicolasdespres.github.io/respect/)
 
 # Compatibility
 
