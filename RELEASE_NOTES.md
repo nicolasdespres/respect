@@ -7,8 +7,7 @@ Note that each entry is kept so brief that no reason behind or
 reference information is supplied with.  For a full list of changes
 with all sufficient information, see the git(1) log.
 
-A lot more is coming soon check out the issue tagged as `feature`
-in the tracker.
+A lot more is coming soon check out the issue tracker.
 
 ## Part of the first release
 
