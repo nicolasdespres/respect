@@ -63,7 +63,7 @@
 
     <div id="content"><div id='filecontents'><h1>Welcome to Respect</h1>
 
-<p><em>Respect</em> is a DSL to concisely describe the structure of common data such as Hash and Array using
+<p><em>Respect</em> is a DSL to concisely describe the structure of common data such as hash and array using
 Ruby code. It comes with a validator, a sanitizer and dumpers to generate valid
 <a href="http://json-schema.org/">json-schema.org</a> compliant specifications. Although it was designed to
 specify JSON schema, it can be used for any data represented as Hash and Array. It does not require
@@ -98,7 +98,7 @@ Thus, it is ideal to specify JSON schema. I find it a way more concise than
 <a href="http://json-schema.org/">json-schema.org</a>. And it is plain Ruby so you can rely on all great Ruby features
 to factor your specification code.</p>
 
-<p>For instance, this ruby code specify how one could structure a very simple user profile:</p>
+<p>For instance, this ruby code specifies how one could structure a very simple user profile:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
   <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
@@ -160,7 +160,7 @@ easily so that all your customers can read and understand it:</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{ &quot;name&quot;: &quot;My name&quot;, &quot;age&quot;: 20, &quot;email&quot;: &quot;me@example.com&quot; }</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>   <span class='comment'>#=&gt; true
 </span></code></pre>
 
-<p>Once a JSON document has been validated, we often want to turn its basic strings and integers into real object like <code>URI</code>.
+<p>Once a JSON document has been validated, we often want to turn its basic strings and integers into real objects like <code>URI</code>.
 <em>Respect</em> does that automatically for you for standard objects:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
@@ -171,7 +171,7 @@ easily so that all your customers can read and understand it:</p>
 </span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                            <span class='comment'>#=&gt; URI::HTTP
 </span></code></pre>
 
-<p>You can easily extend the sanitizer with your own object type. Let&#39;s assume you have an object type define like this:</p>
+<p>You can easily extend the sanitizer with your own object type. Let&#39;s assume you have an object type defined like this:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Place</span>
   <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='id identifier rubyid_longitude'>longitude</span><span class='rparen'>)</span>
@@ -186,7 +186,7 @@ easily so that all your customers can read and understand it:</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>Then you must extend the Schema hierarchy with the new schema for your custom type.
+<p>Then you can extend the <code>Schema</code> class hierarchy with the new schema for your custom type.
 The <code>CompositeSchema</code> class assists you in this task so you just have to overwrite
 two methods.</p>
 
@@ -242,11 +242,11 @@ in your schema like this:</p>
 </code></pre>
 
 <p>In such case, you don&#39;t need a custom sanitizer. You just want to factor the definition of
-identifier property. You can easily to it like this:</p>
+identifier property. You can easily do it like this:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>MyMacros</span>
-  <span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-    <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>_id$</span><span class='regexp_end'>/</span></span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>_id$</span><span class='regexp_end'>/</span></span>
       <span class='id identifier rubyid_name'>name</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_integer'>integer</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>greater_than:</span> <span class='int'>0</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -255,7 +255,7 @@ identifier property. You can easily to it like this:</p>
 <span class='const'>Respect</span><span class='period'>.</span><span class='id identifier rubyid_extend_dsl_with'>extend_dsl_with</span><span class='lparen'>(</span><span class='const'>MyMacros</span><span class='rparen'>)</span>
 </code></pre>
 
-<p>Now you can rewrite the original schema this way:</p>
+<p>Now you can rewrite your schema definition this way:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
   <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>article</span><span class='tstring_end'>&quot;</span></span>
@@ -297,7 +297,7 @@ identifier property. You can easily to it like this:</p>
 <em>JSON schema standard</em>, we have tried to keep it as close as possible. For instance the <code>strict</code> option of
 hash schema is not presented in the standard. However, when a schema is dumped to its <em>JSON Schema</em> version
 the syntax and semantic have been followed. You should note that there is no &quot;loader&quot; available yet in this
-library. In other word, you cannot instantiate a Schema class from a <em>JSON Schema</em> string representation.</p>
+library. In other word, you cannot instantiate a <code>Schema</code> class from a <em>JSON Schema</em> string representation.</p>
 
 <h1>Getting help</h1>
 
@@ -334,7 +334,7 @@ any JSON parser returning normal basic types like <code>Hash</code>, <code>Array
 
 <p>I spent quite a lot of time writing this gem but there is still a lot of work to do. Whether it
 is a bug-fix, a new feature, some code re-factoring, or documentation clarification, I will be
-glade to merge your pull request on GitHub. You just have to create a branch from <code>master</code> and
+glade to merge your pull-request on GitHub. You just have to create a branch from <code>master</code> and
 send me a pull request.</p>
 
 <h1>License</h1>
@@ -344,7 +344,7 @@ Copyright (c) 2013 Nicolas Despres.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Tue May 21 12:42:17 2013 by
+  Generated on Tue May 21 14:29:58 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-1.9.3).
 </div>
