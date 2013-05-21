@@ -28,6 +28,7 @@ set -x
 
 rake yard
 git checkout gh-pages
+git clean -f
 cp -r doc/* .
 git add -A .
 git commit -m "Update GitHub Pages site."
