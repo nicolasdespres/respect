@@ -32,5 +32,4 @@ git clean -f
 cp -r doc/* .
 git add -A .
 git commit -m "Update GitHub Pages site."
-git push origin gh-pages
 git checkout master
