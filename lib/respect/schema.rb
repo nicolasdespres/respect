@@ -31,7 +31,7 @@ module Respect
   #             required in the hash schema (+true+ by default).
   # default::   the default value to use for the associated property
   #             if it is not present. Setting a default value make
-  #             the property private. (+nil+ by default)
+  #             the property optional. (+nil+ by default)
   # doc::       the documentation of this schema (+nil+ by default).
   #             A documentation is composed of a title followed by
   #             an empty line and an optional long description.

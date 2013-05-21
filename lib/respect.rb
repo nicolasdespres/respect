@@ -169,7 +169,7 @@ module Respect
     end
 
     # Turn the given +constraint_name+ into a validator class symbol.
-    # Return nil if the validator class does not exist.
+    # Return +nil+ if the validator class does not exist.
     def validator_for(constraint_name)
       validator_name_for(constraint_name).safe_constantize
     end
