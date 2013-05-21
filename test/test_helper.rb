@@ -38,8 +38,11 @@ end
 # A module to test statement extension helper.
 module EndUserDSLStatement
 
-  def id(name = "id")
-    integer name, greater_than: 0
+  def id(name = "id", options = {})
+    unless name.nil? || name == "id" || name =~ /_id$/
+      name += "_id"
+    end
+    integer(name, { greater_than: 0 }.merge(options))
   end
 
   def call_to_kernel
