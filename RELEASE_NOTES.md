@@ -9,6 +9,10 @@ with all sufficient information, see the git(1) log.
 
 A lot more is coming soon check out the issue tracker.
 
+## Part of 0.1.1
+
+* Fix: English mistakes in documentation and gemspec.
+
 ## Part of the first release
 
 Feature: DSL to describe schema of Hash, Array, String, Numeric, Integer, Float, Boolean, etc...
