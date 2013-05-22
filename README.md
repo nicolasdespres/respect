@@ -39,7 +39,7 @@ For instance, this ruby code specifies how one could structure a very simple use
 schema = Respect::HashSchema.define do |s|
   s.string "name"
   s.integer "age", greater_than: 18
-  s.string "homepage", format: :email
+  s.string "homepage", format: :uri
 end
 ```
 

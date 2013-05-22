@@ -12,6 +12,7 @@ A lot more is coming soon check out the issue tracker.
 ## Part of 0.1.1
 
 * Fix: English mistakes in documentation and gemspec.
+* Fix: minor issues in documentation examples.
 
 ## Part of the first release
 
