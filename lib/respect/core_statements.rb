@@ -120,7 +120,7 @@ module Respect
     #     end
     #   end
     #
-    # or you can overwrite the +class+ method in the context of your choice:
+    # or you can override the +class+ method in the context of your choice:
     #
     #   module Respect
     #     class GlobalDef
@@ -130,7 +130,7 @@ module Respect
     #     end
     #   end
     #
-    # Do not un-define or overwrite 'method' and 'methods' since {FakeNameProxy}
+    # Do not un-define or override 'method' and 'methods' since {FakeNameProxy}
     # use them.
     def method_missing(method_name, *args, &block)
       if respond_to_missing?(method_name, false)

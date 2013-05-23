@@ -42,10 +42,10 @@ module Respect
     private
 
     # Called when {#to_h} is called with +:org3+ format.
-    # Sub-classes are supposed to overwrite this methods and to return
+    # Sub-classes are supposed to override this methods and to return
     # their conversion to the JSON schema standard draft v3.
     def to_h_org3
-      raise NoMethodError, "overwrite me in sub-classes"
+      raise NoMethodError, "override me in sub-classes"
     end
   end
 end

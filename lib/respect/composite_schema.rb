@@ -2,7 +2,7 @@ module Respect
   # A composite schema is a schema composed of another schema.
   #
   # Sub-classing {CompositeSchema} is the easiest way to add a user-defined
-  # schema. Indeed, you just have to overwrite {#schema_definition} and optionally
+  # schema. Indeed, you just have to override {#schema_definition} and optionally
   # {#sanitize}. Your schema will be handled properly by all other part
   # of the library (i.e. mainly dumpers and the DSL).
   #

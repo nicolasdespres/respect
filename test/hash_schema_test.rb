@@ -212,7 +212,7 @@ class HashSchemaTest < Test::Unit::TestCase
     assert_equal({ "test" => 42 }, s.sanitized_object)
   end
 
-  def test_default_value_do_not_overwrite_defined_one
+  def test_default_value_do_not_override_defined_one
     s = Respect::HashSchema.define do |s|
       s.integer "test", default: 42
     end

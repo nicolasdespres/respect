@@ -72,7 +72,7 @@ module Respect
     # Overwrite this method in sub-classes to return the result value
     # of this evaluation context.
     def evaluation_result
-      raise NoMethodError, "overwrite me in sub-classes"
+      raise NoMethodError, "override me in sub-classes"
     end
   end
 

@@ -56,7 +56,7 @@ class HashDefTest < Test::Unit::TestCase
     assert_schema_validate s, { "test" => [], "opt" => [] }
   end
 
-  def test_cannot_overwrite_property
+  def test_cannot_override_property
     assert_raise(Respect::InvalidSchemaError) do
       Respect::HashSchema.define do |s|
         s.integer "id", equal_to: 42
@@ -65,7 +65,7 @@ class HashDefTest < Test::Unit::TestCase
     end
   end
 
-  def test_extra_properties_overwrite_expected_ones
+  def test_extra_properties_override_expected_ones
     assert_raise(Respect::InvalidSchemaError) do
       Respect::HashSchema.define(strict: true) do |s|
         s.integer "test", equal_to: 42

@@ -110,7 +110,7 @@ module Respect
       end
 
       # Return the default options for this schema class.
-      # If you overwrite this method in sub-classes, call super and merge the
+      # If you override this method in sub-classes, call super and merge the
       # result with your default options.
       def default_options
         {
@@ -201,7 +201,7 @@ module Respect
     # this process and you can access it via {#sanitized_object}.
     # Rewrite it in sub-classes.
     def validate(object)
-      raise NoMethodError, "overwrite me in sub-classes"
+      raise NoMethodError, "override me in sub-classes"
     end
 
     # Return +true+ or +false+ whether this schema validates the given +object+.
