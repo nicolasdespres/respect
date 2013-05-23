@@ -22,7 +22,7 @@ Already available:
 * Contextual validation error.
 * Object sanitizer: turn plain string and integer values into real objects.
 * Extensible API to add your custom validator and sanitizer.
-* Extensible macro definition system to factor you schema definition code.
+* Extensible macro definition system to factor your schema definition code.
 
 See the RELEASE_NOTES file for detailed feature listing.
 
@@ -43,9 +43,9 @@ schema = Respect::HashSchema.define do |s|
 end
 ```
 
-But you can still convert this specification to
+You can easily convert this specification to
 [JSON Schema specification draft v3](http://tools.ietf.org/id/draft-zyp-json-schema-03.html)
-easily so that all your customers can read and understand it:
+so that all your customers can read and understand it:
 
 ```ruby
 require 'json'
@@ -101,8 +101,8 @@ _Respect_ does not parse JSON document by default but it is easy to do so using 
 schema.validate?(JSON.parse('{ "name": "My name", "age": 20, "email": "me@example.com" }'))   #=> true
 ```
 
-Once a JSON document has been validated, we often want to turn its basic strings and integers into real objects like `URI`.
-_Respect_ does that automatically for you for standard objects:
+Once a JSON document has been validated, we often want to turn its basic strings and integers into real objects like `URI`
+for instance. _Respect_ does that automatically for you for standard objects:
 
 ```ruby
 schema = Respect::HashSchema.define do |s|
@@ -113,7 +113,7 @@ schema.validate!(object)                            #=> true
 object["homepage"].class                            #=> URI::HTTP
 ```
 
-You can easily extend the sanitizer with your own object type. Let's assume you have an object type defined like this:
+You can easily extend the sanitizer with your own object type. Let's assume you have a class defined like this:
 
 ```ruby
 class Place
@@ -130,7 +130,7 @@ end
 ```
 
 Then you can extend the `Schema` class hierarchy with the new schema for your custom type.
-The `CompositeSchema` class assists you in this task so you just have to overwrite
+The `CompositeSchema` class assists you in this task so you just have to override
 two methods.
 
 ```ruby
@@ -172,7 +172,7 @@ schema.validate!(object)                              #=> true
 object["home"].class                                  #=> Place
 ```
 
-Sometimes you just want to extend the DSL with a new statement providing higher level feature than
+Sometimes you just want to extend the DSL with a new statement providing higher level features than
 the primitives `integer`, `string` or `float`, etc... For instance if you specify identifier
 in your schema like this:
 
@@ -187,8 +187,8 @@ Respect::HashSchema.define do |s|
 end
 ```
 
-In such case, you don't need a custom sanitizer. You just want to factor the definition of
-an identifier property. You can easily do it like this:
+In such case, you don't need a custom sanitizer since an identifer is an integer after all. You just
+want to factor the definition of an identifier property. You can easily do it like this:
 
 ```ruby
 module MyMacros

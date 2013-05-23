@@ -107,7 +107,7 @@ end
 
 module MyMacros
   def id(name, options = {})
-    unless name.nil? || name =~ /_id$/
+    unless name.nil? || name == "id" || name =~ /_id$/
       name += "_id"
     end
     integer(name, { greater_than: 0 }.merge(options))
