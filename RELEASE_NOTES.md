@@ -9,6 +9,10 @@ with all sufficient information, see the git(1) log.
 
 A lot more is coming soon check out the issue tracker.
 
+## Part of 0.1.2
+
+* API: MultipleOfValidator now delegates to DivisibleByValidator instead of inheriting from.
+
 ## Part of 0.1.1
 
 * Fix: English mistakes in documentation and gemspec.
