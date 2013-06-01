@@ -141,7 +141,7 @@ schema (<tt>true</tt> by default).</p>
 </td></tr><tr><td class="rdoc-term"><p>default</p></td>
 <td>
 <p>the default value to use for the associated property if it is not present.
-Setting a default value make the property private. (<tt>nil</tt> by
+Setting a default value make the property optional. (<tt>nil</tt> by
 default)</p>
 </td></tr><tr><td class="rdoc-term"><p>doc</p></td>
 <td>
@@ -1219,7 +1219,7 @@ no class (see <span class='object_link'><a href="#def_class_name-class_method" t
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Return the default options for this schema class. If you overwrite this
+<p>Return the default options for this schema class. If you override this
 method in sub-classes, call super and merge the result with your default
 options.</p>
 
@@ -2177,7 +2177,7 @@ Rewrite it in sub-classes.</p>
       <pre class="code"><span class="info file"># File 'lib/respect/schema.rb', line 203</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NoMethodError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>overwrite me in sub-classes</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NoMethodError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>override me in sub-classes</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2308,7 +2308,7 @@ the validation error via <span class='object_link'><a href="#last_error-instance
 </div>
 
     <div id="footer">
-  Generated on Tue May 21 14:29:59 2013 by
+  Generated on Sat Jun  1 16:33:03 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-1.9.3).
 </div>

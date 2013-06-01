@@ -86,7 +86,7 @@ integrate this gem in Rails.</p>
 <li>Contextual validation error.</li>
 <li>Object sanitizer: turn plain string and integer values into real objects.</li>
 <li>Extensible API to add your custom validator and sanitizer.</li>
-<li>Extensible macro definition system to factor you schema definition code.</li>
+<li>Extensible macro definition system to factor your schema definition code.</li>
 </ul>
 
 <p>See the RELEASE_NOTES file for detailed feature listing.</p>
@@ -103,13 +103,13 @@ to factor your specification code.</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
   <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span>
   <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_integer'>integer</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>age</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>greater_than:</span> <span class='int'>18</span>
-  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>format:</span> <span class='symbol'>:email</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>email</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>format:</span> <span class='symbol'>:email</span>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>But you can still convert this specification to
+<p>You can easily convert this specification to
 <a href="http://tools.ietf.org/id/draft-zyp-json-schema-03.html">JSON Schema specification draft v3</a>
-easily so that all your customers can read and understand it:</p>
+so that all your customers can read and understand it:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>json</span><span class='tstring_end'>'</span></span>
 <span class='id identifier rubyid_puts'>puts</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_pretty_generate'>pretty_generate</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='rparen'>)</span>
@@ -160,8 +160,8 @@ easily so that all your customers can read and understand it:</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_validate?'>validate?</span><span class='lparen'>(</span><span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{ &quot;name&quot;: &quot;My name&quot;, &quot;age&quot;: 20, &quot;email&quot;: &quot;me@example.com&quot; }</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>   <span class='comment'>#=&gt; true
 </span></code></pre>
 
-<p>Once a JSON document has been validated, we often want to turn its basic strings and integers into real objects like <code>URI</code>.
-<em>Respect</em> does that automatically for you for standard objects:</p>
+<p>Once a JSON document has been validated, we often want to turn its basic strings and integers into real objects like <code>URI</code>
+for instance. <em>Respect</em> does that automatically for you for standard objects:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
   <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_uri'>uri</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span>
@@ -171,7 +171,7 @@ easily so that all your customers can read and understand it:</p>
 </span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>homepage</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                            <span class='comment'>#=&gt; URI::HTTP
 </span></code></pre>
 
-<p>You can easily extend the sanitizer with your own object type. Let&#39;s assume you have an object type defined like this:</p>
+<p>You can easily extend the sanitizer with your own object type. Let&#39;s assume you have a class defined like this:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Place</span>
   <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='id identifier rubyid_longitude'>longitude</span><span class='rparen'>)</span>
@@ -187,7 +187,7 @@ easily so that all your customers can read and understand it:</p>
 </code></pre>
 
 <p>Then you can extend the <code>Schema</code> class hierarchy with the new schema for your custom type.
-The <code>CompositeSchema</code> class assists you in this task so you just have to overwrite
+The <code>CompositeSchema</code> class assists you in this task so you just have to override
 two methods.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>Respect</span>
@@ -227,8 +227,8 @@ access to your custom schema via the <code>place</code> method.</p>
 </span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>home</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                                  <span class='comment'>#=&gt; Place
 </span></code></pre>
 
-<p>Sometimes you just want to extend the DSL with a new statement providing higher level feature than
-the primitive <code>integer</code>, <code>string</code> or <code>float</code>, etc... For instance if you specify identifier
+<p>Sometimes you just want to extend the DSL with a new statement providing higher level features than
+the primitives <code>integer</code>, <code>string</code> or <code>float</code>, etc... For instance if you specify identifier
 in your schema like this:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='const'>Respect</span><span class='op'>::</span><span class='const'>HashSchema</span><span class='period'>.</span><span class='id identifier rubyid_define'>define</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
@@ -241,8 +241,8 @@ in your schema like this:</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>In such case, you don&#39;t need a custom sanitizer. You just want to factor the definition of
-identifier property. You can easily do it like this:</p>
+<p>In such case, you don&#39;t need a custom sanitizer since an identifer is an integer after all. You just
+want to factor the definition of an identifier property. You can easily do it like this:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>MyMacros</span>
   <span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -344,7 +344,7 @@ Copyright (c) 2013 Nicolas Despres.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Tue May 21 14:29:58 2013 by
+  Generated on Sat Jun  1 16:33:01 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-1.9.3).
 </div>
