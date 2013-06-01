@@ -20,12 +20,12 @@ A lot more is coming soon check out the issue tracker.
 
 ## Part of the first release
 
-Feature: DSL to describe schema of Hash, Array, String, Numeric, Integer, Float, Boolean, etc...
-Feature: Dumper to pretty-print a schema using the same DSL syntax.
-Feature: Dumper to generate [JSON schema draft v3 standard](http://tools.ietf.org/id/draft-zyp-json-schema-03.html) representation of a schema.
-Feature: Validation system to check objects follow a schema.
-Feature: Sanitizer to promote validated value to a more specific type.
-Feature: CompositeSchema class to easily create your own schema.
-Feature: Facilities to extends the DSL with user-defined module.
-Feature: Contextual validation error.
-Feature: A JSON schema HTML formatter.
+* Feature: DSL to describe schema of Hash, Array, String, Numeric, Integer, Float, Boolean, etc...
+* Feature: Dumper to pretty-print a schema using the same DSL syntax.
+* Feature: Dumper to generate [JSON schema draft v3 standard](http://tools.ietf.org/id/draft-zyp-json-schema-03.html) representation of a schema.
+* Feature: Validation system to check objects follow a schema.
+* Feature: Sanitizer to promote validated value to a more specific type.
+* Feature: CompositeSchema class to easily create your own schema.
+* Feature: Facilities to extends the DSL with user-defined module.
+* Feature: Contextual validation error.
+* Feature: A JSON schema HTML formatter.
