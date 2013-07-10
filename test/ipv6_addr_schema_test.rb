@@ -40,7 +40,7 @@ class Ipv6AddrSchemaTest < Test::Unit::TestCase
     s = Respect::Ipv6AddrSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bIpv6AddrSchema\b/
+    assert_match /\bIpv6AddrSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, "3ffe:505:2::1"
     assert_not_nil(s.sanitized_object)
@@ -54,8 +54,8 @@ class Ipv6AddrSchemaTest < Test::Unit::TestCase
     assert_equal(IPAddr, ip.class)
     assert ip.ipv4?
     exception = assert_exception(Respect::ValidationError) { s.validate(ip) }
-    assert_match exception.message, /\b#{ip}\b/
-    assert_match exception.message, /not IPv6/
+    assert_match /\b#{ip}\b/, exception.message
+    assert_match /not IPv6/, exception.message
   end
 
   def test_validate_ip_addr_object_with_ipv6_value

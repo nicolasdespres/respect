@@ -132,7 +132,7 @@ class IntegerSchemaTest < Test::Unit::TestCase
     s = Respect::IntegerSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bIntegerSchema\b/
+    assert_match /\bIntegerSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, 42
     assert_equal(42, s.sanitized_object)

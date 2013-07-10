@@ -175,7 +175,7 @@ class StringSchemaTest < Test::Unit::TestCase
     s = Respect::StringSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bStringSchema\b/
+    assert_match /\bStringSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, "42"
     assert_equal("42", s.sanitized_object)

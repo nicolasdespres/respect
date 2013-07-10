@@ -39,7 +39,7 @@ class URISchemaTest < Test::Unit::TestCase
     s = Respect::URISchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bURISchema\b/
+    assert_match /\bURISchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, "http://foo.com"
     assert_not_nil(s.sanitized_object)

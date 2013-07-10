@@ -479,7 +479,7 @@ class ArraySchemaTest < Test::Unit::TestCase
     s = Respect::ArraySchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bArraySchema\b/
+    assert_match /\bArraySchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, []
     assert_equal([], s.sanitized_object)
