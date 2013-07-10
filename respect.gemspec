@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha', '~> 0.13.3'
   s.add_development_dependency 'rake', '~> 10.0.4'
   s.add_development_dependency 'redcarpet', '~> 2.2.2'
-  s.add_development_dependency 'debugger', '~> 1.3.3'
+  s.add_development_dependency 'debugger', '~> 1.6.1'
 end
