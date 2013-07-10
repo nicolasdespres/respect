@@ -267,7 +267,7 @@ class NumericSchemaTest < Test::Unit::TestCase
     s = Respect::NumericSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bNumericSchema\b/
+    assert_match /\bNumericSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, 42
     assert_equal(42, s.sanitized_object)

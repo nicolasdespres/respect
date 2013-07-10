@@ -39,7 +39,7 @@ class RegexpSchemaTest < Test::Unit::TestCase
     s = Respect::RegexpSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bRegexpSchema\b/
+    assert_match /\bRegexpSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, "a*b*"
     assert_not_nil(s.sanitized_object)

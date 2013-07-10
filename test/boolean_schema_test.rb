@@ -65,7 +65,7 @@ class BooleanSchemaTest < Test::Unit::TestCase
     s = Respect::BooleanSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bBooleanSchema\b/
+    assert_match /\bBooleanSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, true
     assert_equal(true, s.sanitized_object)

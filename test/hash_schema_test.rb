@@ -605,7 +605,7 @@ class HashSchemaTest < Test::Unit::TestCase
     s = Respect::HashSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bHashSchema\b/
+    assert_match /\bHashSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate s, {}
     assert_equal({}, s.sanitized_object)

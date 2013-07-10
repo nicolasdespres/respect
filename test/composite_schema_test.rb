@@ -22,7 +22,7 @@ class CompositeSchemaTest < Test::Unit::TestCase
     s = Respect::PointSchema.new
     assert !s.allow_nil?
     exception = assert_exception(Respect::ValidationError) { s.validate(nil) }
-    assert_match exception.message, /\bPointSchema\b/
+    assert_match /\bPointSchema\b/, exception.message
     assert_equal(nil, s.sanitized_object)
     assert_schema_validate(s, { x: 42.5, y: 51.3 })
     assert_equal(Point.new(42.5, 51.3), s.sanitized_object)
