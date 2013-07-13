@@ -10,6 +10,11 @@ module Respect
       end
     end
 
+    # Overwritten method. See {Validator#explain}.
+    def explain
+      "Must match #{@pattern.inspect}."
+    end
+
     private
 
     def to_h_org3

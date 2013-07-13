@@ -276,6 +276,52 @@ module Respect
       self.class == other.class && @options == other.options
     end
 
+    # Explain the options of this schema to humans.
+    def explain_options(options = {})
+      # Collect options to explain.
+      if options[:only]
+        names = options[:only]
+      elsif options[:except]
+        names = options.keys.select{|name| options[:except].include?(name) }
+      else
+        names = options.keys
+      end
+      # Explain options
+      result = []
+      names.each do |name|
+        desc = explain_option(name)
+        result << desc if desc
+      end
+      result
+    end
+
+    # Explain the option called +name+ to humans.
+    # Returns +nil+ if there is no explanation.
+    def explain_option(name)
+      case name
+      when :required, :default
+        if required?
+          "Is required."
+        else
+          if has_default?
+            "Is optional and default value is #{default.inspect}."
+          else
+            "Is optional."
+          end
+        end
+      when :allow_nil
+        allow_nil? ? "May be null." : nil;
+      when :doc
+        nil
+      else
+        if validator_class = Respect.validator_for(name)
+          validator_class.new(options[name]).explain
+        else
+          "Option #{name} has value '#{options[name].inspect}'."
+        end
+      end
+    end
+
     private
 
     # Used by sub-classes to set the formatted object.

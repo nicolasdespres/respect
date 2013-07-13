@@ -188,6 +188,16 @@ module Respect
       super && @item == other.item && @items == other.items && @extra_items == other.extra_items
     end
 
+    # Overwritten method. See {Schema#explain_option}.
+    def explain_option(name)
+      case name
+      when :uniq
+        "All items must be uniq."
+      else
+        super
+      end
+    end
+
     private
 
     def validate_item(index, schema, object, sanitized_object)

@@ -29,6 +29,12 @@ module Respect
       true
     end
 
+    # Explain this validator to humans.
+    # Returns +nil+ if there is no explanation.
+    def explain
+      nil
+    end
+
     # Convert this validator to a Hash using the given +format+.
     def to_h(format = :org3)
       case format

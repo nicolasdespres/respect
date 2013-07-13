@@ -108,6 +108,32 @@ module Respect
       end
     end
 
+    # Overwritten method. See {Validator#explain}.
+    def explain
+      case @format
+      when :email
+        "Must be a valid email address."
+      when :uri
+        "Must be a valid URI."
+      when :regexp
+        "Must be a valid regular expression."
+      when :datetime
+        "Must be a valid date and time (according to RFC 3339)."
+      when :ipv4_addr
+        "Must be a valid IPv4 address."
+      when :ipv6_addr
+        "Must be a valid IPv6 address."
+      when :phone_number
+        "Must be a valid phone number."
+      when :ip_addr
+        "Must be a valid IPv4 or IPv6 address."
+      when :hostname
+        "Must be a valid host name."
+      else
+        "Must have format #@format."
+      end
+    end
+
     private
 
     def to_h_org3

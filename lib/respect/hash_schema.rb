@@ -214,5 +214,15 @@ module Respect
     def each(&block)
       @properties.each(&block)
     end
+
+    # Overwritten method. See {Schema#explain_option}.
+    def explain_option(name)
+      case name
+      when :strict
+        "Must contains exactly the defined properties."
+      else
+        super
+      end
+    end
   end
 end

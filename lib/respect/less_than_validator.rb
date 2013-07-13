@@ -10,6 +10,11 @@ module Respect
       end
     end
 
+    # Overwritten method. See {Validator#explain}.
+    def explain
+      "Must be less than #@max."
+    end
+
     private
 
     def to_h_org3

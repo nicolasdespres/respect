@@ -11,6 +11,11 @@ module Respect
       end
     end
 
+    # Overwritten method. See {Validator#explain}.
+    def explain
+      "Must be at worst #@max_length long."
+    end
+
     private
 
     def to_h_org3
