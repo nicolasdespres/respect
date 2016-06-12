@@ -22,7 +22,7 @@ end
 # * The _validator_ classes implement validation routine you can attach to your schema.
 #   accessible via the schema's options (see {Validator}).
 # * The _dumper_ classes are the back-end of this module since they implement the
-#   convertion of the internal schema representation to different formats.
+#   conversion of the internal schema representation to different formats.
 # * The _miscellaneous_ classes provides various support for the other categories.
 #
 # You can extend this library in many ways:
